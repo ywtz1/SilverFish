@@ -24,6 +24,11 @@ namespace HREngine.Bots
 
     public class Minion
     {
+        
+        //public int bot312 = 0;
+        public int missilebot = 0;
+        public int sn1p = 0;
+
         //dont silence----------------------------
         public int anzGotDmg = 0;
         public int GotDmgValue = 0;
@@ -63,6 +68,10 @@ namespace HREngine.Bots
         public int ancestralspirit = 0;
         public int desperatestand = 0;
         public int souloftheforest = 0;
+        public int valanyr = 0;
+        public int spiderbomb = 0;
+        public int robot312 = 0;
+
         public int stegodon = 0;
         public int livingspores = 0;
         public int explorershat = 0;
@@ -106,6 +115,7 @@ namespace HREngine.Bots
         public bool lifesteal = false;
 
         public int charge = 0;
+		public int rush = 0;
         public int hChoice = 0;
         public bool poisonous = false;
         public bool cantLowerHPbelowONE = false;
@@ -114,6 +124,7 @@ namespace HREngine.Bots
         public bool playedFromHand = false;
         public bool extraParam = false;
         public int extraParam2 = 0;
+		public int reborn = 0;
 
         public Minion()
         {
@@ -150,6 +161,7 @@ namespace HREngine.Bots
             this.shadowmadnessed = m.shadowmadnessed;
 
             this.ancestralspirit = m.ancestralspirit;
+			this.reborn = m.reborn;
             this.desperatestand = m.desperatestand;
             this.destroyOnOwnTurnStart = m.destroyOnOwnTurnStart; // depends on own!
             this.destroyOnEnemyTurnStart = m.destroyOnEnemyTurnStart; // depends on own!
@@ -159,6 +171,9 @@ namespace HREngine.Bots
 
             this.conceal = m.conceal;
             this.souloftheforest = m.souloftheforest;
+            this.spiderbomb = m.spiderbomb;
+            this.valanyr = m.valanyr;
+            this.robot312 = m.robot312;
             this.stegodon = m.stegodon;
             this.livingspores = m.livingspores;
             this.explorershat = m.explorershat;
@@ -194,6 +209,7 @@ namespace HREngine.Bots
             this.exhausted = m.exhausted;
 
             this.charge = m.charge;
+			this.rush = m.rush;
             this.hChoice = m.hChoice;
             this.poisonous = m.poisonous;
             this.lifesteal = m.lifesteal;
@@ -234,6 +250,7 @@ namespace HREngine.Bots
             this.shadowmadnessed = m.shadowmadnessed;
 
             this.ancestralspirit = m.ancestralspirit;
+			this.reborn = m.reborn;
             this.desperatestand = m.desperatestand;
             this.destroyOnOwnTurnStart = m.destroyOnOwnTurnStart; // depends on own!
             this.destroyOnEnemyTurnStart = m.destroyOnEnemyTurnStart; // depends on own!
@@ -243,6 +260,9 @@ namespace HREngine.Bots
 
             this.conceal = m.conceal;
             this.souloftheforest = m.souloftheforest;
+            this.spiderbomb = m.spiderbomb;
+            this.valanyr = m.valanyr;
+            this.robot312 = m.robot312;
             this.stegodon = m.stegodon;
             this.livingspores = m.livingspores;
             this.explorershat = m.explorershat;
@@ -276,8 +296,9 @@ namespace HREngine.Bots
             this.exhausted = m.exhausted;
 
             this.charge = m.charge;
+            this.rush = m.rush;
             this.hChoice = m.hChoice;
-            if (m.charge > 0 && !m.frozen && !m.silenced) this.Ready = true;
+            if ((m.charge > 0 ||m.rush>0)&& !m.frozen&& !m.silenced) this.Ready = true;
             else this.Ready = false;
             this.poisonous = m.poisonous;
             this.lifesteal = m.lifesteal;
@@ -287,6 +308,8 @@ namespace HREngine.Bots
 
             this.cantBeTargetedBySpellsOrHeroPowers = m.cantBeTargetedBySpellsOrHeroPowers;
             this.cantAttackHeroes = m.cantAttackHeroes;
+            if(this.Ready&&m.rush>0&&m.playedThisTurn&&m.charge==0)this.cantAttackHeroes=true;
+
             this.cantAttack = m.cantAttack;
         }
 
@@ -295,6 +318,13 @@ namespace HREngine.Bots
             return this.Attack;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dmg">bigger than zero means damage, smaller than zero means heal</param>
+        /// <param name="p"></param>
+        /// <param name="isMinionAttack"></param>
+        /// <param name="dontCalcLostDmg"></param>
         public void getDamageOrHeal(int dmg, Playfield p, bool isMinionAttack, bool dontCalcLostDmg)
         {
             if (this.HealthPoints <= 0) return;
@@ -303,7 +333,10 @@ namespace HREngine.Bots
             
             int damage = dmg;
             int heal = 0;
-            if (dmg < 0) heal = -dmg;
+            if (dmg < 0)
+            {
+                heal = -dmg;
+            }
 
             if (this.isHero)
             {
@@ -489,12 +522,12 @@ namespace HREngine.Bots
 
             if (woundedbefore && !this.wounded)
             {
-                this.handcard.card.sim_card.onEnrageStop(p, this);
+                this.handcard.card.CardSimulation.onEnrageStop(p, this);
             }
 
             if (!woundedbefore && this.wounded)
             {
-                this.handcard.card.sim_card.onEnrageStart(p, this);
+                this.handcard.card.CardSimulation.onEnrageStart(p, this);
             }
             
             if (this.HealthPoints <= 0)
@@ -571,7 +604,9 @@ namespace HREngine.Bots
                 return;
             }
 
-            if (!frozen && ((charge >= 1 && playedThisTurn) || !playedThisTurn || shadowmadnessed) && (numAttacksThisTurn == 0 || (numAttacksThisTurn == 1 && windfury) || ( !silenced && this.name == CardDB.cardName.v07tr0n && numAttacksThisTurn <=3 )) ) Ready = true;
+              if (!frozen && ((rush >= 1 && playedThisTurn)||(charge >= 1 && playedThisTurn) || !playedThisTurn || shadowmadnessed) && (numAttacksThisTurn == 0 || (numAttacksThisTurn == 1 && windfury) || ( !silenced && this.name == CardDB.cardName.v07tr0n && numAttacksThisTurn <=3 )) ) Ready = true;
+               if (rush >= 1 && charge == 0 && playedThisTurn) cantAttackHeroes = true; 
+			/*if (!frozen && ((charge >= 1 && playedThisTurn) || !playedThisTurn || shadowmadnessed) && (numAttacksThisTurn == 0 || (numAttacksThisTurn == 1 && windfury) || ( !silenced && this.name == CardDB.cardName.v07tr0n && numAttacksThisTurn <=3 )) ) Ready = true;*/
 
         }
 
@@ -602,6 +637,9 @@ namespace HREngine.Bots
             changeOwnerOnTurnStart = false;
             conceal = false;
             souloftheforest = 0;
+            spiderbomb = 0;
+            valanyr = 0;
+            robot312 = 0;
             stegodon = 0;
             livingspores = 0;
             explorershat = 0;
@@ -635,7 +673,7 @@ namespace HREngine.Bots
             //delete enrage (if minion is silenced the first time)
             if (wounded && handcard.card.Enrage && !silenced)
             {
-                handcard.card.sim_card.onEnrageStop(p, this);
+                handcard.card.CardSimulation.onEnrageStop(p, this);
             }
 
             //reset attack
@@ -653,7 +691,7 @@ namespace HREngine.Bots
 
             if (!silenced)//minion WAS not silenced, deactivate his aura
             {
-                handcard.card.sim_card.onAuraEnds(p, this);
+                handcard.card.CardSimulation.onAuraEnds(p, this);
             }
 
             silenced = true;
@@ -781,14 +819,23 @@ namespace HREngine.Bots
                     // deathrattles-------------------------------------------------
                     case CardDB.cardIDEnum.LOE_105e: this.explorershat++; continue;
                     case CardDB.cardIDEnum.UNG_956e: this.returnToHand++; continue;
-                        
+                    case CardDB.cardIDEnum.TRL_082e: 
+                    //this.deathrattle2  = CardDB.getCardDataFromID(CardDB.cardIDEnum.TRL_082e);
+                     //continue;//终极巫毒    
                     case CardDB.cardIDEnum.CS2_038e: this.ancestralspirit++; continue;
                     case CardDB.cardIDEnum.ICC_244e: this.desperatestand++; continue;
+                    
                     case CardDB.cardIDEnum.EX1_158e: this.souloftheforest++; continue;
+                    case CardDB.cardIDEnum.LOOT_500e: this.valanyr++; continue;
+                    case CardDB.cardIDEnum.BOT_312e: this.robot312++; continue;
+                    case CardDB.cardIDEnum.BOT_251e: this.spiderbomb++; continue;
+                    
                     case CardDB.cardIDEnum.UNG_952e: this.stegodon++; continue;
                     case CardDB.cardIDEnum.UNG_999t2e: this.livingspores++; continue;
                         
                     case CardDB.cardIDEnum.OG_045a: this.infest++; continue;
+                    case CardDB.cardIDEnum.DAL_710e: this.infest++; continue;
+                    case CardDB.cardIDEnum.BOT_438e: this.infest++; continue;
                     case CardDB.cardIDEnum.LOE_019e: this.extraParam2 = me.copyDeathrattle; continue; //unearthedraptor
                    // case CardDB.cardIDEnum.LOE_012e: this.deathrattle2 = ; continue; //zzdeletetombexplorer
 

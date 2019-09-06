@@ -1,4 +1,6 @@
-﻿namespace HREngine.Bots
+﻿using SilverFish.Helpers;
+
+namespace HREngine.Bots
 {
     using System;
     using System.Collections.Generic;
@@ -26,6 +28,7 @@
         public bool canbeTriggeredWithAttackingMinion = true;
         public bool canbeTriggeredWithPlayingMinion = true;
         public bool canbeTriggeredWithPlayingHeroPower = true;*/
+        public bool canBe_flameward = true;
 
         public bool canBe_snaketrap = true;
         public bool canBe_snipe = true;
@@ -66,11 +69,13 @@
             this.canbeTriggeredWithAttackingMinion = sec.canbeTriggeredWithAttackingMinion;
             this.canbeTriggeredWithPlayingMinion = sec.canbeTriggeredWithPlayingMinion;
             this.canbeTriggeredWithPlayingHeroPower = sec.canbeTriggeredWithPlayingHeroPower;*/
+            this.canBe_flameward = sec.canBe_flameward;
 
             this.canBe_avenge = sec.canBe_avenge;
             this.canBe_counterspell = sec.canBe_counterspell;
             this.canBe_duplicate = sec.canBe_duplicate;
             this.canBe_effigy = sec.canBe_effigy;
+
             this.canBe_explosive = sec.canBe_explosive;
             this.canBe_beartrap = sec.canBe_beartrap;
             this.canBe_eyeforaneye = sec.canBe_eyeforaneye;
@@ -103,6 +108,8 @@
             {
                 Helpfunctions.Instance.ErrorLog("cant read secret " + secdata + " " + canbe.Length);
             }
+
+            this.canBe_flameward = false;
 
             this.canBe_snaketrap = false;
             this.canBe_snipe = false;
@@ -298,6 +305,7 @@
             retval += "" + ((canBe_snaketrap) ? "1" : "0");
             retval += "" + ((canBe_snipe) ? "1" : "0");
             retval += "" + ((canBe_explosive) ? "1" : "0");
+            retval += "" + ((canBe_flameward) ? "1" : "0");
             retval += "" + ((canBe_beartrap) ? "1" : "0");
             retval += "" + ((canBe_freezing) ? "1" : "0");
             retval += "" + ((canBe_missdirection) ? "1" : "0");
@@ -327,7 +335,7 @@
             bool result = this.entityId == s.entityId;
             if (!result)
             {
-                result = result && this.canBe_avenge == s.canBe_avenge && this.canBe_counterspell == s.canBe_counterspell && this.canBe_duplicate == s.canBe_duplicate && this.canBe_effigy == s.canBe_effigy && this.canBe_explosive == s.canBe_explosive;
+                result = result && this.canBe_avenge == s.canBe_avenge && this.canBe_counterspell == s.canBe_counterspell && this.canBe_duplicate == s.canBe_duplicate && this.canBe_effigy == s.canBe_effigy && this.canBe_explosive == s.canBe_explosive&& this.canBe_flameward == s.canBe_flameward;
                 result = result && this.canBe_eyeforaneye == s.canBe_eyeforaneye && this.canBe_freezing == s.canBe_freezing && this.canBe_icebarrier == s.canBe_icebarrier && this.canBe_iceblock == s.canBe_iceblock;
                 result = result && this.canBe_mirrorentity == s.canBe_mirrorentity && this.canBe_missdirection == s.canBe_missdirection && this.canBe_noblesacrifice == s.canBe_noblesacrifice && this.canBe_redemption == s.canBe_redemption;
                 result = result && this.canBe_repentance == s.canBe_repentance && this.canBe_snaketrap == s.canBe_snaketrap && this.canBe_snipe == s.canBe_snipe && this.canBe_spellbender == s.canBe_spellbender && this.canBe_vaporize == s.canBe_vaporize;
@@ -394,7 +402,7 @@
             /*string g = "";
             if (Probabilitymaker.Instance.feugenDead) g += " fgn";
             if (Probabilitymaker.Instance.stalaggDead) g += " stlgg";
-            Helpfunctions.Instance.logg("GraveYard:" + g);
+            LogHelper.WriteCombatLog("GraveYard:" + g);
             if (writetobuffer) Helpfunctions.Instance.writeToBuffer("GraveYard:" + g);*/
 
             string s = "ownDiedMinions: ";
@@ -402,14 +410,14 @@
             {
                 if (gyi.own) s += gyi.cardid + "," + gyi.entity + ";";
             }
-            Helpfunctions.Instance.logg(s);
+            LogHelper.WriteCombatLog(s);
 
             s = "enemyDiedMinions: ";
             foreach (GraveYardItem gyi in this.turngraveyard)
             {
                 if (!gyi.own) s += gyi.cardid + "," + gyi.entity + ";";
             }
-            Helpfunctions.Instance.logg(s);
+            LogHelper.WriteCombatLog(s);
 
 
             s = "otg: ";
@@ -417,14 +425,14 @@
             {
                 if (gyi.own) s += gyi.cardid + "," + gyi.entity + ";";
             }
-            Helpfunctions.Instance.logg(s);
+            LogHelper.WriteCombatLog(s);
 
             s = "etg: ";
             foreach (GraveYardItem gyi in this.turngraveyardAll)
             {
                 if (!gyi.own) s += gyi.cardid + "," + gyi.entity + ";";
             }
-            Helpfunctions.Instance.logg(s);
+            LogHelper.WriteCombatLog(s);
         }
 
         public void setGraveYard(List<GraveYardItem> list, bool turnStart)
@@ -535,8 +543,8 @@
             {
                 eg += e.Key + "," + e.Value + ";";
             }
-            Helpfunctions.Instance.logg(og);
-            Helpfunctions.Instance.logg(eg);
+            LogHelper.WriteCombatLog(og);
+            LogHelper.WriteCombatLog(eg);
         }
 
         public int getProbOfEnemyHavingCardInHand(CardDB.cardIDEnum cardid, int handsize, int decksize)
@@ -545,6 +553,7 @@
 
 
             int cardsremaining = this.anzCardsInDeck(cardid);
+            int n=-1;
             if (cardsremaining == 0) return 0;
             double retval = 0.0;
             //http://de.wikipedia.org/wiki/Hypergeometrische_Verteilung (we calculte 1-p(x=0))
@@ -559,6 +568,23 @@
             }
 
             retval = Math.Min(retval, 1.0);
+            CardDB.Card c = CardDB.Instance.getCardDataFromID(cardid);
+            if(!c.Collectible)//衍生卡
+            {
+            	
+            	switch (c.name) 
+            	{
+            		case CardDB.cardName.lynx:
+            		     if (this.enemyCardsOut.ContainsKey(CardDB.cardIDEnum.TRL_348))
+            		     {
+            		     	n=this.enemyCardsOut[CardDB.cardIDEnum.TRL_348];
+            		        n-=this.enemyCardsOut[CardDB.cardIDEnum.TRL_348t];
+            		     }
+            		     else  n=0;
+            		     break; 
+            	}
+            	if(n!=-1)retval = n;
+            }
 
             return (int)(100.0 * retval);
         }
@@ -579,7 +605,7 @@
             foreach (KeyValuePair<int, TAG_CLASS> eSec in enemySecretList)
             {
                 if (eSec.Key >= 1000) continue;
-                Helpfunctions.Instance.logg("detect secret with id" + eSec.Key);
+                LogHelper.WriteCombatLog("detect secret with id" + eSec.Key);
                 SecretItem sec = getNewSecretGuessedItem(eSec.Key, eSec.Value);
 
                 newlist.Add(new SecretItem(sec));
@@ -618,6 +644,7 @@
             SecretItem sec = new SecretItem { entityId = entityid };
             if (SecClass == TAG_CLASS.HUNTER)
             {
+                sec.canBe_flameward = false;
 
                 sec.canBe_counterspell = false;
                 sec.canBe_icebarrier = false;
@@ -650,6 +677,7 @@
                     sec.canBe_explosive = false;
                 }
 
+
                 if (enemyCardsOut.ContainsKey(CardDB.cardIDEnum.AT_060) && enemyCardsOut[CardDB.cardIDEnum.AT_060] >= 2)
                 {
                     sec.canBe_beartrap = false;
@@ -679,8 +707,9 @@
 
             if (SecClass == TAG_CLASS.MAGE)
             {
+
                 sec.canBe_snaketrap = false;
-                sec.canBe_snipe = false;
+                //sec.canBe_snipe = false;爆炸符文
                 sec.canBe_explosive = false;
                 sec.canBe_beartrap = false;
                 sec.canBe_freezing = false;
@@ -695,6 +724,11 @@
                 sec.canBe_avenge = false;
                 sec.canBe_sacredtrial = false;
 
+                if (enemyCardsOut.ContainsKey(CardDB.cardIDEnum.LOOT_101) && enemyCardsOut[CardDB.cardIDEnum.LOOT_101] >= 2)
+                {
+                    sec.canBe_snipe = false;
+                }
+
                 if (enemyCardsOut.ContainsKey(CardDB.cardIDEnum.EX1_287) && enemyCardsOut[CardDB.cardIDEnum.EX1_287] >= 2)
                 {
                     sec.canBe_counterspell = false;
@@ -708,6 +742,10 @@
                 if (enemyCardsOut.ContainsKey(CardDB.cardIDEnum.EX1_295) && enemyCardsOut[CardDB.cardIDEnum.EX1_295] >= 2)
                 {
                     sec.canBe_iceblock = false;
+                }
+                if (enemyCardsOut.ContainsKey(CardDB.cardIDEnum.ULD_239) && enemyCardsOut[CardDB.cardIDEnum.ULD_239] >= 2)
+                {
+                    sec.canBe_flameward = false;
                 }
 
                 if (enemyCardsOut.ContainsKey(CardDB.cardIDEnum.EX1_294) && enemyCardsOut[CardDB.cardIDEnum.EX1_294] >= 2)
@@ -738,6 +776,7 @@
 
             if (SecClass == TAG_CLASS.PALADIN)
             {
+                sec.canBe_flameward = false;
                 sec.canBe_snaketrap = false;
                 sec.canBe_snipe = false;
                 sec.canBe_explosive = false;
@@ -875,6 +914,8 @@
                 }
             }
 
+            bool flameward = false;
+
             bool beartrap = false;
             bool explosive = false;
             bool snaketrap = false;
@@ -948,6 +989,8 @@
                     if (targetWasHero)
                     {
                         explosive = true;
+                        flameward = true;
+
                         if (old.enemyMinions.Count < 7) beartrap = true;
                         missdirection = true;
                         if (attackerIsHero && old.ownMinions.Count == 0 && old.enemyMinions.Count == 0) missdirection = false;
@@ -979,6 +1022,17 @@
                                 beartrap = true;
                                 missdirection = true;
                                 continue;
+                            case CardDB.cardIDEnum.ULD_239:  //火焰结界
+                                if (enemySecretsOpenedStep.Count == 1)
+                                {
+                                    missdirection = true;
+                                    if (!attackerIsHero && p.ownMinions.Find(x => x.entitiyID == doneMove.own.entitiyID) == null)
+                                    {
+                                        missdirection = false;
+                                        freezing = false;
+                                    }
+                                }
+                                continue;
                             case CardDB.cardIDEnum.EX1_610:  //explosivetrap
                                 if (enemySecretsOpenedStep.Count == 1)
                                 {
@@ -1008,6 +1062,12 @@
                                 freezing = false;
                                 continue;
                             case CardDB.cardIDEnum.EX1_130:   //noblesacrifice
+                                noblesacrifice = true;
+                                snaketrap = true;
+                                vaporize = false;
+                                icebarrier = false;
+                                continue;
+                            case CardDB.cardIDEnum.BOT_908:   //自动防御矩阵
                                 noblesacrifice = true;
                                 snaketrap = true;
                                 vaporize = false;
@@ -1051,6 +1111,7 @@
                     case CardDB.cardIDEnum.AT_002: effigy = true; continue;
                     case CardDB.cardIDEnum.AT_060: beartrap = true; continue;
                     case CardDB.cardIDEnum.EX1_130: noblesacrifice = true; continue;
+                    case CardDB.cardIDEnum.BOT_908: noblesacrifice = true; continue;
                     case CardDB.cardIDEnum.EX1_132: eyeforaneye = true; continue;
                     case CardDB.cardIDEnum.EX1_136: redemption = true; continue;
                     case CardDB.cardIDEnum.EX1_287: counterspell = true; continue;
@@ -1062,6 +1123,7 @@
                     case CardDB.cardIDEnum.EX1_554: snaketrap = true; continue;
                     case CardDB.cardIDEnum.EX1_594: vaporize = true; continue;
                     case CardDB.cardIDEnum.EX1_609: snipe = true; continue;
+                    case CardDB.cardIDEnum.ULD_239: flameward = true; continue;
                     case CardDB.cardIDEnum.EX1_610: explosive = true; continue;
                     case CardDB.cardIDEnum.EX1_611: freezing = true; continue;
                     case CardDB.cardIDEnum.FP1_018: duplicate = true; continue;
@@ -1076,7 +1138,8 @@
             foreach (SecretItem si in this.enemySecrets)
             {
                 if (beartrap) si.canBe_beartrap = false;
-                if (explosive) si.canBe_explosive = false;
+                if (explosive) si.canBe_explosive = false;                
+                if (flameward) si.canBe_flameward = false;
                 if (snaketrap) si.canBe_snaketrap = false;
                 if (missdirection) si.canBe_missdirection = false;
                 if (freezing) si.canBe_freezing = false;

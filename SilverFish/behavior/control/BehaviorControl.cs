@@ -99,8 +99,9 @@ namespace HREngine.Bots
                 retval += m.HealthPoints * 2;
                 retval += m.Attack * 2;
                 retval += m.handcard.card.rarity;
-                if (!m.playedThisTurn && m.windfury) retval += m.Attack;
+                if (m.windfury) {retval += 1; if(!m.playedThisTurn) retval += m.Attack;}//风怒修改
                 if (m.divineshild) retval += 1;
+                if (m.lifesteal) retval += 1;
                 if (m.stealth) retval += 1;
                 if (m.handcard.card.isSpecialMinion && !m.silenced)
                 {

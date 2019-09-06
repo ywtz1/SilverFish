@@ -129,6 +129,14 @@
         {
             return;
         }
+        public virtual void chaosha(Playfield p, Minion attacker, Minion target)
+        {
+            return;
+        }
+        public virtual void inhand(Playfield p, Handmanager.Handcard hc, bool wasOwnCard, Handmanager.Handcard triggerhc)
+        {
+            return;
+        }
 
 
     }

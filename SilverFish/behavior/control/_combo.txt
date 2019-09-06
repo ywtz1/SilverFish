@@ -1,0 +1,9 @@
+//圣剑扳手
+cardvalue:DAL_063,8
+//无人运输机（战士）
+cardvalue:BOT_238p4,20
+//电磁炮（战士）
+cardvalue:BOT_238p1,10
+cardvalue:BOT_238p2,15
+cardvalue:BOT_238p3,10
+cardvalue:BOT_238p6,15

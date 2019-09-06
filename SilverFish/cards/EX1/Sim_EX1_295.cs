@@ -12,6 +12,14 @@ namespace HREngine.Bots
         {
             target.HealthPoints += number;
             target.immune = true;
+            if(ownplay)
+            {
+            	foreach( Handmanager.Handcard bb in p.owncards)
+            	{
+            		if( bb.card.name==CardDB.cardName.cloudprince ||bb.card.name==CardDB.cardName.medivhsvalet)
+            		p.evaluatePenality -= 10;
+            	}
+            }
         }
 
 	}

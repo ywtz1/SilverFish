@@ -1,27 +1,19 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Linq;
-using Buddy.Coroutines;
-using HREngine.Bots.SilverFish.AI;
-using Triton.Bot;
-using Triton.Common;
+using System.Threading;
+using SilverFish.Helpers;
 using Triton.Game;
 using Triton.Game.Mapping;
- 
-
-
-
-
 
 namespace HREngine.Bots
 {
     public class SilverFishBot
     {
-        public string versionnumber = "117.178";
-        private bool singleLog = Settings.Instance.SingleLogFile;
+        public string versionnumber = "2019.09.01.002";
+        private bool singleLog = Settings.Instance.writeToSingleFile;
         private string botbehave = "noname";
         private bool needSleep = false;
 
@@ -57,7 +49,7 @@ namespace HREngine.Bots
         private string enemyHeroname = "";
 
         private CardDB.Card heroAbility = new CardDB.Card();
-        private int ownHeroPowerCost = ChuckHelper.GetOwnHeroPowerCost();
+        private int ownHeroPowerCost = 2;
         private bool ownAbilityisReady = false;
         private CardDB.Card enemyAbility = new CardDB.Card();
         private int enemyHeroPowerCost = 2;
@@ -114,31 +106,13 @@ namespace HREngine.Bots
 
         private SilverFishBot()
         {
-            this.singleLog = Settings.Instance.writeToSingleFile;
             Helpfunctions.Instance.InfoLog("init Silverfish");
+            this.singleLog = Settings.Instance.writeToSingleFile;
+
             string baseDirectory = Settings.Instance.BaseDirectory;
-
-            string silverFishLogFolderPath = @"Logs\Silverfish";
-            string logFolderPath = Path.Combine(baseDirectory, silverFishLogFolderPath);
-            if (!Directory.Exists(logFolderPath))
-            {
-                Directory.CreateDirectory(logFolderPath);
-            }
-
             string dataFolderPath = Path.Combine(baseDirectory, @"Routines\DefaultRoutine\Silverfish\data");
             _settings.DataFolderPath = dataFolderPath;
 
-            if (!singleLog)
-            {
-                string combatLogFolderPath = "CombatLogs";
-                _settings.LogFolderPath = Path.Combine(logFolderPath, combatLogFolderPath);
-            }
-            else
-            {
-                //single log file mode
-                _settings.LogFolderPath = logFolderPath;
-                Helpfunctions.Instance.createNewLoggfile();
-            }
             setBehavior();
         }
 
@@ -199,7 +173,7 @@ namespace HREngine.Bots
             if (BehaviorDB.ContainsKey(bName))
             {
                 _settings.SetSettings(bName);
-                ComboBreaker.Instance.readCombos(bName);
+                ComboBreaker.Instance.ReadCombos(bName);
                 RulesEngine.Instance.readRules(bName);
                 return BehaviorDB[bName];
             }
@@ -232,10 +206,9 @@ namespace HREngine.Bots
             Questmanager.Instance.Reset();
             if (!singleLog)
             {
-                _settings.LogFileName = $"{DateTime.Now:yyyyMMdd-HHmmss}.log";
-                Helpfunctions.Instance.createNewLoggfile();
+                LogHelper.CombatLogFileName = $"Combat-{DateTime.Now:yyyyMMdd-HHmmss}.log";
                 Helpfunctions.Instance.InfoLog("#######################################################");
-                Helpfunctions.Instance.InfoLog($"fight is logged in: {Path.Combine(_settings.LogFolderPath,_settings.LogFileName)}");
+                Helpfunctions.Instance.InfoLog($"fight is logged in: {LogHelper.GetCombatLogFilePath()}");
                 Helpfunctions.Instance.InfoLog("#######################################################");
             }
             startDeck.Clear();
@@ -745,6 +718,8 @@ namespace HREngine.Bots
                     m.cantBeTargetedBySpellsOrHeroPowers = (entitiy.GetTag(GAME_TAG.CANT_BE_TARGETED_BY_HERO_POWERS) == 0) ? false : true;
 
                     m.charge = entitiy.HasCharge ? 1 : 0;
+                    m.rush = entitiy.HasChuckRush ? 1 : 0;
+
 
 
                     m.zonepos = zp;
@@ -806,6 +781,12 @@ namespace HREngine.Bots
                     }
 
                     m.Ready = entitiy.CanBeUsed;
+                    if(m.playedThisTurn &&m.rush>0&&m.charge==0&& (m.numAttacksThisTurn == 0||(m.windfury&&m.numAttacksThisTurn == 1)))
+                    {
+                        m.Ready=true;
+                        if(m.playedThisTurn)m.cantAttackHeroes = true;
+                    }
+
                     if (m.charge > 0 && m.playedThisTurn && !m.Ready && m.numAttacksThisTurn == 0)
                     {
                         needSleep = true;
@@ -1175,16 +1156,16 @@ namespace HREngine.Bots
             string dtimes = DateTime.Now.ToString("HH:mm:ss:ffff");
             string enemysecretIds = "";
             enemysecretIds = Probabilitymaker.Instance.getEnemySecretData();
-            Helpfunctions.Instance.logg("#######################################################################");
-            Helpfunctions.Instance.logg("#######################################################################");
-            Helpfunctions.Instance.logg("start calculations, current time: " + DateTime.Now.ToString("HH:mm:ss") + " V" +
+            LogHelper.WriteCombatLog("#######################################################################");
+            LogHelper.WriteCombatLog("#######################################################################");
+            LogHelper.WriteCombatLog("start calculations, current time: " + DateTime.Now.ToString("HH:mm:ss") + " V" +
                                         this.versionnumber + " " + this.botbehave);
-            Helpfunctions.Instance.logg("#######################################################################");
-            Helpfunctions.Instance.logg("turn " + gTurn + "/" + gTurnStep);
-            Helpfunctions.Instance.logg("mana " + currentMana + "/" + ownMaxMana);
-            Helpfunctions.Instance.logg("emana " + enemyMaxMana);
-            Helpfunctions.Instance.logg("own secretsCount: " + ownSecretList.Count);
-            Helpfunctions.Instance.logg("enemy secretsCount: " + enemySecretList.Count + " ;" + enemysecretIds);
+            LogHelper.WriteCombatLog("#######################################################################");
+            LogHelper.WriteCombatLog("turn " + gTurn + "/" + gTurnStep);
+            LogHelper.WriteCombatLog("mana " + currentMana + "/" + ownMaxMana);
+            LogHelper.WriteCombatLog("emana " + enemyMaxMana);
+            LogHelper.WriteCombatLog("own secretsCount: " + ownSecretList.Count);
+            LogHelper.WriteCombatLog("enemy secretsCount: " + enemySecretList.Count + " ;" + enemysecretIds);
 
             Ai.Instance.currentCalculatedBoard = dtimes;
 
@@ -1195,6 +1176,26 @@ namespace HREngine.Bots
             Probabilitymaker.Instance.printTurnGraveYard();
             Probabilitymaker.Instance.printGraveyards();
             Hrtprozis.Instance.printOwnDeck();
+
+            ThreadPool.QueueUserWorkItem(CheckNotImplementedCardSimulation);
+        }
+
+        private void CheckNotImplementedCardSimulation(object state)
+        {
+            var enemyMinionsCard = enemyMinions.Select(x => x.handcard.card);
+            var notImplementedEnemyMinions = enemyMinionsCard.Where(x => !x.CardSimulationImplemented);
+            foreach (var card in notImplementedEnemyMinions)
+            {
+                CardNotImplementedHelper.Add(card);
+            }
+
+            var enemyCardsOut =
+                Probabilitymaker.Instance.enemyCardsOut.Select(x => CardDB.Instance.getCardDataFromID(x.Key));
+            var notImplementedEnemyCardsOut = enemyCardsOut.Where(x => !x.CardSimulationImplemented);
+            foreach (var card in notImplementedEnemyCardsOut)
+            {
+               CardNotImplementedHelper.Add(card);
+            }
         }
 
     }

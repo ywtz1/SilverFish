@@ -1,4 +1,6 @@
-﻿namespace HREngine.Bots
+﻿using SilverFish.Helpers;
+
+namespace HREngine.Bots
 {
     using System.Collections.Generic;
 
@@ -13,10 +15,13 @@
             public int addattack = 0;
             public int addHp = 0;
             public CardDB.Card card;
+            //public CardDB.Card card2= null;//额外的效果，僵尸兽等
             public Minion target;
             public int elemPoweredUp = 0;
             public int extraParam2 = 0;
             public bool extraParam3 = false;
+            public bool discardOnOwnTurnEnd = false;
+            public int valanyr = 0;
 
             public Handcard()
             {
@@ -31,6 +36,8 @@
                 this.addattack = hc.addattack;
                 this.addHp = hc.addHp;
                 this.elemPoweredUp = hc.elemPoweredUp;
+                this.discardOnOwnTurnEnd = hc.discardOnOwnTurnEnd;
+                this.valanyr = hc.valanyr;
             }
             public Handcard(CardDB.Card c)
             {
@@ -47,6 +54,8 @@
                 this.addHp = hc.addHp;
                 this.card = hc.card;
                 this.elemPoweredUp = hc.elemPoweredUp;
+                this.discardOnOwnTurnEnd = false;
+                this.valanyr = hc.valanyr;
             }
 
             public int getManaCost(Playfield p)
@@ -118,12 +127,12 @@
         
         public void printcards()
         {
-            help.logg("Own Handcards: ");
+            LogHelper.WriteCombatLog("Own Handcards: ");
             foreach (Handmanager.Handcard hc in this.handCards)
             {
-                help.logg("pos " + hc.position + " " + hc.card.name + " " + hc.manacost + " entity " + hc.entity + " " + hc.card.cardIDenum + " " + hc.addattack + " " + hc.addHp + " " + hc.elemPoweredUp);
+                LogHelper.WriteCombatLog("pos " + hc.position + " " + hc.card.name + " " + hc.manacost + " entity " + hc.entity + " " + hc.card.cardIDenum + " " + hc.addattack + " " + hc.addHp + " " + hc.elemPoweredUp);
             }
-            help.logg("Enemy cards: " + this.enemyAnzCards);
+            LogHelper.WriteCombatLog("Enemy cards: " + this.enemyAnzCards);
         }
 
 

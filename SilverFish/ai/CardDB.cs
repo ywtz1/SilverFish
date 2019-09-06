@@ -1,7 +1,8 @@
-﻿using System.Linq;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SilverFish.Helpers;
 using Triton.Common.LogUtilities;
 
 namespace HREngine.Bots
@@ -219,14 +220,13 @@ namespace HREngine.Bots
                     // have to do it 2 times (or the kids inside the simcards will not have a simcard :D
                     foreach (Card c in instance.cardlist)
                     {
-                        c.sim_card = instance.GetSimCard(c.cardIDenum);
+                        c.CardSimulation = CardHelper.GetCardSimulation(c.cardIDenum);
                     }
 
                     var totalCardSimCount = instance.cardlist.Count;
-                    var implementedCardSimCount =
-                        instance.cardlist.Count(x => x.sim_card.GetType().IsSubclassOf(typeof(SimTemplate)));
+                    var implementedCardSimCount = instance.cardlist.Count(x =>x.CardSimulationImplemented);
                     var percentage = implementedCardSimCount / (double)totalCardSimCount;
-                    Helpfunctions.Instance.InfoLog(
+                    Helpfunctions.Instance.ErrorLog(
                         $"Card simulation implemented {percentage:P}, {implementedCardSimCount}/{totalCardSimCount}");
 
                     instance.setAdditionalData();
@@ -259,9 +259,9 @@ namespace HREngine.Bots
                 {
                     if (c.type == cardtype.ENCHANTMENT)
                     {
-                        //Helpfunctions.Instance.logg(c.CardID);
-                        //Helpfunctions.Instance.logg(c.name);
-                        //Helpfunctions.Instance.logg(c.description);
+                        //LogHelper.WriteCombatLog(c.CardID);
+                        //LogHelper.WriteCombatLog(c.name);
+                        //LogHelper.WriteCombatLog(c.description);
                         continue;
                     }
 
@@ -275,7 +275,7 @@ namespace HREngine.Bots
                     {
 
                         this.cardlist.Add(c);
-                        //Helpfunctions.Instance.logg(c.name);
+                        //LogHelper.WriteCombatLog(c.name);
                         if (!this.cardidToCardList.ContainsKey(c.cardIDenum))
                         {
                             this.cardidToCardList.Add(c.cardIDenum, c);
@@ -333,6 +333,24 @@ namespace HREngine.Bots
                     c.Health = Convert.ToInt32(temp);
                     continue;
                 }
+				//reborn复生
+                if (s.Contains("<Tag enumID=\"1085\""))
+                {
+                    string temp = s.Split(new string[] { "value=\"" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split('\"')[0];
+                    c.Reborn = Convert.ToInt32(temp);
+                    continue;
+                }
+                
+                if (s.Contains("<Tag enumID=\"321\""))
+                {
+                    string temp = s.Split(new string[] { "value=\"" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split('\"')[0];
+                    int ti = Convert.ToInt32(temp);
+                    if (ti == 1) c.Collectible = true;
+                    else c.Collectible = false;
+                    continue;
+                }
 
                 //Class
                 if (s.Contains("Tag enumID=\"199\""))
@@ -386,7 +404,7 @@ namespace HREngine.Bots
                     temp = temp.Split('\"')[0];
                     if (c.name != CardDB.cardName.unknown)
                     {
-                        //Helpfunctions.Instance.logg(temp);
+                        //LogHelper.WriteCombatLog(temp);
                     }
 
                     int crdtype = Convert.ToInt32(temp);
@@ -460,7 +478,7 @@ namespace HREngine.Bots
                     if (temp.Contains("choose one"))
                     {
                         c.choice = true;
-                        //Helpfunctions.Instance.logg(c.name + " is choice");
+                        //LogHelper.WriteCombatLog(c.name + " is choice");
                     }
 
                     continue;
@@ -603,6 +621,14 @@ namespace HREngine.Bots
                     c.overload = Convert.ToInt32(temp);
                     continue;
                 }
+                if (s.Contains("<Tag enumID=\"846\""))
+                {
+                    string temp = s.Split(new string[] { "value=\"" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split('\"')[0];
+                    int ti = Convert.ToInt32(temp);
+                    if (ti == 1) c.Echo = true;
+                    continue;
+                }
 
                 //lifesteal
                 if (s.Contains("<Tag enumID=\"685\""))
@@ -693,7 +719,15 @@ namespace HREngine.Bots
                     if (ti == 1) c.Charge = true;
                     continue;
                 }
-
+				
+				if (s.Contains("<Tag enumID=\"791\""))
+				{
+					string temp = s.Split(new string[] { "value=\"" }, StringSplitOptions.RemoveEmptyEntries)[1];
+					temp = temp.Split('\"')[0];
+					int ti = Convert.ToInt32(temp);
+					if (ti == 1) c.Rush = true;
+					continue;
+				}
                 //silence
                 if (s.Contains("<Tag enumID=\"339\""))
                 {
@@ -826,25 +860,25 @@ namespace HREngine.Bots
         private void enumCreator()
         {
             //call this, if carddb.txt was changed, to get latest public enum cardIDEnum
-            Helpfunctions.Instance.logg("public enum cardIDEnum");
-            Helpfunctions.Instance.logg("{");
-            Helpfunctions.Instance.logg("None,");
+            LogHelper.WriteMainLog("public enum cardIDEnum");
+            LogHelper.WriteMainLog("{");
+            LogHelper.WriteMainLog("None,");
             foreach (string cardid in this.allCardIDS)
             {
-                Helpfunctions.Instance.logg(cardid + ",");
+                LogHelper.WriteMainLog(cardid + ",");
             }
-            Helpfunctions.Instance.logg("}");
+            LogHelper.WriteMainLog("}");
 
 
 
-            Helpfunctions.Instance.logg("public cardIDEnum cardIdstringToEnum(string s)");
-            Helpfunctions.Instance.logg("{");
+            LogHelper.WriteMainLog("public cardIDEnum cardIdstringToEnum(string s)");
+            LogHelper.WriteMainLog("{");
             foreach (string cardid in this.allCardIDS)
             {
-                Helpfunctions.Instance.logg("if(s==\"" + cardid + "\") return CardDB.cardIDEnum." + cardid + ";");
+                LogHelper.WriteMainLog("if(s==\"" + cardid + "\") return CardDB.cardIDEnum." + cardid + ";");
             }
-            Helpfunctions.Instance.logg("return CardDB.cardIDEnum.None;");
-            Helpfunctions.Instance.logg("}");
+            LogHelper.WriteMainLog("return CardDB.cardIDEnum.None;");
+            LogHelper.WriteMainLog("}");
 
             List<string> namelist = new List<string>();
 
@@ -855,33 +889,33 @@ namespace HREngine.Bots
             }
 
 
-            Helpfunctions.Instance.logg("public enum cardName");
-            Helpfunctions.Instance.logg("{");
+            LogHelper.WriteMainLog("public enum cardName");
+            LogHelper.WriteMainLog("{");
             foreach (string cardid in namelist)
             {
-                Helpfunctions.Instance.logg(cardid + ",");
+                LogHelper.WriteMainLog(cardid + ",");
             }
-            Helpfunctions.Instance.logg("}");
+            LogHelper.WriteMainLog("}");
 
-            Helpfunctions.Instance.logg("public cardName cardNamestringToEnum(string s)");
-            Helpfunctions.Instance.logg("{");
+            LogHelper.WriteMainLog("public cardName cardNamestringToEnum(string s)");
+            LogHelper.WriteMainLog("{");
             foreach (string cardid in namelist)
             {
-                Helpfunctions.Instance.logg("if(s==\"" + cardid + "\") return CardDB.cardName." + cardid + ";");
+                LogHelper.WriteMainLog("if(s==\"" + cardid + "\") return CardDB.cardName." + cardid + ";");
             }
-            Helpfunctions.Instance.logg("return CardDB.cardName.unknown;");
-            Helpfunctions.Instance.logg("}");
+            LogHelper.WriteMainLog("return CardDB.cardName.unknown;");
+            LogHelper.WriteMainLog("}");
 
             // simcard creator:
 
-            Helpfunctions.Instance.logg("public SimTemplate getSimCard(cardIDEnum id)");
-            Helpfunctions.Instance.logg("{");
+            LogHelper.WriteMainLog("public SimTemplate getSimCard(cardIDEnum id)");
+            LogHelper.WriteMainLog("{");
             foreach (string cardid in this.allCardIDS)
             {
-                Helpfunctions.Instance.logg("if(id == CardDB.cardIDEnum." + cardid + ") return new Sim_" + cardid + "();");
+                LogHelper.WriteMainLog("if(id == CardDB.cardIDEnum." + cardid + ") return new Sim_" + cardid + "();");
             }
-            Helpfunctions.Instance.logg("return new SimTemplate();");
-            Helpfunctions.Instance.logg("}");
+            LogHelper.WriteMainLog("return new SimTemplate();");
+            LogHelper.WriteMainLog("}");
 
         }
 
@@ -917,7 +951,7 @@ namespace HREngine.Bots
                 }
                 
                 c.trigers = new List<cardtrigers>();
-                Type trigerType = c.sim_card.GetType();
+                Type trigerType = c.CardSimulation.GetType();
                 foreach (string trigerName in Enum.GetNames(typeof(cardtrigers)))
                 {
                     try
@@ -935,36 +969,6 @@ namespace HREngine.Bots
                 if (c.trigers.Count > 10) c.trigers.Clear();
             }
         }
-
-        public SimTemplate GetSimCard(cardIDEnum tempCardIdEnum)
-        {
-            SimTemplate result = new SimTemplate();
-
-            var className = $"HREngine.Bots.Sim_{tempCardIdEnum}";
-            Type type = Type.GetType(className);
-            if (type == null)
-            {
-                //write a log here
-            }
-            else
-            {
-                var simTemplateInstance = Activator.CreateInstance(type);
-                if (simTemplateInstance is SimTemplate temp)
-                {
-                    result = temp;
-                }
-                else
-                {
-                    throw new Exception($"class {className} should inherit from {typeof(SimTemplate)}");
-                }
-            }
-            if (tempCardIdEnum == cardIDEnum.GIL_530)
-            {
-                Logger.GetLoggerInstanceForType().InfoFormat($"className = {className}, type of result is {type}");
-            }
-            return result;
-        }
-
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SilverFish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -18,6 +19,10 @@ namespace HREngine.Bots
 
             public int Attack = 0;
             public int Health = 0;
+			public int Reborn = 0;//复生
+            public bool Echo = false;
+
+            public bool Collectible = true;
             public int Durability = 0;//for weapons
             public bool tank = false;
             public bool Silence = false;
@@ -41,6 +46,7 @@ namespace HREngine.Bots
             public bool AdjacentBuff = false;
             public bool Shield = false;
             public bool Charge = false;
+			public bool Rush = false;
             public bool Secret = false;
             public bool Quest = false;
             public bool Morph = false;
@@ -72,7 +78,25 @@ namespace HREngine.Bots
             public List<Bots.CardDB.ErrorType2> playrequires;
             public List<Bots.CardDB.cardtrigers> trigers;
 
-            public SimTemplate sim_card;
+            public SimTemplate CardSimulation
+            {
+                get
+                {
+                    return _cardSimulation;
+                }
+                set
+                {
+                    if (CardHelper.IsCardSimulationImplemented(value))
+                    {
+                        CardSimulationImplemented = true;
+                    }
+                    _cardSimulation = value;
+                }
+            }
+
+            private SimTemplate _cardSimulation;
+
+            public bool CardSimulationImplemented { get; set; }
 
             public Card()
             {
@@ -90,6 +114,8 @@ namespace HREngine.Bots
                 this.discover = c.discover;
                 //this.CardID = c.CardID;
                 this.Charge = c.Charge;
+				this.Rush = c.Rush;
+                this.Echo = c.Echo;
                 this.choice = c.choice;
                 this.Combo = c.Combo;
                 this.cost = c.cost;
@@ -101,6 +127,8 @@ namespace HREngine.Bots
                 this.Enrage = c.Enrage;
                 this.Freeze = c.Freeze;
                 this.Health = c.Health;
+				this.Reborn = c.Reborn;//复生
+                this.Collectible = c.Collectible;
                 this.immuneWhileAttacking = c.immuneWhileAttacking;
                 this.untouchable = c.untouchable;
                 this.Morph = c.Morph;
@@ -131,7 +159,7 @@ namespace HREngine.Bots
                 this.type = c.type;
                 this.windfury = c.windfury;
                 this.cardIDenum = c.cardIDenum;
-                this.sim_card = c.sim_card;
+                this.CardSimulation = c.CardSimulation;
                 this.isToken = c.isToken;
             }
 
@@ -758,6 +786,9 @@ namespace HREngine.Bots
                     case CardDB.cardName.seagiant:
                         retval = retval + offset - p.ownMinions.Count - p.enemyMinions.Count;
                         break;
+                    case CardDB.cardName.mogufleshshaper://魔古血肉塑造者
+                        retval = retval + offset - p.ownMinions.Count - p.enemyMinions.Count;
+                        break;                        
                     case CardDB.cardName.mountaingiant:
                         retval = retval + offset - p.owncards.Count;
                         break;
@@ -935,7 +966,7 @@ namespace HREngine.Bots
                     offset += p.startedWithmyCardsCostLess - p.myCardsCostLess;
                 }
 
-                switch (this.name)
+                switch (this.name)//巨人减费
                 {
                     case CardDB.cardName.volcaniclumberer:
                         retval = retval + offset - p.ownMinionsDiedTurn - p.enemyMinionsDiedTurn;
@@ -956,6 +987,9 @@ namespace HREngine.Bots
                         retval = retval + offset - p.ownWeapon.Angr + p.ownWeaponAttackStarted; // if weapon attack change we change manacost
                         break;
                     case CardDB.cardName.seagiant:
+                        retval = retval + offset - p.ownMinions.Count - p.enemyMinions.Count + p.ownMobsCountStarted + p.enemyMobsCountStarted;
+                        break;
+                    case CardDB.cardName.mogufleshshaper://魔古血肉塑造者
                         retval = retval + offset - p.ownMinions.Count - p.enemyMinions.Count + p.ownMobsCountStarted + p.enemyMobsCountStarted;
                         break;
                     case CardDB.cardName.mountaingiant:

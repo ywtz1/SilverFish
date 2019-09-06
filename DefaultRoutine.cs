@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,11 +11,10 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using Buddy.Coroutines;
 using HREngine.Bots;
-using HREngine.Bots.SilverFish.AI;
 using IronPython.Modules;
 using log4net;
 using Microsoft.Scripting.Hosting;
-using SilverFish.ai;
+using SilverFish.Helpers;
 using Triton.Bot;
 using Triton.Common;
 using Triton.Game;
@@ -80,7 +80,7 @@ namespace HREngine.Bots
             bool printstuff = false; // if true, the best board of the tested file is printet stepp by stepp
 
             Helpfunctions.Instance.InfoLog("----------------------------");
-            Helpfunctions.Instance.InfoLog("you are running SilverFish AI V" + SilverFishBot.Instance.versionnumber);
+            Helpfunctions.Instance.ErrorLog("you are running SilverFish AI(https://github.com/ChuckHearthBuddy/SilverFish) written by ChuckLu Version:" + SilverFishBot.Instance.versionnumber);
             Helpfunctions.Instance.InfoLog("----------------------------");
 
             if (teststuff)
@@ -243,6 +243,7 @@ def Execute():
             GameEventManager.GameOver -= GameEventManagerOnGameOver;
             GameEventManager.QuestUpdate -= GameEventManagerOnQuestUpdate;
             GameEventManager.ArenaRewards -= GameEventManagerOnArenaRewards;
+            CardNotImplementedHelper.Save();
         }
 
         #endregion
@@ -510,6 +511,10 @@ def Execute():
                 Log.InfoFormat("[Mulligan] Concede successfully at mulligan.");
                 return;
             }
+            else
+            {
+                Log.ErrorFormat("[Mulligan] Concede failed at mulligan.");
+            }
 
             Log.InfoFormat("[Mulligan] {0} vs {1}.", mulliganData.UserClass, mulliganData.OpponentClass);
             var count = mulliganData.Cards.Count;
@@ -775,11 +780,27 @@ def Execute():
                                     case CardDB.cardName.cthun: lastChance = true; break;
                                     case CardDB.cardName.nzoththecorruptor: lastChance = true; break;
                                     case CardDB.cardName.yoggsaronhopesend: lastChance = true; break;
+                                    case CardDB.cardName.shudderwock: lastChance = true; break;
+                                    case CardDB.cardName.stargazerluna: lastChance = true; break;//观星者露娜
+
                                     case CardDB.cardName.sirfinleymrrgglton: lastChance = true; break;
                                     case CardDB.cardName.ragnarosthefirelord: if (lastChancePl.enemyHero.HealthPoints < 9) lastChance = true; break;
                                     case CardDB.cardName.barongeddon: if (lastChancePl.enemyHero.HealthPoints < 3) lastChance = true; break;
                                 }
                             }
+                            foreach (CardDB.cardIDEnum secretID in lastChancePl.ownSecretsIDList)
+                            {
+                                switch(secretID)
+                                {
+                                    case CardDB.cardIDEnum.EX1_295: lastChance = true; break;
+                                    case CardDB.cardIDEnum.EX1_130: lastChance = true; break;
+                                    case CardDB.cardIDEnum.ULD_239: lastChance = true; break;
+
+
+                                }
+                            }
+                            if (lastChancePl.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.GIL_504h)lastChance = true;
+
                         }
                         if (lastChance) doConcede = false;
                     }
@@ -788,13 +809,27 @@ def Execute():
                 if (doEndTurn)
                 {
                     Helpfunctions.Instance.InfoLog("end turn");
+                    await Coroutine.Sleep(new Random().Next(4000, 8000));//等待随机时间 防止没打牌
+
+                
+
+                    bool EndTurnRetry = SilverFishBot.Instance.updateEverything(behave, 1, out EndTurnRetry);
+               
+                    Ai.Instance.simmulateWholeTurnandPrint();
+                
+                    this.printlearnmode = false;
+
+                    //do nothing
+                    await Coroutine.Sleep(50);//重新计算
+
+
                     await TritonHs.EndTurn();
                     return;
                 }
                 else if (doConcede)
                 {
                     Helpfunctions.Instance.InfoLog("Lethal detected. Concede...");
-                    Helpfunctions.Instance.logg("Concede... Lethal detected###############################################");
+                    LogHelper.WriteCombatLog("Concede... Lethal detected###############################################");
                     TritonHs.Concede(true);
                     return;
                 }
@@ -803,6 +838,19 @@ def Execute():
             if (moveTodo == null)
             {
                 Helpfunctions.Instance.InfoLog("moveTodo == null. EndTurn");
+                await Coroutine.Sleep(new Random().Next(4000, 8000));//等待随机时间
+
+                bool EndTurnRetry = SilverFishBot.Instance.updateEverything(behave, 1, out EndTurnRetry);
+               
+                Ai.Instance.simmulateWholeTurnandPrint();
+                
+                    this.printlearnmode = false;
+
+                    //do nothing
+                    await Coroutine.Sleep(50);//重新计算
+
+
+
                 await TritonHs.EndTurn();
                 return;
             }
@@ -828,7 +876,7 @@ def Execute():
                         if (target != null)
                         {
                             Helpfunctions.Instance.InfoLog("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") target: " + target.Name + " (" + target.EntityId + ")");
-                            Helpfunctions.Instance.logg("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") target: " + target.Name + " (" + target.EntityId + ") choice: " + moveTodo.druidchoice);
+                            LogHelper.WriteCombatLog("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") target: " + target.Name + " (" + target.EntityId + ") choice: " + moveTodo.druidchoice);
 						    if (moveTodo.druidchoice >= 1)
                             {
                                 dirtytarget = moveTodo.target.entitiyID;
@@ -862,7 +910,7 @@ def Execute():
                         else
                         {
                             Helpfunctions.Instance.ErrorLog("[AI] Target is missing. Attempting recover...");
-                            Helpfunctions.Instance.logg("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
+                            LogHelper.WriteCombatLog("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
                         }
                         await Coroutine.Sleep(500);
 
@@ -870,7 +918,7 @@ def Execute():
                     }
 
                     Helpfunctions.Instance.InfoLog("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") target nothing");
-                    Helpfunctions.Instance.logg("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") choice: " + moveTodo.druidchoice);
+                    LogHelper.WriteCombatLog("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") choice: " + moveTodo.druidchoice);
                     if (moveTodo.druidchoice >= 1)
                     {
                         dirtychoice = moveTodo.druidchoice; //1=leftcard, 2= rightcard
@@ -905,7 +953,7 @@ def Execute():
                         if (target != null)
                         {
                             Helpfunctions.Instance.InfoLog("minion attack: " + attacker.Name + " target: " + target.Name);
-                            Helpfunctions.Instance.logg("minion attack: " + attacker.Name + " target: " + target.Name);
+                            LogHelper.WriteCombatLog("minion attack: " + attacker.Name + " target: " + target.Name);
 
                             
                             await attacker.DoAttack(target);
@@ -914,13 +962,13 @@ def Execute():
                         else
                         {
                             Helpfunctions.Instance.ErrorLog("[AI] Target is missing. Attempting recover...");
-                            Helpfunctions.Instance.logg("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
+                            LogHelper.WriteCombatLog("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
                         }
                     }
                     else
                     {
                         Helpfunctions.Instance.ErrorLog("[AI] Attacker is missing. Attempting recover...");
-                        Helpfunctions.Instance.logg("[AI] Attacker " + moveTodo.own.entitiyID + " is missing. Attempting recover...");
+                        LogHelper.WriteCombatLog("[AI] Attacker " + moveTodo.own.entitiyID + " is missing. Attempting recover...");
                     }
                     await Coroutine.Sleep(250);
                     return;
@@ -936,7 +984,7 @@ def Execute():
                         {
                             dirtytarget = moveTodo.target.entitiyID;
                             Helpfunctions.Instance.InfoLog("heroattack: " + attacker.Name + " target: " + target.Name);
-                            Helpfunctions.Instance.logg("heroattack: " + attacker.Name + " target: " + target.Name);
+                            LogHelper.WriteCombatLog("heroattack: " + attacker.Name + " target: " + target.Name);
 
                             //safe targeting stuff for hsbuddy
                             dirtyTargetSource = moveTodo.own.entitiyID;
@@ -946,13 +994,13 @@ def Execute():
                         else
                         {
                             Helpfunctions.Instance.ErrorLog("[AI] Target is missing. Attempting recover...");
-                            Helpfunctions.Instance.logg("[AI] Target " + moveTodo.target.entitiyID + "is missing (H). Attempting recover...");
+                            LogHelper.WriteCombatLog("[AI] Target " + moveTodo.target.entitiyID + "is missing (H). Attempting recover...");
                         }
                     }
                     else
                     {
                         Helpfunctions.Instance.ErrorLog("[AI] Attacker is missing. Attempting recover...");
-                        Helpfunctions.Instance.logg("[AI] Attacker " + moveTodo.own.entitiyID + " is missing (H). Attempting recover...");
+                        LogHelper.WriteCombatLog("[AI] Attacker " + moveTodo.own.entitiyID + " is missing (H). Attempting recover...");
                     }
 				    await Coroutine.Sleep(250);
                     return;
@@ -969,7 +1017,7 @@ def Execute():
                         if (target != null)
                         {
                             Helpfunctions.Instance.InfoLog("use ablitiy: " + cardtoplay.Name + " target " + target.Name);
-                            Helpfunctions.Instance.logg("use ablitiy: " + cardtoplay.Name + " target " + target.Name + (moveTodo.druidchoice > 0 ? (" choice: " + moveTodo.druidchoice) : ""));
+                            LogHelper.WriteCombatLog("use ablitiy: " + cardtoplay.Name + " target " + target.Name + (moveTodo.druidchoice > 0 ? (" choice: " + moveTodo.druidchoice) : ""));
                             if (moveTodo.druidchoice > 0)
                             {
                                 dirtytarget = moveTodo.target.entitiyID;
@@ -986,14 +1034,14 @@ def Execute():
                         else
                         {
                             Helpfunctions.Instance.ErrorLog("[AI] Target is missing. Attempting recover...");
-                            Helpfunctions.Instance.logg("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
+                            LogHelper.WriteCombatLog("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
                         }
                         await Coroutine.Sleep(500);
                     }
                     else
                     {
                         Helpfunctions.Instance.InfoLog("use ablitiy: " + cardtoplay.Name + " target nothing");
-                        Helpfunctions.Instance.logg("use ablitiy: " + cardtoplay.Name + " target nothing" + (moveTodo.druidchoice > 0 ? (" choice: " + moveTodo.druidchoice) : ""));
+                        LogHelper.WriteCombatLog("use ablitiy: " + cardtoplay.Name + " target nothing" + (moveTodo.druidchoice > 0 ? (" choice: " + moveTodo.druidchoice) : ""));
                         
                         if (moveTodo.druidchoice >= 1)
                         {
@@ -1010,6 +1058,7 @@ def Execute():
                     return;
                 }
             }
+            await Coroutine.Sleep(new Random().Next(4000, 8000));//等待随机时间
 
             await TritonHs.EndTurn();
         }
@@ -1092,19 +1141,106 @@ def Execute():
                                 case GAME_TAG.DISCOVER:
                                     switch (ai.bestmove.card.card.name)
                                     {
+                                    	case CardDB.cardName.anewchallenger://新人登场
+
                                         case CardDB.cardName.eternalservitude:
                                         case CardDB.cardName.freefromamber:
                                             Minion m = tmpPlf.createNewMinion(discoverCards[i], tmpPlf.ownMinions.Count, true);
                                             tmpPlf.ownMinions[tmpPlf.ownMinions.Count - 1] = m;
                                             break;
+                                        case CardDB.cardName.ninelives:  //九命兽魂
+                                            tmpPlf.owncards[tmpPlf.owncards.Count - 1] = discoverCards[i];
+                                            Minion m2 = tmpPlf.createNewMinion(discoverCards[i], tmpPlf.ownMinions.Count, true);
+                                            tmpPlf.ownMinions[tmpPlf.ownMinions.Count - 1] = m2;
+                                            foreach (Minion m3 in tmpPlf.ownMinions)
+                                            {
+                                                if(m3 == m2)
+                                                {
+                                                    tmpPlf.minionGetDestroyed(m2);
+                                                    break;
+                                                }
+                                            }
+                                            //discoverCards[i].card.sim_card.onDeathrattle(this, m);
+                                            break;
+									/*case CardDB.cardName.buildabeast://僵尸兽
+                                            buildabeastn++;
+                                            if(buildabeastn%2==0)hcb=discoverCards[i];
+                                            else 
+                                            {
+                                                Handmanager.Handcard hcb2=null;
+                                                if((discoverCards[i].card.battlecry||discoverCards[i].card.deathrattle||discoverCards[i].card.Aura||discoverCards[i].card.oneTurnEffect)
+                                                &&(!hcb.card.battlecry||!hcb.card.Aura||!hcb.card.oneTurnEffect||hcb.card.deathrattle))
+                                                {
+                                                    hcb2=discoverCards[i];
+                                                    hcb2.manacost+=hcb.manacost;
+                                                    hcb2.addattack+=hcb.card.Attack;
+                                                    hcb2.addHp += hcb.card.Health;
+                                                    if(hcb.card.Charge) hcb2.card.Charge=true;
+                                                    if(hcb.card.Rush) hcb2.card.Rush=true;
+                                                    if(hcb.card.Shield)  hcb2.card.Shield=true;
+                                                    if(hcb.card.tank)  hcb2.card.tank=true;
+                                                    if(hcb.card.poisonous)  hcb2.card.poisonous=true;
+                                                    if(hcb.card.lifesteal)  hcb2.card.lifesteal=true;
+                                                    tmpPlf.owncards[tmpPlf.owncards.Count - 1] = hcb2;
+                                                }
+                                                else
+                                                {
+                                                    hcb.manacost+=discoverCards[i].manacost;
+                                                    hcb.addattack+=discoverCards[i].card.Attack;
+                                                    hcb.addHp += discoverCards[i].card.Health;
+                                                
+                                                    if(discoverCards[i].card.Charge) hcb.card.Charge=true;
+                                                    if(discoverCards[i].card.Rush) hcb.card.Rush=true;
+                                                    if(discoverCards[i].card.Shield)  hcb.card.Shield=true;
+                                                    if(discoverCards[i].card.tank)  hcb.card.tank=true;
+                                                    if(discoverCards[i].card.poisonous)  hcb.card.poisonous=true;
+                                                    if(discoverCards[i].card.lifesteal)  hcb.card.lifesteal=true;
+                                                    tmpPlf.owncards[tmpPlf.owncards.Count - 1] = hcb;
+                                                }
+
+                                                //hcb.card2=discoverCards[i].card;
+                                            }
+                                            
+                                            break;*/
                                         default:
                                             tmpPlf.owncards[tmpPlf.owncards.Count - 1] = discoverCards[i];
                                             break;
                                     }
-                                    bestval = ai.mainTurnSimulator.doallmoves(tmpPlf);
+                                    bestval = ai.mainTurnSimulator.DoAllMoves(tmpPlf);
+                                    if (discoverCards[i].card.Shield&&ai.bestmove.card.card.name==CardDB.cardName.anewchallenger) bestval += 30;
+                                    if (discoverCards[i].card.name==CardDB.cardName.zuljin) bestval += 30;
                                     if (discoverCards[i].card.name == CardDB.cardName.bloodimp) bestval -= 20;
-                                    break;
-                                case GAME_TAG.ADAPT:
+									//动物园
+									if (discoverCards[i].card.name == CardDB.cardName.thesoularium) bestval += 200;//莫瑞甘的灵界
+									if (discoverCards[i].card.name == CardDB.cardName.mortalcoil) bestval += 200;
+									if (discoverCards[i].card.name == CardDB.cardName.soulfire) bestval += 200;
+									if (discoverCards[i].card.name == CardDB.cardName.siphonsoul) bestval += 200;
+									if (discoverCards[i].card.name == CardDB.cardName.fiendishcircle) bestval += 200;//恶魔法阵
+									if (discoverCards[i].card.name == CardDB.cardName.impferno) bestval += 200;//小鬼狱火
+                                   
+                                    //战士机械
+									if (discoverCards[i].card.name == CardDB.cardName.clockworkgoblin) bestval += 200;//发条地精
+                                    if (discoverCards[i].card.name == CardDB.cardName.securityrover) bestval += 220;//安保巡游者
+									if (discoverCards[i].card.name == CardDB.cardName.omegadevastator) bestval += 300;//欧米茄毁灭者
+									if (discoverCards[i].card.name == CardDB.cardName.berylliumnullifier) bestval += 200;//铍金毁灭者
+									if (discoverCards[i].card.name == CardDB.cardName.theboomreaver) bestval += 220;//砰砰机甲
+									if (discoverCards[i].card.name == CardDB.cardName.zilliax) bestval += 200;//奇利亚斯
+									if (discoverCards[i].card.name == CardDB.cardName.replicatingmenace) bestval += 180;//量产型恐吓机
+									if (discoverCards[i].card.name == CardDB.cardName.mechanicalwhelp) bestval += 220;//机械雏龙
+									if (discoverCards[i].card.name == CardDB.cardName.safeguard) bestval += 220;//机械保险箱
+									if (discoverCards[i].card.name == CardDB.cardName.damagedstegotron) bestval += 180;//受损的机械剑龙
+									if (discoverCards[i].card.name == CardDB.cardName.missilelauncher) bestval += 180;//飞弹机器人
+									if (discoverCards[i].card.name == CardDB.cardName.mechathun) bestval += 200;//机械克苏恩
+									if (discoverCards[i].card.name == CardDB.cardName.bulldozer) bestval += 200;//机械推土牛
+									
+									if (discoverCards[i].card.Attack >= 5 && discoverCards[i].card.Attack <= 6) bestval += 200;
+									if (discoverCards[i].card.Attack >= 7 && discoverCards[i].card.Attack <= 8) bestval += 300;
+									if (discoverCards[i].card.Attack >= 9 ) bestval += 400;
+								   break;
+                                
+								
+								//进化
+								case GAME_TAG.ADAPT:
                                     bool found = false;
                                     foreach (Minion m in tmpPlf.ownMinions)
                                     {
@@ -1123,8 +1259,8 @@ def Execute():
                                             if (forbidden) bestval = -2000000;
                                             else
                                             {
-                                                discoverCards[i].card.sim_card.onCardPlay(tmpPlf, true, m, 0);
-                                                bestval = ai.mainTurnSimulator.doallmoves(tmpPlf);
+                                                discoverCards[i].card.CardSimulation.onCardPlay(tmpPlf, true, m, 0);
+                                                bestval = ai.mainTurnSimulator.DoAllMoves(tmpPlf);
                                             }
                                             found = true;
                                             break;
@@ -1146,12 +1282,12 @@ def Execute():
                 if (dirtychoice == 0) dirtychoice = 1;
                 else if (dirtychoice == 1) dirtychoice = 0;
                 int ttf = (int)(DateTime.Now - tmp).TotalMilliseconds;
-                Helpfunctions.Instance.logg("discover card: " + dirtychoice + (discoverCardsCount > 1 ? " " + discoverCards[1].card.cardIDenum : "") + (discoverCardsCount > 0 ? " " + discoverCards[0].card.cardIDenum : "") + (discoverCardsCount > 2 ? " " + discoverCards[2].card.cardIDenum : ""));
+                LogHelper.WriteCombatLog("discover card: " + dirtychoice + (discoverCardsCount > 1 ? " " + discoverCards[1].card.cardIDenum : "") + (discoverCardsCount > 0 ? " " + discoverCards[0].card.cardIDenum : "") + (discoverCardsCount > 2 ? " " + discoverCards[2].card.cardIDenum : ""));
                 if (ttf < 3000) return (new Random().Next(ttf < 1300 ? 1300 - ttf : 0, 3100 - ttf));
             }
             else
             {
-                Helpfunctions.Instance.logg("chooses the card: " + dirtychoice);
+                LogHelper.WriteCombatLog("chooses the card: " + dirtychoice);
                 return (new Random().Next(1100, 3200));
             }
             return 0;
@@ -1372,6 +1508,7 @@ def Execute():
         {
             Log.InfoFormat("[GameEventManagerOnGameOver] {0}{2} => {1}.", gameOverEventArgs.Result,
                 GameEventManager.Instance.LastGamePresenceStatus, gameOverEventArgs.Conceded ? " [conceded]" : "");
+            ThreadPool.QueueUserWorkItem(CardNotImplementedHelper.GameOver);
         }
 
         private void GameEventManagerOnNewGame(object sender, NewGameEventArgs newGameEventArgs)
@@ -1379,7 +1516,7 @@ def Execute():
             Log.InfoFormat("[Set new log file:] Start");
             Hrtprozis prozis = Hrtprozis.Instance;
             prozis.clearAllNewGame();
-            ChuckHelper.Reset();
+            EvenDeckHelper.Reset();
             SilverFishBot.Instance.SetNewLogFile();
             Log.InfoFormat("[Set new log file:] End");
         }

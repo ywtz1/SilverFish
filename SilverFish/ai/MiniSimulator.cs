@@ -1,4 +1,6 @@
-﻿namespace HREngine.Bots
+﻿using SilverFish.Helpers;
+
+namespace HREngine.Bots
 {
     using System;
     using System.Collections.Generic;
@@ -100,7 +102,7 @@
             }
         }
         
-        public float doallmoves(Playfield playf)
+        public float DoAllMoves(Playfield playf)
         {
             print = playf.print;
             this.isLethalCheck = playf.isLethalCheck;
@@ -117,7 +119,10 @@
             bestoldval = -20000000;
             while (havedonesomething)
             {
-                if (this.printNormalstuff) Helpfunctions.Instance.logg("ailoop");
+                if (this.printNormalstuff)
+                {
+                    LogHelper.WriteCombatLog("ailoop");
+                }
                 GC.Collect();
                 temp.Clear();
                 temp.AddRange(this.posmoves);
@@ -125,7 +130,10 @@
                 havedonesomething = false;
                 threadnumberGlobal = 0;
 
-                if (print) startEnemyTurnSimThread(temp, 0, temp.Count);
+                if (print)
+                {
+                    startEnemyTurnSimThread(temp, 0, temp.Count);
+                }
                 else
                 {
                     Parallel.ForEach(Partitioner.Create(0, temp.Count),
@@ -154,40 +162,64 @@
                     }
                     else if (pVal == bestoldval) bestoldDuplicates.Add(p);
                 }
-                if (isLethalCheck && bestoldval >= 10000) this.posmoves.Clear();
-                if (this.posmoves.Count > 0) havedonesomething = true;
+
+                if (isLethalCheck && bestoldval >= 10000)
+                {
+                    this.posmoves.Clear();
+                }
+
+                if (this.posmoves.Count > 0)
+                {
+                    havedonesomething = true;
+                }
                 
                 if (this.printNormalstuff)
                 {
                     int donec = 0;
                     foreach (Playfield p in posmoves)
                     {
-                        if (p.complete) donec++;
+                        if (p.complete)
+                        {
+                            donec++;
+                        }
                     }
-                    Helpfunctions.Instance.logg("deep " + deep + " len " + this.posmoves.Count + " dones " + donec);
+                    LogHelper.WriteCombatLog("deep " + deep + " len " + this.posmoves.Count + " dones " + donec);
                 }
 
                 cuttingposibilities(isLethalCheck);
 
                 if (this.printNormalstuff)
                 {
-                    Helpfunctions.Instance.logg("cut to len " + this.posmoves.Count);
+                    LogHelper.WriteCombatLog("cut to len " + this.posmoves.Count);
                 }
                 deep++;
                 temp.Clear();
 
-                if (this.calculated > this.totalboards) enoughCalculations = true;
-                if (deep >= this.maxdeep) enoughCalculations = true;
+                if (this.calculated > this.totalboards)
+                {
+                    enoughCalculations = true;
+                }
+
+                if (deep >= this.maxdeep)
+                {
+                    enoughCalculations = true;
+                }
             }
-            
-            if (this.dirtyTwoTurnSim > 0 && !twoturnfields.Contains(bestold)) twoturnfields.Add(bestold);
+
+            if (this.dirtyTwoTurnSim > 0 && !twoturnfields.Contains(bestold))
+            {
+                twoturnfields.Add(bestold);
+            }
             this.posmoves.Clear();
             this.posmoves.Add(bestold);
             this.posmoves.AddRange(bestoldDuplicates);
 
             // search the best play...........................................................
             //do dirtytwoturnsim first :D
-            if (!isLethalCheck && bestoldval < 10000) doDirtyTwoTurnsim();
+            if (!isLethalCheck && bestoldval < 10000)
+            {
+                doDirtyTwoTurnsim();
+            }
 
             if (posmoves.Count >= 1)
             {
@@ -254,7 +286,10 @@
                     //gernerate actions and play them!
                     List<Action> actions = movegen.GetMoveList(p, usePenalityManager, useCutingTargets, true);
 
-                    if (printRules > 0) p.endTurnState = new Playfield(p);
+                    if (printRules > 0)
+                    {
+                        p.endTurnState = new Playfield(p);
+                    }
                     foreach (Action a in actions)
                     {
                         Playfield pf = new Playfield(p);
@@ -298,10 +333,17 @@
                             {
                                 if (a.actionType == actionEnum.playcard)
                                 {
-                                    if (pen.cardDrawBattleCryDatabase.ContainsKey(a.card.card.name)) secondChance = true;
+                                    if (pen.cardDrawBattleCryDatabase.ContainsKey(a.card.card.name))
+                                    {
+                                        secondChance = true;
+                                    }
                                 }
                             }
-                            if (secondChance) p.value += 1500;
+
+                            if (secondChance)
+                            {
+                                p.value += 1500;
+                            }
                         }
                     }
                     p.complete = true;
@@ -442,7 +484,7 @@
                     foreach (Minion mnn in temp)
                     {
                         // special minions are allowed to attack in silended and unsilenced state!
-                        //help.logg(mnn.silenced + " " + m.silenced + " " + mnn.name + " " + m.name + " " + penman.specialMinions.ContainsKey(m.name));
+                        //LogHelper.WriteCombatLog(mnn.silenced + " " + m.silenced + " " + mnn.name + " " + m.name + " " + penman.specialMinions.ContainsKey(m.name));
 
                         bool otherisSpecial = mnn.handcard.card.isSpecialMinion;
 
@@ -469,17 +511,17 @@
                     {
                         addedmins.Add(m);
                         retvalues.Add(t);
-                        //help.logg(m.name + " " + m.id +" is added to targetlist");
+                        //LogHelper.WriteCombatLog(m.name + " " + m.id +" is added to targetlist");
                     }
                     else
                     {
-                        //help.logg(m.name + " is not needed to attack");
+                        //LogHelper.WriteCombatLog(m.name + " is not needed to attack");
                         continue;
                     }
 
                 }
             }
-            //help.logg("end targetcutting");
+            //LogHelper.WriteCombatLog("end targetcutting");
             if (priomins) return retvaluesPrio;
 
             return retvalues;

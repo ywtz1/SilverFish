@@ -8,7 +8,10 @@
 //scharmuetzel kills all :D
 //todo deathlord-guessing
 //todo kelthuzad dont know which minion died this turn in rl
-namespace HREngine.Bots
+
+ using SilverFish.Helpers;
+
+ namespace HREngine.Bots
 {
     using System;
 
@@ -85,26 +88,26 @@ namespace HREngine.Bots
 
                     if (this.druidchoice >= 1) playaction += " choice " + this.druidchoice;
 
-                    help.writeToBuffer(playaction);
+                    LogHelper.WriteCombatLog(playaction);
                 }
                 if (this.actionType == actionEnum.attackWithMinion)
                 {
-                    help.writeToBuffer("attack " + this.own.entitiyID + " enemy " + this.target.entitiyID);
+                    LogHelper.WriteCombatLog("attack " + this.own.entitiyID + " enemy " + this.target.entitiyID);
                 }
                 if (this.actionType == actionEnum.attackWithHero)
                 {
-                    help.writeToBuffer("heroattack " + this.target.entitiyID);
+                    LogHelper.WriteCombatLog("heroattack " + this.target.entitiyID);
                 }
                 if (this.actionType == actionEnum.useHeroPower)
                 {
 
                     if (this.target != null)
                     {
-                        help.writeToBuffer("useability on target " + this.target.entitiyID);
+                        LogHelper.WriteCombatLog("useability on target " + this.target.entitiyID);
                     }
                     else
                     {
-                        help.writeToBuffer("useability");
+                        LogHelper.WriteCombatLog("useability");
                     }
                 }
                 return;
@@ -126,25 +129,25 @@ namespace HREngine.Bots
 
                 if (this.druidchoice >= 1) playaction += " choice " + this.druidchoice;
 
-                help.logg(playaction);
+                LogHelper.WriteCombatLog(playaction);
             }
             if (this.actionType == actionEnum.attackWithMinion)
             {
-                help.logg("attacker: " + this.own.entitiyID + " enemy: " + this.target.entitiyID);
+                LogHelper.WriteCombatLog("attacker: " + this.own.entitiyID + " enemy: " + this.target.entitiyID);
             }
             if (this.actionType == actionEnum.attackWithHero)
             {
-                help.logg("attack with hero, enemy: " + this.target.entitiyID);
+                LogHelper.WriteCombatLog("attack with hero, enemy: " + this.target.entitiyID);
             }
             if (this.actionType == actionEnum.useHeroPower)
             {
-                help.logg("useability ");
+                LogHelper.WriteCombatLog("useability ");
                 if (this.target != null)
                 {
-                    help.logg("on enemy: " + this.target.entitiyID);
+                    LogHelper.WriteCombatLog("on enemy: " + this.target.entitiyID);
                 }
             }
-            help.logg("");
+            LogHelper.WriteCombatLog("");
         }
         
         public string printString()

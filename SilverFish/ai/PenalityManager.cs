@@ -1784,22 +1784,62 @@
             return pen;
         }
 
-        private int getDestroyOwnPenality(CardDB.cardName name, Minion target, Playfield p)
+        private int getDestroyOwnPenality(CardDB.cardName name, Minion target, Playfield p)//消灭我方随从
         {
             if (!this.destroyOwnDatabase.ContainsKey(name)) return 0;
-            
+            int nnn=0;
             switch (name)
             {
-                case CardDB.cardName.sanguinereveler: goto case CardDB.cardName.shadowflame;
+                case CardDB.cardName.evilgenius: //怪盗天才
+                    if(target==null) return 50;
+                    if(this.priorityDatabase.ContainsKey(target.name)) return 500;
+                    if(this.priorityTargets.ContainsKey(target.name)) return 500;
+                    if((target.name == CardDB.cardName.magiccarpet||target.name == CardDB.cardName.knifejuggler))return 500;
+                    nnn=0;
+                    if(this.ownSummonFromDeathrattle.ContainsKey(target.name)) nnn+=this.ownSummonFromDeathrattle[target.name];
+                    if(target.numAttacksThisTurn == 1||(target.windfury&&target.numAttacksThisTurn == 2))nnn-=5;
+                    if(target.Attack <3)nnn-=(6-target.Attack); 
+                    if(target.HealthPoints <= 2)nnn-=5-target.HealthPoints;
+                    if( target.handcard.card.deathrattle) nnn-=5;
+                    return nnn;
+
+
+                    break;
+
+
+                case CardDB.cardName.grimrally: //残酷集结
+                    if(p.isLethalCheck)return -50;
+                    if(target==null) return 50;
+                    if(this.priorityDatabase.ContainsKey(target.name)) return 500;
+                    if(this.priorityTargets.ContainsKey(target.name)) return 500;
+                    if(target.Attack>3) return 50;
+                    nnn=0;
+                    if(this.ownSummonFromDeathrattle.ContainsKey(target.name)) nnn+=this.ownSummonFromDeathrattle[target.name];
+                    if(target.numAttacksThisTurn == 1||(target.windfury&&target.numAttacksThisTurn == 2))nnn-=20;
+
+                    if(target.Attack <3)nnn-=(6-target.Attack); 
+                    if(target.HealthPoints <= 2)nnn-=5-target.HealthPoints;
+                    nnn-=p.ownMinions.Count*2;
+                    if( target.handcard.card.deathrattle) nnn-=5;
+                    return nnn;
+
+
+                    break;
+
                 case CardDB.cardName.ravenouspterrordax: goto case CardDB.cardName.shadowflame;
+				//case CardDB.cardName.grimrally: goto case CardDB.cardName.shadowflame;//残酷集结
+				//case CardDB.cardName.evilgenius: goto case CardDB.cardName.shadowflame;//怪盗天才
                 case CardDB.cardName.shadowflame:
                     if (target == null || !target.Ready) return 0;
                     else return 1;
+				//死亡之翼	
                 case CardDB.cardName.deathwing:
                     if (p.mobsplayedThisTurn >= 1) return 500;
                     break;
                 case CardDB.cardName.twistingnether: goto case CardDB.cardName.brawl;
+                case CardDB.cardName.psychicscream: goto case CardDB.cardName.brawl;//心灵尖啸
                 case CardDB.cardName.doompact: goto case CardDB.cardName.brawl;
+				//绝命乱斗
                 case CardDB.cardName.brawl:
                     if (p.mobsplayedThisTurn >= 1) return 500;
                     
@@ -2332,6 +2372,24 @@
             //rule for coin on early game
             if (p.ownMaxMana < 3 && card.name == CardDB.cardName.thecoin)
             {
+                if (p.ownHeroName==HeroEnum.mage)
+                {
+                    bool hasSecret =false;
+                    bool hasSecret0mana =false;
+                    foreach (Handmanager.Handcard hcc in p.owncards)
+                    {
+                        if(hcc.card.Secret)hasSecret=true;
+
+                    }
+                    foreach (Handmanager.Handcard hcc in p.owncards)
+                    {
+                        if (hcc.card.name == CardDB.cardName.kirintormage||hcc.card.name == CardDB.cardName.kaballackey )
+                        hasSecret0mana=true;
+                    }
+                    if(hasSecret0mana&&hasSecret)return 30;
+
+                }
+
                 foreach (Handmanager.Handcard hc in p.owncards)
                 {
                     if (hc.manacost <= p.ownMaxMana && hc.card.type == CardDB.cardtype.MOB) return 5;
@@ -2543,7 +2601,13 @@
                         if (p.enemyMinions.Count == 1) return 30;
                     }
                     break;
-
+                case CardDB.cardName.scarabegg://甲虫卵
+				    if (p.owncards.Find(x => this.attackBuffDatabase.ContainsKey(x.card.name)) != null || p.owncards.Find(x => this.tauntBuffDatabase.ContainsKey(x.card.name)) != null)
+                    {
+                        return -6;
+                    }
+                    return -3;
+                    break;
                 case CardDB.cardName.nerubianegg:
                     if (p.owncards.Find(x => this.attackBuffDatabase.ContainsKey(x.card.name)) != null || p.owncards.Find(x => this.tauntBuffDatabase.ContainsKey(x.card.name)) != null)
                     {
@@ -2685,7 +2749,12 @@
                     if (p.ownMinions.Count == 1) return 30;
                     else if (p.ownMinions.Count == 0) return 50;
                     break;
-
+					
+				case CardDB.cardName.fungalmancer://菌菇术士
+                    if (p.ownMinions.Count == 1) return 10;
+                    else if (p.ownMinions.Count == 0) return 50;
+                    break;
+					
                 case CardDB.cardName.unearthedraptor:
                     if (target == null) return 10;
                     break;
@@ -2849,6 +2918,42 @@
                         }
                     }
                     break;
+					
+				//女巫深林	
+				case CardDB.cardName.warpath://战路
+				    if(p.enemyMinions.Count == 0) return 500;
+					if(p.mobsplayedThisTurn > 0) return 500;
+					if(p.ownMaxMana < 4) return 40;
+					break;	
+				//砰砰计划
+				case CardDB.cardName.thesoularium://莫瑞甘的灵界
+				    if(p.mana < 6) return 500;
+					break;
+				case CardDB.cardName.omegaassembly://欧米茄装配
+				    if(p.ownMaxMana < 10) return 500;
+					if(p.ownMaxMana ==10) return -5000;
+					break;
+					
+				//拉斯塔哈的大乱斗
+				//case CardDB.cardName.scarabegg: return -10;//甲虫卵
+				
+				//暗影崛起
+				case CardDB.cardName.squirrel: return -1;//松鼠
+												
+				case CardDB.cardName.magiccarpet: return -15;//魔法飞毯
+				
+				case CardDB.cardName.omegadevastator://欧米茄毁灭者
+				    if(p.ownMaxMana == 10 && p.enemyMinions.Count == 0) return -500;
+					if(p.ownMaxMana <= 9) return 500;
+					
+					break;
+				case CardDB.cardName.archivistelysiana://档案员艾丽西娜
+				    if(p.ownDeckSize > 0) return 5000;
+					if(p.ownDeckSize == 0) return -5000;
+					break;
+                //奥丹姆奇兵
+
+				
             }
 
 
@@ -2999,13 +3104,33 @@
             {
                 foreach (Handmanager.Handcard hc in p.owncards)
                 {
-                    if (hc.card.name == CardDB.cardName.kirintormage && p.mana >= hc.getManaCost(p))
+                    if ((hc.card.name == CardDB.cardName.kirintormage||hc.card.name == CardDB.cardName.kaballackey )&& p.mana >= hc.getManaCost(p))
                     {
-                        pen = 500;
+                        pen += 500;
                     }
-                }
-            }
+                    if(hc.card.name == CardDB.cardName.kabalcrystalrunner)
+                    pen -=10;
 
+                }
+                switch (card.name)
+                {
+                    case CardDB.cardName.potionofpolymorph: 
+                        if(p.ownMaxMana >=5)pen-=7;break; 
+                    case CardDB.cardName.iceblock: 
+                        if(p.ownHero.HealthPoints <15)pen-=8;break; 
+                    case CardDB.cardName.flameward: 
+                        if(p.enemyMinions.Count ==2) pen-=8;
+                        if(p.enemyMinions.Count ==3) pen-=12;
+                        if(p.enemyMinions.Count >3)  pen-=15;
+
+                        break; 
+
+                    case CardDB.cardName.counterspell: 
+                        pen-=5;break; 
+                }
+
+
+            }
             return pen;
         }
         
@@ -3189,9 +3314,12 @@
                 if (target.isHero)
                 {
                     bool canBe_vaporize = false;
+                    bool canBe_flameward = false;
                     foreach (SecretItem si in p.enemySecretList)
                     {
-                        if (si.canBe_vaporize) { canBe_vaporize = true; break; }
+                        if (si.canBe_vaporize) { canBe_vaporize = true; }
+                        if (si.canBe_flameward) { canBe_flameward = true; }
+
                     }
                     if (canBe_vaporize)
                     {
@@ -3205,6 +3333,17 @@
                             }
                             if (p.enemyMinions.Count > 0) pen += 12;
                         }
+                        return pen;
+                    }
+                    else if(canBe_flameward)
+                    {
+                        Minion maxatt4hp=null;int att1=0;
+                        foreach (Minion mnn in p.ownMinions)
+                        {
+                            if(m.divineshild)continue;
+                            if(mnn.HealthPoints<4&&att1<mnn.Attack){att1=mnn.Attack;maxatt4hp=mnn;}
+                        }
+                        if(m!=maxatt4hp) pen+=getValueOfMinion(m)+10;
                         return pen;
                     }
                     else
@@ -3440,11 +3579,14 @@
             HealTargetDatabase.Add(CardDB.cardName.lightofthenaaru, 3);
             HealTargetDatabase.Add(CardDB.cardName.moongladeportal, 6);
             HealTargetDatabase.Add(CardDB.cardName.voodoodoctor, 2);
+            HealTargetDatabase.Add(CardDB.cardName.shroombrewer, 4);//蘑菇酿酒师
+
+
             HealTargetDatabase.Add(CardDB.cardName.willofmukla, 8);
             //HealTargetDatabase.Add(CardDB.cardName.divinespirit, 2);
         }
 
-        private void setupDamageDatabase()
+        private void setupDamageDatabase()//造成伤害数据库
         {
             //DamageAllDatabase.Add(CardDB.cardName.flameleviathan, 2);
             DamageAllDatabase.Add(CardDB.cardName.abomination, 2);
@@ -3457,6 +3599,7 @@
             DamageAllDatabase.Add(CardDB.cardName.dreadinfernal, 1);
             DamageAllDatabase.Add(CardDB.cardName.dreadscale, 1);
             DamageAllDatabase.Add(CardDB.cardName.elementaldestruction, 4);
+            DamageAllDatabase.Add(CardDB.cardName.blastwave, 1);//冲击波
             DamageAllDatabase.Add(CardDB.cardName.excavatedevil, 3);
             DamageAllDatabase.Add(CardDB.cardName.explosivesheep, 2);
             DamageAllDatabase.Add(CardDB.cardName.felbloom, 4);
@@ -3482,6 +3625,7 @@
 
             DamageAllEnemysDatabase.Add(CardDB.cardName.arcaneexplosion, 1);
             DamageAllEnemysDatabase.Add(CardDB.cardName.bladeflurry, 1);
+            DamageAllEnemysDatabase.Add(CardDB.cardName.impferno, 1);//小鬼狱火
             DamageAllEnemysDatabase.Add(CardDB.cardName.blizzard, 2);
             DamageAllEnemysDatabase.Add(CardDB.cardName.consecration, 2);
             DamageAllEnemysDatabase.Add(CardDB.cardName.cthun, 1);
@@ -3506,6 +3650,7 @@
             DamageAllEnemysDatabase.Add(CardDB.cardName.deathstalkerrexxar, 2);
             DamageAllEnemysDatabase.Add(CardDB.cardName.deathanddecay, 3);
             DamageAllEnemysDatabase.Add(CardDB.cardName.bonestorm, 1);
+            DamageAllEnemysDatabase.Add(CardDB.cardName.sandstormelemental, 1);
 
             DamageHeroDatabase.Add(CardDB.cardName.backstreetleper, 2);
             DamageHeroDatabase.Add(CardDB.cardName.burningadrenaline, 2);
@@ -3584,7 +3729,8 @@
             DamageTargetDatabase.Add(CardDB.cardName.firebloomtoxin, 2);
             DamageTargetDatabase.Add(CardDB.cardName.fireelemental, 3);
             DamageTargetDatabase.Add(CardDB.cardName.firelandsportal, 5);
-            DamageTargetDatabase.Add(CardDB.cardName.fireplumephoenix, 2);
+            DamageTargetDatabase.Add(CardDB.cardName.fireplumephoenix, 2);//火羽凤凰
+			DamageTargetDatabase.Add(CardDB.cardName.murksparkeel, 2);//阴燃电鳗
             DamageTargetDatabase.Add(CardDB.cardName.flamelance, 8);
             DamageTargetDatabase.Add(CardDB.cardName.forbiddenflame, 1);
             DamageTargetDatabase.Add(CardDB.cardName.forgottentorch, 3);
@@ -3617,6 +3763,9 @@
             DamageTargetDatabase.Add(CardDB.cardName.mortalcoil, 1);
             DamageTargetDatabase.Add(CardDB.cardName.mortalstrike, 4);
             DamageTargetDatabase.Add(CardDB.cardName.northseakraken, 4);
+            
+            DamageTargetDatabase.Add(CardDB.cardName.weaponizedwasp, 2);//武装胡蜂
+            DamageTargetDatabase.Add(CardDB.cardName.koboldlackey, 2);//狗头人跟班
             DamageTargetDatabase.Add(CardDB.cardName.onthehunt, 1);
             DamageTargetDatabase.Add(CardDB.cardName.perditionsblade, 1);
             DamageTargetDatabase.Add(CardDB.cardName.powershot, 2);
@@ -3643,7 +3792,7 @@
             DamageTargetDatabase.Add(CardDB.cardName.voidform, 2);
             DamageTargetDatabase.Add(CardDB.cardName.vampiricleech, 3);
             DamageTargetDatabase.Add(CardDB.cardName.ultimateinfestation, 5);
-            DamageTargetDatabase.Add(CardDB.cardName.toxicarrow, 2);
+            DamageTargetDatabase.Add(CardDB.cardName.toxicarrow, 2);//剧毒箭矢
             DamageTargetDatabase.Add(CardDB.cardName.siphonlife, 3);
             DamageTargetDatabase.Add(CardDB.cardName.icytouch, 1);
             DamageTargetDatabase.Add(CardDB.cardName.iceclaw, 2);
@@ -3837,9 +3986,10 @@
         }
 
 
-        private void setupPriorityList()
+        private void setupPriorityList()//优先上的随从
         {
             priorityDatabase.Add(CardDB.cardName.acidmaw, 3);
+            priorityDatabase.Add(CardDB.cardName.vexcrow, 5);//三眼乌鸦
             priorityDatabase.Add(CardDB.cardName.animatedarmor, 2);
             priorityDatabase.Add(CardDB.cardName.archmageantonidas, 6);
             priorityDatabase.Add(CardDB.cardName.aviana, 5);
@@ -3853,6 +4003,7 @@
             priorityDatabase.Add(CardDB.cardName.fandralstaghelm, 6);
             priorityDatabase.Add(CardDB.cardName.flametonguetotem, 6);
             priorityDatabase.Add(CardDB.cardName.flamewaker, 5);
+            priorityDatabase.Add(CardDB.cardName.archmagevargoth, 5);//大法师瓦格斯
             priorityDatabase.Add(CardDB.cardName.frothingberserker, 1);
             priorityDatabase.Add(CardDB.cardName.gadgetzanauctioneer, 1);
             priorityDatabase.Add(CardDB.cardName.grimestreetenforcer, 1);
@@ -3871,7 +4022,7 @@
             priorityDatabase.Add(CardDB.cardName.mechwarper, 1);
             priorityDatabase.Add(CardDB.cardName.muklaschampion, 5);
             priorityDatabase.Add(CardDB.cardName.murlocknight, 5);
-            priorityDatabase.Add(CardDB.cardName.underbellyangler, 5);
+            priorityDatabase.Add(CardDB.cardName.underbellyangler, 5);//下水道鱼人
             priorityDatabase.Add(CardDB.cardName.murlocwarleader, 5);
             priorityDatabase.Add(CardDB.cardName.nexuschampionsaraad, 6);
             priorityDatabase.Add(CardDB.cardName.northshirecleric, 4);
@@ -3905,9 +4056,10 @@
             priorityDatabase.Add(CardDB.cardName.rotface, 1);
             priorityDatabase.Add(CardDB.cardName.professorputricide, 1);
             priorityDatabase.Add(CardDB.cardName.moorabi, 1);
+			priorityDatabase.Add(CardDB.cardName.magiccarpet, 6);//魔法飞毯
         }
 
-        private void setupAttackBuff()
+        private void setupAttackBuff()//给攻击属性BUFF
         {
             this.heroAttackBuffDatabase.Add(CardDB.cardName.bite, 4);
             this.heroAttackBuffDatabase.Add(CardDB.cardName.claw, 2);
@@ -3946,9 +4098,9 @@
             this.attackBuffDatabase.Add(CardDB.cardName.nightmare, 5); //destroy minion on next turn
             this.attackBuffDatabase.Add(CardDB.cardName.powerwordtentacles, 2);
             this.attackBuffDatabase.Add(CardDB.cardName.primalfusion, 1);
-            this.attackBuffDatabase.Add(CardDB.cardName.rampage, 3);//only damaged minion 
+            this.attackBuffDatabase.Add(CardDB.cardName.rampage, 3);//only damaged minion 狂暴
             this.attackBuffDatabase.Add(CardDB.cardName.rockbiterweapon, 3);
-            this.attackBuffDatabase.Add(CardDB.cardName.rockpoolhunter, 1);
+            this.attackBuffDatabase.Add(CardDB.cardName.rockpoolhunter, 1);//石塘鱼人
             this.attackBuffDatabase.Add(CardDB.cardName.screwjankclunker, 2);
             this.attackBuffDatabase.Add(CardDB.cardName.sealofchampions, 3);
             this.attackBuffDatabase.Add(CardDB.cardName.silvermoonportal, 2);
@@ -3962,7 +4114,7 @@
             this.attackBuffDatabase.Add(CardDB.cardName.acherusveteran, 1);
         }
 
-        private void setupHealthBuff()
+        private void setupHealthBuff()//给生命值属性BUFF
         {
             //healthBuffDatabase.Add(CardDB.cardName.ancientofwar, 5);//choice2 is only buffing himself!
             //healthBuffDatabase.Add(CardDB.cardName.rooted, 5);
@@ -3989,7 +4141,7 @@
             healthBuffDatabase.Add(CardDB.cardName.powerwordtentacles, 6);
             healthBuffDatabase.Add(CardDB.cardName.primalfusion, 1);
             healthBuffDatabase.Add(CardDB.cardName.rampage, 3);
-            healthBuffDatabase.Add(CardDB.cardName.rockpoolhunter, 1);
+            healthBuffDatabase.Add(CardDB.cardName.rockpoolhunter, 1);//石塘鱼人
             healthBuffDatabase.Add(CardDB.cardName.screwjankclunker, 2);
             healthBuffDatabase.Add(CardDB.cardName.silvermoonportal, 2);
             healthBuffDatabase.Add(CardDB.cardName.spikeridgedsteed, 6);
@@ -4263,7 +4415,7 @@
             UsefulNeedKeepDatabase.Add(CardDB.cardName.moroes, 13);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.muklaschampion, 14);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.murlocknight, 16);
-            UsefulNeedKeepDatabase.Add(CardDB.cardName.underbellyangler, 17);
+            UsefulNeedKeepDatabase.Add(CardDB.cardName.underbellyangler, 17);//下水道鱼人
             UsefulNeedKeepDatabase.Add(CardDB.cardName.murloctidecaller, 10);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.murlocwarleader, 11);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.natpagle, 2);
@@ -4341,7 +4493,7 @@
             cardDiscardDatabase.Add(CardDB.cardName.succubus, 2);
         }
 
-        private void setupDestroyOwnCards()
+        private void setupDestroyOwnCards()//能消灭敌方或己方卡牌的卡
         {
             this.destroyOwnDatabase.Add(CardDB.cardName.brawl, 0);
             this.destroyOwnDatabase.Add(CardDB.cardName.deathwing, 0);
@@ -4388,6 +4540,8 @@
             this.destroyDatabase.Add(CardDB.cardName.obsidianstatue, 0);
             this.destroyDatabase.Add(CardDB.cardName.obliterate, 0);
             this.destroyDatabase.Add(CardDB.cardName.doompact, 0);
+			this.destroyDatabase.Add(CardDB.cardName.grimrally, 0);//残酷集结
+			this.destroyDatabase.Add(CardDB.cardName.evilgenius, 0);//怪盗天才
         }
 
         private void setupReturnBackToHandCards()
@@ -4409,7 +4563,7 @@
             this.heroDamagingAoeDatabase.Add(CardDB.cardName.unknown, 0);
         }
 
-        private void setupSpecialMins()
+        private void setupSpecialMins()//一些特殊的卡？（吸血，剧毒类的？）
         {
             specialMinions.Add(CardDB.cardName.aberrantberserker, 0);
             specialMinions.Add(CardDB.cardName.abomination, 0);
@@ -4582,7 +4736,7 @@
             specialMinions.Add(CardDB.cardName.moroes, 0);
             specialMinions.Add(CardDB.cardName.muklaschampion, 0);
             specialMinions.Add(CardDB.cardName.murlocknight, 0);
-            specialMinions.Add(CardDB.cardName.underbellyangler, 0);
+            specialMinions.Add(CardDB.cardName.underbellyangler, 0);//下水道鱼人
             specialMinions.Add(CardDB.cardName.murloctidecaller, 0);
             specialMinions.Add(CardDB.cardName.murlocwarleader, 0);
             specialMinions.Add(CardDB.cardName.natpagle, 0);
@@ -4593,11 +4747,11 @@
             specialMinions.Add(CardDB.cardName.ogremagi, 0);
             specialMinions.Add(CardDB.cardName.oldmurkeye, 0);
             specialMinions.Add(CardDB.cardName.orgrimmaraspirant, 0);
-            specialMinions.Add(CardDB.cardName.patientassassin, 0);
+            specialMinions.Add(CardDB.cardName.patientassassin, 0);//耐心的刺客（潜行剧毒）
             specialMinions.Add(CardDB.cardName.pilotedshredder, 0);
             specialMinions.Add(CardDB.cardName.pilotedskygolem, 0);
             specialMinions.Add(CardDB.cardName.pintsizedsummoner, 0);
-            specialMinions.Add(CardDB.cardName.pitsnake, 0);
+            specialMinions.Add(CardDB.cardName.pitsnake, 0);//深渊巨蟒（剧毒）
             specialMinions.Add(CardDB.cardName.possessedvillager, 0);
             specialMinions.Add(CardDB.cardName.priestofthefeast, 0);
             specialMinions.Add(CardDB.cardName.primalfinchampion, 0);
@@ -4692,7 +4846,7 @@
             specialMinions.Add(CardDB.cardName.webspinner, 0);
             specialMinions.Add(CardDB.cardName.whiteeyes, 0);
             specialMinions.Add(CardDB.cardName.wickedwitchdoctor, 0);
-            specialMinions.Add(CardDB.cardName.wickerflameburnbristle, 0);
+            specialMinions.Add(CardDB.cardName.wickerflameburnbristle, 0);//燃鬃自走炮
             specialMinions.Add(CardDB.cardName.wilfredfizzlebang, 0);
             specialMinions.Add(CardDB.cardName.windupburglebot, 0);
             specialMinions.Add(CardDB.cardName.wobblingrunts, 0);
@@ -4714,9 +4868,9 @@
             specialMinions.Add(CardDB.cardName.explodingbloatbat, 0);
             specialMinions.Add(CardDB.cardName.drakkarienchanter, 0);
             specialMinions.Add(CardDB.cardName.despicabledreadlord, 0);
-            specialMinions.Add(CardDB.cardName.deadscaleknight, 0);
+            specialMinions.Add(CardDB.cardName.deadscaleknight, 0);//死鳞骑士（吸血）
             specialMinions.Add(CardDB.cardName.cobaltscalebane, 0);
-            specialMinions.Add(CardDB.cardName.chillbladechampion, 0);
+            specialMinions.Add(CardDB.cardName.chillbladechampion, 0);//寒刃勇士（冲锋，吸血）
             specialMinions.Add(CardDB.cardName.bonedrake, 0);
             specialMinions.Add(CardDB.cardName.bonebaron, 0);
             specialMinions.Add(CardDB.cardName.bloodworm, 0);
@@ -4742,6 +4896,7 @@
             specialMinions.Add(CardDB.cardName.doomedapprentice, 0);
             specialMinions.Add(CardDB.cardName.cryptlord, 0);
             specialMinions.Add(CardDB.cardName.corpsewidow, 0);
+			specialMinions.Add(CardDB.cardName.crystaldryad, 0);//水晶树妖
         }
 
         private void setupOwnSummonFromDeathrattle()
@@ -4763,6 +4918,10 @@
             ownSummonFromDeathrattle.Add(CardDB.cardName.moirabronzebeard, 3);
             ownSummonFromDeathrattle.Add(CardDB.cardName.mountedraptor, 3);
             ownSummonFromDeathrattle.Add(CardDB.cardName.nerubianegg, -16);
+            ownSummonFromDeathrattle.Add(CardDB.cardName.scarabegg, -9);//甲虫卵
+            ownSummonFromDeathrattle.Add(CardDB.cardName.mechanicalwhelp, -16);//机械雏龙
+            ownSummonFromDeathrattle.Add(CardDB.cardName.mechanoegg, -20);//机械蛋
+            ownSummonFromDeathrattle.Add(CardDB.cardName.saronitetaskmaster, 2);//萨隆铁矿监工
             ownSummonFromDeathrattle.Add(CardDB.cardName.pilotedshredder, 4);
             ownSummonFromDeathrattle.Add(CardDB.cardName.pilotedskygolem, 4);
             ownSummonFromDeathrattle.Add(CardDB.cardName.possessedvillager, 1);
@@ -4777,14 +4936,15 @@
             ownSummonFromDeathrattle.Add(CardDB.cardName.frozenchampion, -12);
         }
 
-        private void setupBuffingMinions()
+        private void setupBuffingMinions()//加BUFF随从
         {
             buffingMinionsDatabase.Add(CardDB.cardName.abusivesergeant, 0);
             buffingMinionsDatabase.Add(CardDB.cardName.beckonerofevil, 10);
             buffingMinionsDatabase.Add(CardDB.cardName.bladeofcthun, 10);
             buffingMinionsDatabase.Add(CardDB.cardName.bloodsailcultist, 5);
             buffingMinionsDatabase.Add(CardDB.cardName.captaingreenskin, 5);
-            buffingMinionsDatabase.Add(CardDB.cardName.cenarius, 0);
+            buffingMinionsDatabase.Add(CardDB.cardName.cenarius, 0);//塞纳留斯
+			buffingMinionsDatabase.Add(CardDB.cardName.tendingtauren, 0);//牛头人园丁
             buffingMinionsDatabase.Add(CardDB.cardName.clockworkknight, 2);
             buffingMinionsDatabase.Add(CardDB.cardName.coldlightseer, 3);
             buffingMinionsDatabase.Add(CardDB.cardName.crueltaskmaster, 0);
@@ -4792,7 +4952,8 @@
             buffingMinionsDatabase.Add(CardDB.cardName.cultsorcerer, 10);
             buffingMinionsDatabase.Add(CardDB.cardName.darkarakkoa, 10);
             buffingMinionsDatabase.Add(CardDB.cardName.darkirondwarf, 0);
-            buffingMinionsDatabase.Add(CardDB.cardName.defenderofargus, 0);
+            buffingMinionsDatabase.Add(CardDB.cardName.defenderofargus, 0);//阿古斯防御者
+			buffingMinionsDatabase.Add(CardDB.cardName.fungalmancer, 0);//菌菇术士
             buffingMinionsDatabase.Add(CardDB.cardName.direwolfalpha, 0);
             buffingMinionsDatabase.Add(CardDB.cardName.discipleofcthun, 10);
             buffingMinionsDatabase.Add(CardDB.cardName.doomcaller, 10);
@@ -4830,7 +4991,7 @@
             buffing1TurnDatabase.Add(CardDB.cardName.worshipper, 0);
         }
 
-        private void setupEnemyTargetPriority()
+        private void setupEnemyTargetPriority()//优先解的随从
         {
             priorityTargets.Add(CardDB.cardName.acidmaw, 10);
             priorityTargets.Add(CardDB.cardName.acolyteofpain, 10);
@@ -4943,7 +5104,7 @@
             priorityTargets.Add(CardDB.cardName.mogortheogre, 10);
             priorityTargets.Add(CardDB.cardName.moroes, 10);
             priorityTargets.Add(CardDB.cardName.muklaschampion, 10);
-            priorityTargets.Add(CardDB.cardName.underbellyangler, 10);
+            priorityTargets.Add(CardDB.cardName.underbellyangler, 10);//下水道鱼人
             priorityTargets.Add(CardDB.cardName.murlocknight, 10);
             priorityTargets.Add(CardDB.cardName.natpagle, 10);
             priorityTargets.Add(CardDB.cardName.nerubarweblord, 10);
@@ -5021,6 +5182,36 @@
             priorityTargets.Add(CardDB.cardName.icewalker, 10);
             priorityTargets.Add(CardDB.cardName.cryptlord, 10);
             priorityTargets.Add(CardDB.cardName.corpsewidow, 10);
+			priorityTargets.Add(CardDB.cardName.archmagevargoth, 10);//大法师瓦格斯
+			priorityTargets.Add(CardDB.cardName.stargazerluna, 10);//观星者露娜
+			priorityTargets.Add(CardDB.cardName.magiccarpet, 10);//魔法飞毯
+			priorityTargets.Add(CardDB.cardName.silverhandrecruit, 5);	//白银之手新兵	
+			priorityTargets.Add(CardDB.cardName.keeperstalladris, 10);//守护者斯塔拉蒂斯
+			priorityTargets.Add(CardDB.cardName.lifeweaver, 10);//织命者
+			priorityTargets.Add(CardDB.cardName.khadgar, 10);//卡德加
+			priorityTargets.Add(CardDB.cardName.magicdartfrog, 8);//魔法蓝蛙
+			priorityTargets.Add(CardDB.cardName.commanderrhyssa, 10);//指挥官蕾撒
+			priorityTargets.Add(CardDB.cardName.catrinamuerte, 10);//亡者卡特琳娜
+			priorityTargets.Add(CardDB.cardName.evilmiscreant, 5);//怪盗恶霸
+			priorityTargets.Add(CardDB.cardName.scargil, 10);//斯卡基尔
+			priorityTargets.Add(CardDB.cardName.exoticmountseller, 10);//特殊坐骑商人
+			priorityTargets.Add(CardDB.cardName.bigbadarchmage, 10);//恶狼大法师
+			priorityTargets.Add(CardDB.cardName.spiritoftheraptor, 10);//迅猛龙之灵
+			priorityTargets.Add(CardDB.cardName.spiritofthelynx, 10);//山猫之灵
+			priorityTargets.Add(CardDB.cardName.spiritofthedragonhawk, 10);//龙鹰之灵
+			priorityTargets.Add(CardDB.cardName.spiritofthetiger, 10);//猛虎之灵
+			priorityTargets.Add(CardDB.cardName.spiritofthedead, 10);//亡者之灵
+			priorityTargets.Add(CardDB.cardName.sanddrudge, 8);//沙地苦工
+			priorityTargets.Add(CardDB.cardName.spiritoftheshark, 10);//鲨鱼之灵
+			priorityTargets.Add(CardDB.cardName.spiritofthefrog, 10);//青蛙之灵
+			priorityTargets.Add(CardDB.cardName.zentimo, 10);//泽蒂摩
+			priorityTargets.Add(CardDB.cardName.spiritofthebat, 10);//蝙蝠之灵
+			priorityTargets.Add(CardDB.cardName.spiritoftherhino, 10);//犀牛之灵
+			priorityTargets.Add(CardDB.cardName.serpentward, 10);//毒蛇守卫
+			priorityTargets.Add(CardDB.cardName.sharkfinfan, 8);//鲨鳍后援
+			priorityTargets.Add(CardDB.cardName.sightlessranger, 6);//盲眼游侠
+            priorityTargets.Add(CardDB.cardName.highpriestamet, 8);//高阶祭司阿门特
+
         }
 
         private void setupLethalHelpMinions()
@@ -5241,7 +5432,7 @@
             silenceTargets.Add(CardDB.cardName.mogortheogre, 0);
             silenceTargets.Add(CardDB.cardName.muklaschampion, 0);
             silenceTargets.Add(CardDB.cardName.murlocknight, 0);
-            silenceTargets.Add(CardDB.cardName.underbellyangler, 0);
+            silenceTargets.Add(CardDB.cardName.underbellyangler, 0);//下水道鱼人
             silenceTargets.Add(CardDB.cardName.murloctidecaller, 0);
             silenceTargets.Add(CardDB.cardName.murlocwarleader, 0);
             silenceTargets.Add(CardDB.cardName.natpagle, 0);
@@ -5253,7 +5444,7 @@
             silenceTargets.Add(CardDB.cardName.oneeyedcheat, 0);
             silenceTargets.Add(CardDB.cardName.orgrimmaraspirant, 0);
             silenceTargets.Add(CardDB.cardName.pilotedskygolem, 0);
-            silenceTargets.Add(CardDB.cardName.pitsnake, 0);
+            silenceTargets.Add(CardDB.cardName.pitsnake, 0);//深渊巨蟒（剧毒）
             silenceTargets.Add(CardDB.cardName.primalfinchampion, 0);
             silenceTargets.Add(CardDB.cardName.primalfintotem, 0);
             silenceTargets.Add(CardDB.cardName.prophetvelen, 0);
@@ -5383,7 +5574,7 @@
             silenceTargets.Add(CardDB.cardName.bloodqueenlanathel, 0);
         }
 
-        private void setupRandomCards()
+        private void setupRandomCards()//产生随机效果的卡牌
         {
             randomEffects.Add(CardDB.cardName.alightinthedarkness, 1);
             randomEffects.Add(CardDB.cardName.ancestorscall, 1);
@@ -5457,7 +5648,7 @@
             randomEffects.Add(CardDB.cardName.moongladeportal, 1);
             randomEffects.Add(CardDB.cardName.multishot, 2);
             randomEffects.Add(CardDB.cardName.museumcurator, 1);
-            randomEffects.Add(CardDB.cardName.mysteriouschallenger, 2);
+            randomEffects.Add(CardDB.cardName.mysteriouschallenger, 2);//神秘挑战者
             randomEffects.Add(CardDB.cardName.pileon, 1);
             randomEffects.Add(CardDB.cardName.powerofthehorde, 1);
             randomEffects.Add(CardDB.cardName.primordialglyph, 1);
@@ -5496,12 +5687,13 @@
         }
 
 
-        private void setupChooseDatabase()
+        private void setupChooseDatabase()//抉择卡牌
         {
             this.choose1database.Add(CardDB.cardName.ancientoflore, CardDB.cardIDEnum.NEW1_008a);
             this.choose1database.Add(CardDB.cardName.ancientofwar, CardDB.cardIDEnum.EX1_178b);
             this.choose1database.Add(CardDB.cardName.anodizedrobocub, CardDB.cardIDEnum.GVG_030a);
-            this.choose1database.Add(CardDB.cardName.cenarius, CardDB.cardIDEnum.EX1_573a);
+            this.choose1database.Add(CardDB.cardName.cenarius, CardDB.cardIDEnum.EX1_573a);//塞纳留斯
+			this.choose1database.Add(CardDB.cardName.tendingtauren, CardDB.cardIDEnum.BOT_422a);//牛头人园丁
             this.choose1database.Add(CardDB.cardName.darkwispers, CardDB.cardIDEnum.GVG_041b);
             this.choose1database.Add(CardDB.cardName.druidoftheclaw, CardDB.cardIDEnum.EX1_165t1);
             this.choose1database.Add(CardDB.cardName.druidoftheflame, CardDB.cardIDEnum.BRM_010t);
@@ -5528,7 +5720,8 @@
             this.choose2database.Add(CardDB.cardName.ancientoflore, CardDB.cardIDEnum.NEW1_008b);
             this.choose2database.Add(CardDB.cardName.ancientofwar, CardDB.cardIDEnum.EX1_178a);
             this.choose2database.Add(CardDB.cardName.anodizedrobocub, CardDB.cardIDEnum.GVG_030b);
-            this.choose2database.Add(CardDB.cardName.cenarius, CardDB.cardIDEnum.EX1_573b);
+            this.choose2database.Add(CardDB.cardName.cenarius, CardDB.cardIDEnum.EX1_573b);//塞纳留斯
+			this.choose2database.Add(CardDB.cardName.tendingtauren, CardDB.cardIDEnum.BOT_422b);//牛头人园丁
             this.choose2database.Add(CardDB.cardName.darkwispers, CardDB.cardIDEnum.GVG_041a);
             this.choose2database.Add(CardDB.cardName.druidoftheclaw, CardDB.cardIDEnum.EX1_165t2);
             this.choose2database.Add(CardDB.cardName.druidoftheflame, CardDB.cardIDEnum.BRM_010t2);
@@ -5677,7 +5870,8 @@
             GangUpDatabase.Add(CardDB.cardName.burlyrockjawtrogg, 1);
             GangUpDatabase.Add(CardDB.cardName.cabalshadowpriest, 5);
             GangUpDatabase.Add(CardDB.cardName.cairnebloodhoof, 5);
-            GangUpDatabase.Add(CardDB.cardName.cenarius, 5);
+            GangUpDatabase.Add(CardDB.cardName.cenarius, 5);//塞纳留斯
+			GangUpDatabase.Add(CardDB.cardName.tendingtauren, 4);//牛头人园丁
             GangUpDatabase.Add(CardDB.cardName.chromaggus, 4);
             GangUpDatabase.Add(CardDB.cardName.cobaltguardian, 1);
             GangUpDatabase.Add(CardDB.cardName.coldarradrake, 1);
@@ -5762,7 +5956,7 @@
             GangUpDatabase.Add(CardDB.cardName.moatlurker, 4);
             GangUpDatabase.Add(CardDB.cardName.moirabronzebeard, 5);
             GangUpDatabase.Add(CardDB.cardName.murlocknight, 5);
-            GangUpDatabase.Add(CardDB.cardName.underbellyangler, 5);
+            GangUpDatabase.Add(CardDB.cardName.underbellyangler, 5);//下水道鱼人
             GangUpDatabase.Add(CardDB.cardName.murloctidecaller, 1);
             GangUpDatabase.Add(CardDB.cardName.murlocwarleader, 1);
             GangUpDatabase.Add(CardDB.cardName.nefarian, 5);
