@@ -4,9 +4,10 @@ using System.Text;
 
 namespace HREngine.Bots
 {
-    class Sim_TRL_059 : SimTemplate //* wandering monster
+    class Sim_TRL_059 : SimTemplate //*Bog Slosher
+//沼泽游荡者
     {
-        //Secret: When an enemy attacks your hero, summon a 3-Cost minion as the new target.
+        //<b>Battlecry:</b> Return a friendly minion to your hand and give it +2/+2."
 
 
         public override void getBattlecryEffect(Playfield p, Minion m, Minion target, int choice)
