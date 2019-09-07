@@ -989,7 +989,7 @@ namespace HREngine.Bots
                     if (targetWasHero)
                     {
                         explosive = true;
-                        flameward = true;
+                        if(!attackerIsHero)flameward = true;
 
                         if (old.enemyMinions.Count < 7) beartrap = true;
                         missdirection = true;
