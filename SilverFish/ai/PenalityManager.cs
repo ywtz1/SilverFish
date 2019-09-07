@@ -1089,7 +1089,13 @@
                     switch (name)
                     {
                         case CardDB.cardName.crueltaskmaster: if (m.HealthPoints >= 2) return 0; break;
-                        case CardDB.cardName.innerrage: if (m.HealthPoints >= 2) return 3; break;//留一下innerrage怒火中烧
+                        case CardDB.cardName.innerrage: //留一下innerrage怒火中烧
+                        if (m.HealthPoints >= 2) return 5; 
+                        if (m.HealthPoints >= 3) return 2; 
+                        case CardDB.cardName.crueltaskmaster: //留一下严酷的监工
+                        if (m.HealthPoints >= 2) return 5; 
+                        if (m.HealthPoints >= 3) return 2; 
+                        break;
                         case CardDB.cardName.demonfire: if ((TAG_RACE)m.handcard.card.race == TAG_RACE.DEMON) return 0; break;
                         case CardDB.cardName.demonheart: if ((TAG_RACE)m.handcard.card.race == TAG_RACE.DEMON) return 0; break;
                         case CardDB.cardName.earthshock:
