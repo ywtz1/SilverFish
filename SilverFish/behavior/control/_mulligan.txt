@@ -115,6 +115,8 @@ EX1_392;warrior;None;Discard:2;/
 ULD_195;warrior;None;Discard:2;/
 EX1_607;warrior;None;Discard:2;/
 CS2_104;warrior;None;Discard:2;/
+EX1_603;warrior;None;Discard:2;/
+
 //********打脸战**********
 
 
