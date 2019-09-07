@@ -1088,7 +1088,7 @@
                     Minion m = target; 
                     switch (name)
                     {
-                        case CardDB.cardName.crueltaskmaster: if (m.HealthPoints >= 2) return 0; break;
+    
                         case CardDB.cardName.innerrage: //留一下innerrage怒火中烧
                         if (m.HealthPoints >= 2) return 5; 
                         if (m.HealthPoints >= 3) return 2; 
