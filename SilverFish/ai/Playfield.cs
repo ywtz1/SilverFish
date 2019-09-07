@@ -4012,7 +4012,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 switch(m.name)
                 {
 
-                    case CardDB.cardName.henchclanthug:
+                    case CardDB.cardName.henchclanthug://荆棘帮暴徒
 
                     
                     this.minionGetBuffed(m, 1, 1);
@@ -4021,7 +4021,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     
 
 
-                    case CardDB.cardName.sharkfinfan:
+                    case CardDB.cardName.sharkfinfan://鲨鳍后援
                     
                 //pos = this.ownMinions.Count;
 
