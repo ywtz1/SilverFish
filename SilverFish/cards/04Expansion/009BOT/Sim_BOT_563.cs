@@ -11,7 +11,7 @@
 		{
 			public override void getBattlecryEffect(Playfield p,Minion own,Minion target,int choice)
 			{
-				p.cili(own);
+				//p.cili(own);
 
 	          }
 	      }

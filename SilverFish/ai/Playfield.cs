@@ -5900,7 +5900,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 		{
 			foreach (Minion m in RebornMinions)
 			{
-				if (m.reborn > 0)
+				if (m.reborn > 0 && !m.silenced)
 				{
 					for (int i = 0; i < m.reborn; i++) 
 					{
@@ -5908,6 +5908,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 						List<Minion> tmp = (m.own) ? this.ownMinions : this.enemyMinions;
                         int pos = tmp.Count;
                         CallKid(kid, pos, m.own, false, true);
+                        LogHelper.WriteCombatLog("Minion " + m.name + " Reborn");
 
                         if (tmp.Count >= 1)
                         {
@@ -6541,9 +6542,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             Minion m = createNewMinion(hc, mobplace, true);
             m.playedFromHand = true;
 
-            
             addMinionToBattlefield(m);
-
 
             //trigger the battlecry!
             m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
@@ -6560,6 +6559,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             if(!this.ownAbilityReady && (this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.ULD_291p
             ||ownHeroAblility.card.name == CardDB.cardName.heartofvirnaal))//腐化水源 维尔纳尔之心
             m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
+
+            if(hc.card.Modular)this.cili(m);
+
             doDmgTriggers();
 
             secretTrigger_MinionIsPlayed(m);
@@ -6900,6 +6902,8 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     //break;
                     if(m.Ready)
                     this.evaluatePenality -= (mown.Attack+mown.HealthPoints)*2;//鼓励使用磁力
+                    LogHelper.WriteCombatLog(" card "+ mown.name+"got Modular with minion" + m.name);
+                    break;
                    }
               }
         }

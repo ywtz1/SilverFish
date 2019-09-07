@@ -10,7 +10,7 @@ class Sim_BOT_251:SimTemplate //* spider bomb
 
 	{
 		//own.spiderbomb++;
-		p.cili(own);
+		//p.cili(own);
 
 
 		

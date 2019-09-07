@@ -589,7 +589,7 @@ EX1_611;hunter;shaman;Discard:2;/
 EX1_611;hunter;mage;Discard:2;/
 EX1_611;hunter;priest;Discard:2;/
 EX1_611;hunter;druid;Discard:2;/
-
+DS1_184;hunter;None;Discard:2;/
 BOT_033;hunter;None;Discard:2;/
 TRL_339;hunter;None;Discard:2;/
 

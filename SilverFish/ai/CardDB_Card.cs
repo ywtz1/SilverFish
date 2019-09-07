@@ -20,6 +20,7 @@ namespace HREngine.Bots
             public int Attack = 0;
             public int Health = 0;
 			public int Reborn = 0;//复生
+            public bool Modular = false;//磁力
             public bool Echo = false;
 
             public bool Collectible = true;
@@ -128,6 +129,7 @@ namespace HREngine.Bots
                 this.Freeze = c.Freeze;
                 this.Health = c.Health;
 				this.Reborn = c.Reborn;//复生
+                this.Modular = c.Modular;//磁力
                 this.Collectible = c.Collectible;
                 this.immuneWhileAttacking = c.immuneWhileAttacking;
                 this.untouchable = c.untouchable;

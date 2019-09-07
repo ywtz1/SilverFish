@@ -9,7 +9,7 @@ namespace HREngine.Bots
 		// Battlecry: Give all minions in your hand +2/+2.
 		public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
         {
-            p.cili(own);
+            //p.cili(own);
         }
         public override void onTurnEndsTrigger(Playfield p, Minion triggerEffectMinion, bool turnEndOfOwner)
         {

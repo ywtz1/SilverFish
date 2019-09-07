@@ -11,9 +11,9 @@
 		{
 			public override void getBattlecryEffect(Playfield p,Minion own,Minion target,int choice)
 			{
-				own.rush++;
-				p.minionGetRush(own);
-				p.cili(own);
+				//own.rush++;
+				//p.minionGetRush(own);
+				//p.cili(own);
 	        }
 	      }
 	  }

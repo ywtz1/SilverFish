@@ -13,7 +13,7 @@
 			public override void getBattlecryEffect(Playfield p,Minion own,Minion target,int choice)
 			{
 				//own.robot312++;
-					p.cili(own);
+					//p.cili(own);
 	              
 	        }
 	    public override void onDeathrattle(Playfield p, Minion m)

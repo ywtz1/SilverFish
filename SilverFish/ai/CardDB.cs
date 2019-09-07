@@ -341,6 +341,16 @@ namespace HREngine.Bots
                     c.Reborn = Convert.ToInt32(temp);
                     continue;
                 }
+
+                if (s.Contains("<Tag enumID=\"849\""))//磁力
+                {
+                    string temp = s.Split(new string[] { "value=\"" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split('\"')[0];
+                    int ti = Convert.ToInt32(temp);
+                    if (ti == 1) c.Modular = true;
+                    else c.Modular = false;
+                    continue;
+                }
                 
                 if (s.Contains("<Tag enumID=\"321\""))
                 {
