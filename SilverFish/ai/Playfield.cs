@@ -6884,7 +6884,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 if(m.zonepos ==mown.zonepos+1&&(TAG_RACE)m.handcard.card.race ==TAG_RACE.MECHANICAL)
                 {
-                    this.minionGetBuffed(m,mown.Attack,mown.HealthPoints);//手牌buff应该可以计入，但模拟出牌时恐狼/暴风城等临时buff可能会多算一次?
+                    this.minionGetBuffed(m,mown.Attack,mown.HealthPoints);
                     if(mown.taunt)m.taunt=true;
                     if(mown.divineshild)m.divineshild=true;
                     if(mown.lifesteal)m.lifesteal=true;
@@ -6902,10 +6902,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     //break;
                     if(m.Ready)
                     this.evaluatePenality -= (mown.Attack+mown.HealthPoints)*2;//鼓励使用磁力
-                    LogHelper.WriteCombatLog(" card "+ mown.name+"got Modular with minion" + m.name);
                     break;
                    }
               }
+
         }
         public int restcard(CardDB.cardIDEnum idkey,int moshi=1)//moshi1 有招募  0动物伙伴和凶猛狂暴
         {
