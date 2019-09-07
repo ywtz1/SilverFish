@@ -6877,7 +6877,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             }
 
         }
-        public void cili(Minion mown)
+        public void cili(Minion mown)// 磁力
         {
             List<Minion>temp=(mown.own)?this.ownMinions:this.enemyMinions;
             foreach(Minion m in temp)
@@ -6890,9 +6890,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     if(mown.lifesteal)m.lifesteal=true;
                     if(mown.windfury)m.windfury=true;
                     if(mown.poisonous)m.poisonous=true;
-                    m.valanyr +=mown.valanyr;//唯一（？)的打出前获得的特效，需要先写好“亡语：重新装备val‘anyr”
-                    m.spiderbomb+=mown.spiderbomb;
-                    m.robot312+=mown.robot312;
+                    m.valanyr +=mown.valanyr;//“亡语：重新装备val‘anyr”
+                    m.spiderbomb+=mown.spiderbomb;//蜘蛛炸弹
+                    m.robot312+=mown.robot312;//量产型恐吓机
                     if(mown.name==CardDB.cardName.spiderbomb)m.spiderbomb++;//蜘蛛炸弹
                     if(mown.name==CardDB.cardName.replicatingmenace)m.robot312++;//量产型恐吓机
                     if(mown.rush!=0)this.minionGetRush(m);
