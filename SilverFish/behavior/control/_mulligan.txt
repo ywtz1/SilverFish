@@ -9,6 +9,8 @@ None;warlock;None;Discard:2;3
 
 None;hunter;priest;Discard:2;4
 
+
+
 //**********战吼任务萨***********
 EX1_245;shaman;None;Discard:2;/
 DAL_071;shaman;None;Discard:2;/
@@ -106,8 +108,17 @@ EX1_048;warrior;warlock;Discard:2;/
 EX1_048;warrior;shaman;Discard:2;/
 EX1_048;warrior;druid;Discard:2;/
 EX1_048;warrior;thief;Discard:2;/
+
+//********标准打脸战********
+
+EX1_392;warrior;None;Discard:2;/
+ULD_195;warrior;None;Discard:2;/
 //********打脸战**********
+
+
 None;warrior;warlock;Discard:2;4
+
+
 CFM_637;warrior;warlock;Discard:2;/
 CS2_146;warrior;warlock;Discard:2;/
 LOE_076;warrior;warlock;Hold:1;/
@@ -589,6 +600,7 @@ EX1_611;hunter;shaman;Discard:2;/
 EX1_611;hunter;mage;Discard:2;/
 EX1_611;hunter;priest;Discard:2;/
 EX1_611;hunter;druid;Discard:2;/
+
 DS1_184;hunter;None;Discard:2;/
 BOT_033;hunter;None;Discard:2;/
 TRL_339;hunter;None;Discard:2;/

@@ -5908,7 +5908,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 						List<Minion> tmp = (m.own) ? this.ownMinions : this.enemyMinions;
                         int pos = tmp.Count;
                         CallKid(kid, pos, m.own, false, true);
-                        LogHelper.WriteCombatLog("Minion " + m.name + " Reborn");
+                        //LogHelper.WriteCombatLog("Minion " + m.name + " Reborn");
 
                         if (tmp.Count >= 1)
                         {
@@ -5916,8 +5916,8 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             if (summonedMinion.handcard.card.cardIDenum == kid.cardIDenum)
                             {
                                 summonedMinion.HealthPoints = 1;
-                                summonedMinion.wounded = false;
-                                if (summonedMinion.HealthPoints < summonedMinion.maxHp) summonedMinion.wounded = true;
+                                //summonedMinion.wounded = false;
+                                if ( summonedMinion.maxHp > 1 || summonedMinion.handcard.card.Health>1) summonedMinion.wounded = true;
 							}
 						}
 					}

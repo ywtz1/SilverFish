@@ -16,7 +16,7 @@
         /// <param name="choice"></param>
         public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
         {
-            if (target != null && target.own && target.wounded)
+            if (target != null && target.own && (target.wounded||target.maxHp>target.HealthPoints ||target.handcard.card.Health>target.HealthPoints))
             {
                 int position = p.ownMinions.Count;
                 p.CallKid(own.handcard.card, position, true);
