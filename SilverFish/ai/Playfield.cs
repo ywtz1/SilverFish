@@ -7326,10 +7326,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 int cvalue = c.Health * 2 + c.Attack;
                 if (c.Shield) cvalue = cvalue * 3 / 2;
                 cvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(c.name);
-
-                this.evaluatePenality+= (minionvalue-cvalue-2);
-
-
+                this.evaluatePenality+= (minionvalue - cvalue + 9);
             }
 
 
