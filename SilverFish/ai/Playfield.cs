@@ -811,6 +811,11 @@ namespace HREngine.Bots
                 if (m.name == CardDB.cardName.dragonconsort && anzOwnDragonConsort > 0) this.anzOwnDragonConsortStarted++;
                 if (m.handcard.card.race == 23) this.anzOwnPiratesStarted++;
                 if (m.handcard.card.race == 14) this.anzOwnMurlocStarted++;
+                
+                //任务
+                if((this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.ULD_131p
+                    ||ownHeroAblility.card.name == CardDB.cardName.ossiriantear))
+                this.ownFandralStaghelm++;
 
             }
 
@@ -3727,7 +3732,8 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             playACard(a.card, a.target, a.place, a.druidchoice, a.penalty);
                             if (ownQuest.questProgress == ownQuest.maxProgress && ownQuest.Id != CardDB.cardIDEnum.None)
                             {
-                                this.drawACard(ownQuest.Reward(), true);
+                                //this.drawACard(ownQuest.Reward(), true);
+                                this.ownQuest.QuestReward(this,true);
                                 ownQuest.Reset();
                             }
                         }
@@ -3992,7 +3998,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         }
 
         //a hero attacks a minion
-        public void attackWithWeapon(Minion hero, Minion target, int penality)
+        public void attackWithWeapon(Minion hero, Minion target, int penality)//也包括不用武器
         {
             bool own = hero.own;
             Weapon weapon = own ? this.ownWeapon : this.enemyWeapon;
@@ -4003,31 +4009,25 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             //hero will end his readyness
             hero.updateReadyness();
             if (weapon.name == CardDB.cardName.foolsbane && !hero.frozen) hero.Ready = true;
+            this.ownQuest.trigger_HeroAttacked(hero,target);
+
+            if(own &&(this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.ULD_711p3||this.ownHeroAblility.card.name == CardDB.cardName.anraphetscore))
+            this.ownAbilityReady = true;
+            else this.enemyAbilityReady = true;
 
             foreach (Minion m in (own ? this.ownMinions : this.enemyMinions))
             {
-
-
                 if (m.silenced) continue;
                 switch(m.name)
                 {
-
                     case CardDB.cardName.henchclanthug://荆棘帮暴徒
-
-                    
-                    this.minionGetBuffed(m, 1, 1);
-                    break;
-
-                    
-
-
+                        this.minionGetBuffed(m, 1, 1);
+                        break;
                     case CardDB.cardName.sharkfinfan://鲨鳍后援
-                    
-                //pos = this.ownMinions.Count;
-
-                    CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.TRL_507t);//小海盗
-                    CallKid(kid, (own ? this.ownMinions.Count : this.enemyMinions.Count), own, false);
-                    break;
+                        //pos = this.ownMinions.Count;
+                        CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.TRL_507t);//小海盗
+                        CallKid(kid, (own ? this.ownMinions.Count : this.enemyMinions.Count), own, false);
+                        break;
                 
                     
                 } 
@@ -5031,6 +5031,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void triggerEndTurn(bool ownturn)
         {
+
+            if(ownturn)this.ownQuest.trigger_EndTurn(this,ownturn);//任务
+
             if(this.wehaveCounterspell>0)this.Counterspellturns++;
             //if(this.Counterspellturns>2&&this.enemyAnzCards>3)
             //this.wehaveCounterspell=0;//过了三回合重新开始防aoe
@@ -5266,7 +5269,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 this.enemyAbilityReady = true;
                 this.enemyHero.updateReadyness();
             }
+            //被动技能
             if(ab.card.cardIDenum == CardDB.cardIDEnum.GIL_504h)//hajiasa哈加沙
+            {
+                if (ownturn)this.ownAbilityReady = false;
+                else this.enemyAbilityReady= false;
+            }
+            if(ab.card.cardIDenum == CardDB.cardIDEnum.ULD_131p)//奥斯里安之泪
             {
                 if (ownturn)this.ownAbilityReady = false;
                 else this.enemyAbilityReady= false;
@@ -6632,6 +6641,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             hero.updateReadyness();
             hero.immuneWhileAttacking = (c.name == CardDB.cardName.gladiatorslongbow);
             hero.immuneWhileAttacking = (c.name == CardDB.cardName.candleshot);
+            hero.immuneWhileAttacking = (c.name == CardDB.cardName.mirageblade);
 
             List<Minion> temp = (own) ? this.ownMinions : this.enemyMinions;
             foreach (Minion m in temp)
@@ -6754,9 +6764,11 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             // cant hold more than 10 cards
             if (own)
             {
+                
 
                 if (s == CardDB.cardName.unknown && !nopen) 
                 {
+
                     if (ownDeckSize == 0)
                     {
                         this.ownHeroFatigue++;
@@ -6845,6 +6857,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 CardDB.Card c = CardDB.Instance.getCardData(s);
                 Handmanager.Handcard hc = new Handmanager.Handcard { card = c, position = this.owncards.Count + 1, manacost = 1000, entity = this.getNextEntity() };
+                if(!nopen)this.ownQuest.trigger_CardDraw(this,hc);
                 if(dcTurnEnd)hc.discardOnOwnTurnEnd=true;//回合结束弃牌
                 this.owncards.Add(hc);
                 this.triggerCardsChanged(true);
@@ -7939,35 +7952,36 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             }
             if(dmgOrHeal < 0)//治疗//zhiliao
             {
+                this.ownQuest.trigger_MinionGotHealed(this,m,-dmgOrHeal);
                 if(m.own) foreach (Minion mnn in this.ownMinions)
-            {
-                if (mnn.silenced) continue;
-                switch (mnn.handcard.card.name)
                 {
+                    if (mnn.silenced) continue;
+                    switch (mnn.handcard.card.name)
+                    {
 
                     case CardDB.cardName.theglassknight: //玻璃骑士
-                        mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, dmgOrHeal);
-                        break;
+                    mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, dmgOrHeal);
+                    break;
                     case CardDB.cardName.crystalsmithkangor://水晶工匠坎格尔
-                        mnn.handcard.card.CardSimulation.onACharGotHealed(this, m, dmgOrHeal);
+                    mnn.handcard.card.CardSimulation.onACharGotHealed(this, m, dmgOrHeal);
                         dmgOrHeal*=2;//双倍治疗
                         break;
+                    }
                 }
-            }
-            else foreach (Minion mnn in this.enemyMinions)
-            {
-                if (mnn.silenced) continue;
-                switch (mnn.handcard.card.name)
+                else foreach (Minion mnn in this.enemyMinions)
                 {
-                    case CardDB.cardName.theglassknight: 
+                    if (mnn.silenced) continue;
+                    switch (mnn.handcard.card.name)
+                    {
+                        case CardDB.cardName.theglassknight: 
                         mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, dmgOrHeal);
                         break;
-                    case CardDB.cardName.crystalsmithkangor:
+                        case CardDB.cardName.crystalsmithkangor:
                         mnn.handcard.card.CardSimulation.onACharGotHealed(this, m, dmgOrHeal);
                         dmgOrHeal*=2;//
                         break;
+                    }
                 }
-            }
             }
             if (m.HealthPoints > 0) m.getDamageOrHeal(dmgOrHeal, this, false, dontDmgLoss);
         }

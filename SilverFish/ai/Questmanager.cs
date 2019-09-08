@@ -60,7 +60,36 @@ namespace HREngine.Bots
                         int total = mobsTurn[m.name] + Questmanager.Instance.getPlayedCardFromHand(m.name);
                         if (total > questProgress) questProgress++;
                         break;
+                    case CardDB.cardIDEnum.ULD_291: //腐化水源
+                        if(m.handcard.card.battlecry) questProgress++;
+                        break;
                 }
+            }
+            public void trigger_EndTurn(Playfield p , bool ownplay)
+            {
+                switch (Id)
+                {
+                    case CardDB.cardIDEnum.ULD_131: if (p.manaTurnEnd>0) questProgress++; break;
+
+                }
+
+            }            
+            public void trigger_CardDraw(Playfield p , Handmanager.Handcard hc)
+            {
+                switch (Id)
+                {
+                    case CardDB.cardIDEnum.ULD_140: questProgress++; break;
+                    case CardDB.cardIDEnum.ULD_326: if (hc.entity > 67)questProgress++; break;//任务：将4张其他职业的卡牌置入你的手牌。 奖励：远古刀锋。
+                }
+
+            }
+            public void trigger_MinionGotHealed(Playfield p , Minion m,int healvalue)//治疗值大于0
+            {
+                switch (Id)
+                {
+                    case CardDB.cardIDEnum.ULD_724: questProgress+= healvalue; break;
+                }
+
             }
 
             public void trigger_MinionWasSummoned(Minion m)
@@ -70,6 +99,7 @@ namespace HREngine.Bots
                     case CardDB.cardIDEnum.UNG_116: if (m.Attack >= 5) questProgress++; break;
                     case CardDB.cardIDEnum.UNG_940: if (m.handcard.card.deathrattle) questProgress++; break;
                     case CardDB.cardIDEnum.UNG_942: if ((TAG_RACE)m.handcard.card.race == TAG_RACE.MURLOC) questProgress++; break;
+                    case CardDB.cardIDEnum.ULD_155:   questProgress++; break;
                 }
             }
 
@@ -79,6 +109,7 @@ namespace HREngine.Bots
                 {
                     case CardDB.cardIDEnum.UNG_954: if (target != null && target.own && !target.isHero) questProgress++; break;
                     case CardDB.cardIDEnum.UNG_028: if (qId > 67) questProgress++; break;
+                    case CardDB.cardIDEnum.ULD_433:  questProgress++; break;
                 }
             }
             
@@ -87,6 +118,13 @@ namespace HREngine.Bots
                 switch (Id)
                 {
                     case CardDB.cardIDEnum.UNG_829: questProgress += num; break;
+                }
+            }
+            public void trigger_HeroAttacked(Minion hero, Minion target)
+            {
+                switch (Id)
+                {
+                    case CardDB.cardIDEnum.ULD_711: questProgress ++; break;
                 }
             }
 
@@ -105,6 +143,36 @@ namespace HREngine.Bots
                     case CardDB.cardIDEnum.UNG_954: return CardDB.cardIDEnum.UNG_954t1; //-Quest: Cast 6 spells on your minions. Reward: Galvadon.
                 }
                 return CardDB.cardIDEnum.None;
+            }
+            public void QuestReward(Playfield p , bool ownplay)
+            {
+                switch (Id)
+                {
+                    case CardDB.cardIDEnum.UNG_028: p.drawACard(this.Reward(), true); break;//-Quest: Cast 6 spells that didn't start in your deck. Reward: Time Warp.
+                    case CardDB.cardIDEnum.UNG_067: p.drawACard(this.Reward(), true); break; //-Quest: Play four minions with the same name. Reward: Crystal Core.
+                    case CardDB.cardIDEnum.UNG_116: p.drawACard(this.Reward(), true); break; //-Quest: Summon 5 minions with 5 or more Attack. Reward: Barnabus.
+                    case CardDB.cardIDEnum.UNG_829: p.drawACard(this.Reward(), true); break; //-Quest: Discard 6 cards. Reward: Nether Portal.
+                    case CardDB.cardIDEnum.UNG_920: p.drawACard(this.Reward(), true); break; //-Quest: Play seven 1-Cost minions. Reward: Queen Carnassa.
+                    case CardDB.cardIDEnum.UNG_934: p.drawACard(this.Reward(), true); break; //-Quest: Play 7 Taunt minions. Reward: Sulfuras.
+                    case CardDB.cardIDEnum.UNG_940: p.drawACard(this.Reward(), true); break; //-Quest: Summon 7 Deathrattle minions. Reward: Amara, Warden of Hope.
+                    case CardDB.cardIDEnum.UNG_942: p.drawACard(this.Reward(), true); break; //-Quest: Summon 10 Murlocs. Reward: Megafin.
+                    case CardDB.cardIDEnum.UNG_954: p.drawACard(this.Reward(), true); break; //-Quest: Cast 6 spells on your minions. Reward: Galvadon.
+
+                    case CardDB.cardIDEnum.ULD_131: p.setNewHeroPower(CardDB.cardIDEnum.ULD_131p, ownplay); break;
+                    case CardDB.cardIDEnum.ULD_140: p.setNewHeroPower(CardDB.cardIDEnum.ULD_140p, ownplay); break;
+                    case CardDB.cardIDEnum.ULD_155: p.setNewHeroPower(CardDB.cardIDEnum.ULD_155p, ownplay); break;
+                    case CardDB.cardIDEnum.ULD_291: p.setNewHeroPower(CardDB.cardIDEnum.ULD_291p, ownplay); break;
+                    case CardDB.cardIDEnum.ULD_326: p.setNewHeroPower(CardDB.cardIDEnum.ULD_326p, ownplay); break;
+                    case CardDB.cardIDEnum.ULD_431: p.setNewHeroPower(CardDB.cardIDEnum.ULD_431p, ownplay); break;
+                    case CardDB.cardIDEnum.ULD_433: p.setNewHeroPower(CardDB.cardIDEnum.ULD_433p, ownplay); break;
+                    case CardDB.cardIDEnum.ULD_711: p.setNewHeroPower(CardDB.cardIDEnum.ULD_711p3, ownplay); break;
+                    case CardDB.cardIDEnum.ULD_724: p.setNewHeroPower(CardDB.cardIDEnum.ULD_724p, ownplay); break;
+
+
+            
+                }
+
+
             }
         }
         
