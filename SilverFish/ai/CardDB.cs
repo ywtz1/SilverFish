@@ -338,7 +338,9 @@ namespace HREngine.Bots
                 {
                     string temp = s.Split(new string[] { "value=\"" }, StringSplitOptions.RemoveEmptyEntries)[1];
                     temp = temp.Split('\"')[0];
-                    c.Reborn = Convert.ToInt32(temp);
+                    int ti = Convert.ToInt32(temp);
+                    if (ti == 1) c.Reborn = true;
+                    else c.Reborn = false;                    
                     continue;
                 }
 

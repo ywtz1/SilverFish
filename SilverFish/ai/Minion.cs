@@ -124,7 +124,7 @@ namespace HREngine.Bots
         public bool playedFromHand = false;
         public bool extraParam = false;
         public int extraParam2 = 0;
-		public int reborn = 0;
+		public bool reborn = false;
 
         public Minion()
         {
@@ -635,6 +635,7 @@ namespace HREngine.Bots
             destroyOnOwnTurnEnd = false;
             destroyOnEnemyTurnEnd = false;
             changeOwnerOnTurnStart = false;
+            reborn = false;
             conceal = false;
             souloftheforest = 0;
             spiderbomb = 0;

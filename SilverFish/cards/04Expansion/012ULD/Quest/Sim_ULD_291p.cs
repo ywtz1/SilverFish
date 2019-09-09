@@ -8,7 +8,7 @@ namespace HREngine.Bots
 
         public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
         {
-        	p.evaluatePenality-=10;
+        	p.evaluatePenality-=1;
 
         }
     }

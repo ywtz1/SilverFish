@@ -719,7 +719,7 @@ namespace HREngine.Bots
 
                     m.charge = entitiy.HasCharge ? 1 : 0;
                     m.rush = entitiy.HasChuckRush ? 1 : 0;
-                    m.reborn = (entitiy.GetTag(GAME_TAG.REBORN));
+                    m.reborn = (entitiy.GetTag(GAME_TAG.REBORN) == 0) ? false : true;
 
 
 

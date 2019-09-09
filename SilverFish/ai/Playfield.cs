@@ -5909,27 +5909,26 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 		{
 			foreach (Minion m in RebornMinions)
 			{
-				if (m.reborn > 0 && !m.silenced)
+				if (m.reborn  && !m.silenced)
 				{
-					for (int i = 0; i < m.reborn; i++) 
-					{
-						CardDB.Card kid = m.handcard.card;
-						List<Minion> tmp = (m.own) ? this.ownMinions : this.enemyMinions;
-                        int pos = tmp.Count;
-                        CallKid(kid, pos, m.own, false, true);
-                        //LogHelper.WriteCombatLog("Minion " + m.name + " Reborn");
 
-                        if (tmp.Count >= 1)
+					CardDB.Card kid = m.handcard.card;
+					List<Minion> tmp = (m.own) ? this.ownMinions : this.enemyMinions;
+                    int pos = tmp.Count;
+                    CallKid(kid, pos, m.own, false, true);
+
+                    if (tmp.Count >= 1)
+                    {
+                        Minion summonedMinion = tmp[pos];
+                        if (summonedMinion.handcard.card.cardIDenum == kid.cardIDenum)
                         {
-                            Minion summonedMinion = tmp[pos];
-                            if (summonedMinion.handcard.card.cardIDenum == kid.cardIDenum)
-                            {
-                                summonedMinion.HealthPoints = 1;
-                                //summonedMinion.wounded = false;
-                                if ( summonedMinion.maxHp > 1 || summonedMinion.handcard.card.Health>1) summonedMinion.wounded = true;
-							}
+                            summonedMinion.HealthPoints = 1;
+                            summonedMinion.reborn = false;
+                            //summonedMinion.wounded = false;
+                            if ( summonedMinion.maxHp > 1 || summonedMinion.handcard.card.Health>1) summonedMinion.wounded = true;
 						}
 					}
+					
 				}
 			}
 		}
@@ -6192,7 +6191,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             deathrattleMinions.Add(m);
                         }
 						
-						if ((!m.silenced) || m.reborn >= 1 )
+						if ((!m.silenced) || m.reborn)
 						{
 							RebornMinions.Add(m);
 						}
@@ -6236,7 +6235,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             deathrattleMinions.Add(m);
                         }
-                        if ((!m.silenced) || m.reborn >= 1 )
+                        if ((!m.silenced) || m.reborn)
                         {
                             RebornMinions.Add(m);
                         }

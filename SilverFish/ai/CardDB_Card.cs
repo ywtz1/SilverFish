@@ -19,7 +19,7 @@ namespace HREngine.Bots
 
             public int Attack = 0;
             public int Health = 0;
-			public int Reborn = 0;//复生
+			public bool Reborn = false;//复生
             public bool Modular = false;//磁力
             public bool Echo = false;
 

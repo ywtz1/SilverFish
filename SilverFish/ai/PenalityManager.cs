@@ -4030,6 +4030,7 @@
             priorityDatabase.Add(CardDB.cardName.muklaschampion, 5);
             priorityDatabase.Add(CardDB.cardName.murlocknight, 5);
             priorityDatabase.Add(CardDB.cardName.underbellyangler, 5);//下水道鱼人
+            
             priorityDatabase.Add(CardDB.cardName.murlocwarleader, 5);
             priorityDatabase.Add(CardDB.cardName.nexuschampionsaraad, 6);
             priorityDatabase.Add(CardDB.cardName.northshirecleric, 4);
@@ -4423,6 +4424,7 @@
             UsefulNeedKeepDatabase.Add(CardDB.cardName.muklaschampion, 14);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.murlocknight, 16);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.underbellyangler, 17);//下水道鱼人
+            UsefulNeedKeepDatabase.Add(CardDB.cardName.eviltotem, 5);//怪盗图腾
             UsefulNeedKeepDatabase.Add(CardDB.cardName.murloctidecaller, 10);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.murlocwarleader, 11);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.natpagle, 2);
@@ -5000,6 +5002,8 @@
 
         private void setupEnemyTargetPriority()//优先解的随从
         {
+            priorityTargets.Add(CardDB.cardName.mogufleshshaper, 1);
+            priorityTargets.Add(CardDB.cardName.gigglinginventor, 1);
             priorityTargets.Add(CardDB.cardName.acidmaw, 10);
             priorityTargets.Add(CardDB.cardName.acolyteofpain, 10);
             priorityTargets.Add(CardDB.cardName.addledgrizzly, 10);
@@ -5200,6 +5204,7 @@
 			priorityTargets.Add(CardDB.cardName.commanderrhyssa, 10);//指挥官蕾撒
 			priorityTargets.Add(CardDB.cardName.catrinamuerte, 10);//亡者卡特琳娜
 			priorityTargets.Add(CardDB.cardName.evilmiscreant, 5);//怪盗恶霸
+            priorityTargets.Add(CardDB.cardName.eviltotem, 8);//怪盗图腾
 			priorityTargets.Add(CardDB.cardName.scargil, 10);//斯卡基尔
 			priorityTargets.Add(CardDB.cardName.exoticmountseller, 10);//特殊坐骑商人
 			priorityTargets.Add(CardDB.cardName.bigbadarchmage, 10);//恶狼大法师

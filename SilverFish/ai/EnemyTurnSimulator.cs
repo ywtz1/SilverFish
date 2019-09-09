@@ -271,7 +271,7 @@
                 /*prob1 =p.ProbRd(prob1);
                 if(p.enemyAnzCards >= 2 &&p.enemyMinions.Count>2)p.minionGetBuffed(m, prob1, prob1);
                 
-                if (p.enemyHeroName == HeroEnum.pala&&buffn <1)
+                if (p.enemyHeroStartClass == TAG_CLASS.PALADIN && buffn <1)
                 {
                 	buffn++;
                     if(p.enemyHeroPowerCostLessOnce==0||p.enemyHeroAblility.manacost!=1)//buff随从
@@ -293,6 +293,25 @@
                     	p.minionGetBuffed(m, 3*nm, 0);//力量祝福
                     }
                 }*/
+                if(p.enemyHeroStartClass == TAG_CLASS.SHAMAN)//防萨满突变 进化
+                {
+                    //if(m.own &&m.name==CardDB.cardName.mogufleshshaper)p.evaluatePenality +=2;//Mogu Fleshshaper魔古血肉塑造者
+                    //else if(m.own &&m.name==CardDB.cardName.gigglinginventor)p.evaluatePenality +=2;
+
+                    
+                    
+                    int minionvalue = m.HealthPoints * 2 + m.Attack;
+                    if (m.divineshild) minionvalue = minionvalue * 3 / 2;
+                    minionvalue += p.prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
+
+                    CardDB.Card cofm= p.getRandomCardForManaMinion(m.handcard.card.cost);
+                    int cvalue = cofm.Health * 2 + cofm.Attack;
+                    if (cofm.Shield) cvalue = cvalue * 3 / 2;
+                    cvalue += p.prozis.penman.getValueOfUsefulNeedKeepPriority(cofm.name);
+                    if(minionvalue - cvalue > 7)p.evaluatePenality +=1;
+                    if(minionvalue - cvalue > 12)p.evaluatePenality +=1;
+                
+                }
 
 
                 if (p.enemyAnzCards >= 2 && (m.name == CardDB.cardName.gadgetzanauctioneer || m.name == CardDB.cardName.starvingbuzzard))
