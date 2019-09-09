@@ -5,7 +5,7 @@ using System.Text;
 namespace HREngine.Bots
 {
 
-    public class Sim_GIL_820 : SimTemplate // ɳ���ֿ�
+    public class Sim_GIL_820 : SimTemplate // 沙德沃克
     {
         CardDB cdb = CardDB.Instance;
         CardDB.Card c = null;
@@ -15,6 +15,11 @@ namespace HREngine.Bots
             {
                 int pen=0;
                 Minion VirtualTarget =null;
+                foreach (Minion m in p.ownMinions)//防止不打先放沙德沃克
+                {
+                    if(m.Ready)p.evaluatePenality +=5;
+
+                }
                 foreach (KeyValuePair<CardDB.cardIDEnum, int> e in Probabilitymaker.Instance.ownCardsOut)
                 {
                     c = cdb.getCardDataFromID(e.Key);
