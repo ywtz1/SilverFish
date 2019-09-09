@@ -809,7 +809,7 @@ def Execute():
                 if (doEndTurn)
                 {
                     Helpfunctions.Instance.InfoLog("end turn");
-                    await Coroutine.Sleep(new Random().Next(4000, 8000));//等待随机时间 防止没打牌
+                    await Coroutine.Sleep(new Random().Next(3000, 5000));//等待随机时间 防止没打牌
 
                 
 
@@ -838,7 +838,7 @@ def Execute():
             if (moveTodo == null)
             {
                 Helpfunctions.Instance.InfoLog("moveTodo == null. EndTurn");
-                await Coroutine.Sleep(new Random().Next(4000, 8000));//等待随机时间
+                await Coroutine.Sleep(new Random().Next(3000, 5000));//等待随机时间
 
                 bool EndTurnRetry = SilverFishBot.Instance.updateEverything(behave, 1, out EndTurnRetry);
                
