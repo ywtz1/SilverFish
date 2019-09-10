@@ -8,8 +8,8 @@ namespace HREngine.Bots
 
         public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
         {
-        	p.evaluatePenality-=1;
-        	p.evaluatePenality += p.playactions.Count*5;//防止不第一个打
+        	p.evaluatePenality -= 1;
+        	p.evaluatePenality += p.playactions.Count*2;//防止不第一个打
 
         }
     }

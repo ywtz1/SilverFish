@@ -1500,7 +1500,11 @@
             pen += -carddraw + tmp;
 
             if (p.ownMinions.Count < 3) pen += carddraw;
-            if (p.playactions.Count > 0) pen += p.playactions.Count; // draw first!
+            if (p.playactions.Count > 0 )
+            {
+                if(p.ownHeroAblility.card.cardIDenum != CardDB.cardIDEnum.ULD_291p)pen += p.playactions.Count; // draw first!
+                else if(p.playactions.Count>1)pen += p.playactions.Count; 
+            } 
             else if (p.owncards.Count < 4) pen -= (4 - p.owncards.Count) * 4;
             if (p.ownMinionsInDeckCost0) pen -= carddraw * 5;
             return pen;
