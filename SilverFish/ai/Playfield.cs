@@ -6997,7 +6997,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             else return 0;
         }
 
-        public Dictionary<CardDB.cardIDEnum, int> Decknow()//当前牌库
+        public Dictionary<CardDB.cardIDEnum, int> Decknow()//当前牌库  //报错
         {
             Dictionary<CardDB.cardIDEnum, int> deck =this.prozis.turnDeck;
 

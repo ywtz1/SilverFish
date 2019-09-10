@@ -1513,51 +1513,52 @@
         public int CardDrawsimDeck(Playfield p )//根据牌库进行计算抽牌价值对原算法进行修正
         {
 
-            
-            Dictionary<CardDB.cardIDEnum, int> deck = p.Decknow();
+
             int cardvalue =0;
 
-            foreach (KeyValuePair<CardDB.cardIDEnum, int> e in deck)
+            foreach (KeyValuePair<CardDB.cardIDEnum, int> e in p.prozis.turnDeck)
             {
                 CardDB.Card c = CardDB.Instance.getCardDataFromID(e.Key);
+                int n =e.Value;
+                if(Probabilitymaker.Instance.ownCardsOut.ContainsKey(e.Key))n-= Probabilitymaker.Instance.ownCardsOut[e.Key];
                 if (c.cost<p.mana)
                 {
                     if(this.CardNeedNow(p,1))//1、伤害牌 2、斩杀 3、召唤随从或随从牌  4、回血或嘲讽 5、AOE 
                     {
-                        if(this.heroAttackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.heroAttackBuffDatabase[c.name]*e.Value;
-                        if(this.attackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.attackBuffDatabase[c.name]*e.Value;
-                        if(this.DamageAllDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllDatabase[c.name]*e.Value;
-                        if(this.DamageAllEnemysDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllEnemysDatabase[c.name]*e.Value;
+                        if(this.heroAttackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.heroAttackBuffDatabase[c.name]*n;
+                        if(this.attackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.attackBuffDatabase[c.name]*n;
+                        if(this.DamageAllDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllDatabase[c.name]*n;
+                        if(this.DamageAllEnemysDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllEnemysDatabase[c.name]*n;
 
                     }
 
                     if(this.CardNeedNow(p,2)) 
                     {
-                        if(this.heroAttackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.heroAttackBuffDatabase[c.name]*e.Value;
-                        if(this.attackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.attackBuffDatabase[c.name]*e.Value;
-                        if(this.DamageHeroDatabase.ContainsKey(c.name)) cardvalue +=this.DamageHeroDatabase[c.name]*e.Value;
-                        if(this.DamageRandomDatabase.ContainsKey(c.name)) cardvalue +=this.DamageRandomDatabase[c.name]*e.Value/3;
-                        if(this.DamageTargetDatabase.ContainsKey(c.name)) cardvalue +=this.DamageTargetDatabase[c.name]*e.Value;
+                        if(this.heroAttackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.heroAttackBuffDatabase[c.name]*n;
+                        if(this.attackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.attackBuffDatabase[c.name]*n;
+                        if(this.DamageHeroDatabase.ContainsKey(c.name)) cardvalue +=this.DamageHeroDatabase[c.name]*n;
+                        if(this.DamageRandomDatabase.ContainsKey(c.name)) cardvalue +=this.DamageRandomDatabase[c.name]*n/3;
+                        if(this.DamageTargetDatabase.ContainsKey(c.name)) cardvalue +=this.DamageTargetDatabase[c.name]*n;
 
                     } 
 
                     if(this.CardNeedNow(p,3))
                     {
                         cardvalue += this.getValueOfUsefulNeedKeepPriority(c.name)/10;
-                        if(this.ownSummonFromDeathrattle.ContainsKey(c.name)) cardvalue +=this.ownSummonFromDeathrattle[c.name]*e.Value/-10;
+                        if(this.ownSummonFromDeathrattle.ContainsKey(c.name)) cardvalue +=this.ownSummonFromDeathrattle[c.name]*n/-10;
                         if(c.type==CardDB.cardtype.MOB)cardvalue +=2;
                     }
                     if(this.CardNeedNow(p,4))
                     {
-                        if(this.HealTargetDatabase.ContainsKey(c.name)) cardvalue +=this.HealTargetDatabase[c.name]*e.Value/2;
-                        if(this.HealAllDatabase.ContainsKey(c.name)) cardvalue +=this.HealAllDatabase[c.name]*e.Value/2;
+                        if(this.HealTargetDatabase.ContainsKey(c.name)) cardvalue +=this.HealTargetDatabase[c.name]*n/2;
+                        if(this.HealAllDatabase.ContainsKey(c.name)) cardvalue +=this.HealAllDatabase[c.name]*n/2;
                     }
 
                     
                     if(this.CardNeedNow(p,5))
                     {
-                        if(this.DamageAllDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllDatabase[c.name]*e.Value;
-                        if(this.DamageAllEnemysDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllEnemysDatabase[c.name]*e.Value;
+                        if(this.DamageAllDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllDatabase[c.name]*n;
+                        if(this.DamageAllEnemysDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllEnemysDatabase[c.name]*n;
                     }
                 }
             }
