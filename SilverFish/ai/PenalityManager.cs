@@ -1498,11 +1498,97 @@
             }
             if (tmp < 0) tmp = 0;
             pen += -carddraw + tmp;
+///**************************************抽牌修正*******************************************
+
+            Dictionary<CardDB.cardIDEnum, int> deck = p.Decknow();
+            int cardvalue =0;
+
+            foreach (KeyValuePair<CardDB.cardIDEnum, int> e in deck)
+            {
+                CardDB.Card c = CardDB.Instance.getCardDataFromID(e.Key);
+                if (c.cost<p.mana)
+                {
+                    if(this.CardNeedNow(p,1))//1、伤害牌 2、斩杀 3、召唤随从或随从牌  4、回血或嘲讽 5、AOE 
+                    {
+                        if(this.heroAttackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.heroAttackBuffDatabase[c.name]*e.Value;
+                        if(this.attackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.attackBuffDatabase[c.name]*e.Value;
+                        if(this.DamageAllDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllDatabase[c.name]*e.Value;
+                        if(this.DamageAllEnemysDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllEnemysDatabase[c.name]*e.Value;
+
+                    }
+
+                    if(this.CardNeedNow(p,2)) 
+                    {
+                        if(this.heroAttackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.heroAttackBuffDatabase[c.name]*e.Value;
+                        if(this.attackBuffDatabase.ContainsKey(c.name)) cardvalue +=this.attackBuffDatabase[c.name]*e.Value;
+                        if(this.DamageHeroDatabase.ContainsKey(c.name)) cardvalue +=this.DamageHeroDatabase[c.name]*e.Value;
+                        if(this.DamageRandomDatabase.ContainsKey(c.name)) cardvalue +=this.DamageRandomDatabase[c.name]*e.Value/3;
+                        if(this.DamageTargetDatabase.ContainsKey(c.name)) cardvalue +=this.DamageTargetDatabase[c.name]*e.Value;
+
+                    } 
+
+                    if(this.CardNeedNow(p,3))
+                    {
+                        cardvalue += this.getValueOfUsefulNeedKeepPriority(c.name)/10;
+                        if(this.ownSummonFromDeathrattle.ContainsKey(c.name)) cardvalue +=this.ownSummonFromDeathrattle[c.name]*e.Value/-10;
+                        if(c.type==CardDB.cardtype.MOB)cardvalue +=2;
+                    }
+                    if(this.CardNeedNow(p,4))
+                    {
+                        if(this.HealTargetDatabase.ContainsKey(c.name)) cardvalue +=this.HealTargetDatabase[c.name]*e.Value/2;
+                        if(this.HealAllDatabase.ContainsKey(c.name)) cardvalue +=this.HealAllDatabase[c.name]*e.Value/2;
+                    }
+
+                    
+                    if(this.CardNeedNow(p,5))
+                    {
+                        if(this.DamageAllDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllDatabase[c.name]*e.Value;
+                        if(this.DamageAllEnemysDatabase.ContainsKey(c.name)) cardvalue +=this.DamageAllEnemysDatabase[c.name]*e.Value;
+                    }
+                }
+            }
+            pen -= cardvalue / 30 - 2;
+
+///********************************************************************
             if (p.ownMinions.Count < 3) pen += carddraw;
             if (p.playactions.Count > 0) pen += p.playactions.Count; // draw first!
             else if (p.owncards.Count < 4) pen -= (4 - p.owncards.Count) * 4;
             if (p.ownMinionsInDeckCost0) pen -= carddraw * 5;
             return pen;
+        }
+
+        public bool CardNeedNow(Playfield p,int n)//1、伤害牌 2、斩杀 3、召唤随从或随从牌  4、回血或嘲讽 5、AOE 
+        {
+            int mana_cardcost =0 ;
+            int mobinhand = 0 ;
+            int mobinhandcost = 0;
+            foreach (Handmanager.Handcard hc in p.owncards)
+            {
+                mana_cardcost += hc.manacost ;
+                if(hc.card.type == CardDB.cardtype.MOB)
+                {
+                    mobinhand++;
+                    mobinhandcost += hc.manacost;
+                }
+            }
+            if (mana_cardcost <= p.mana) return false;
+
+            if(n == 1 && (p.enemyMinions.Count > 0)) return true;
+            if(n == 2 && p.enemyHero.HealthPoints < 10) return true;
+
+            if(n == 3 && (p.ownMinions.Count < 3) && mobinhandcost < p.mana ) return true;
+
+            if(n == 4 ) 
+            {
+                foreach (Minion m in p.ownMinions)
+                {
+                    if(m.wounded)return true;
+                }
+                if(p.ownHero.HealthPoints < 10)return true;
+            }
+
+            if(n==5 && p.enemyMinions.Count >3) return true;
+            return false;
         }
 
         private int getCardDrawofEffectMinions(CardDB.Card card, Playfield p)

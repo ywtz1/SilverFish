@@ -6996,6 +6996,34 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             else return 0;
         }
 
+        public Dictionary<CardDB.cardIDEnum, int> Decknow()//当前牌库
+        {
+            Dictionary<CardDB.cardIDEnum, int> deck =this.prozis.turnDeck;
+
+
+            foreach (KeyValuePair<CardDB.cardIDEnum, int> e in this.returntodecklist)
+            {
+                CardDB.Card c = CardDB.Instance.getCardDataFromID(e.Key);
+                if(deck.ContainsKey(e.Key))
+                deck[e.Key]  += e.Value;
+                else deck.Add(e.Key, e.Value);
+            }
+            foreach (KeyValuePair<CardDB.cardIDEnum, int> e in Probabilitymaker.Instance.ownCardsOut)
+            {
+                CardDB.Card c = CardDB.Instance.getCardDataFromID(e.Key);
+                if(deck.ContainsKey(e.Key))
+                if(deck[e.Key] >= e.Value)deck[e.Key]  -= e.Value;
+                else deck[e.Key] = 0;
+            }
+
+            return deck;
+
+        }
+
+
+
+
+
         public void zhaomu( bool own,TAG_RACE race = TAG_RACE.INVALID,int costofcard=0,int attack=0,CardDB.cardName ss=CardDB.cardName.unknown)
         {
             //招募
