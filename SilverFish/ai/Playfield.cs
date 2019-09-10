@@ -6755,6 +6755,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 m.becomeSilence(this);
             }
         }
+        public int DrawCardPen()
+        {
+            return 0;
+        }
 
         public void drawACard(CardDB.cardName ss, bool own, bool nopen = false ,bool dcTurnEnd=false)//dcTurnEnd回合结束弃牌
         {

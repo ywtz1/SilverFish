@@ -18,7 +18,7 @@ namespace SilverFish.cards._04Expansion._012ULD
         /// <param name="choice"></param>
         public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
         {
-            target.Reborn = true;
+            target.reborn = true;
         }
     }
 }

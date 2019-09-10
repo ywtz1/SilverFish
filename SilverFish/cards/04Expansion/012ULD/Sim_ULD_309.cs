@@ -19,7 +19,7 @@ namespace SilverFish.cards._04Expansion._012ULD
         /// <param name="choice"></param>
         public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
         {
-            p.drawACard(CardName.unknown, own.own, true);
+            p.drawACard(CardDB.cardName.unknown, own.own, true);
             p.owncards[p.owncards.Count - 1].manacost -= 1;
         }
     }
