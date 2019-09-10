@@ -1515,6 +1515,7 @@
 
 
             int cardvalue =0;
+            //Dictionary<CardDB.cardIDEnum, int> deck = p.Decknow();
 
             foreach (KeyValuePair<CardDB.cardIDEnum, int> e in p.prozis.turnDeck)
             {
