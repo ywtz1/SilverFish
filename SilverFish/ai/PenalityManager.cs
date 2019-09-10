@@ -1498,8 +1498,18 @@
             }
             if (tmp < 0) tmp = 0;
             pen += -carddraw + tmp;
-///**************************************抽牌修正*******************************************
 
+            if (p.ownMinions.Count < 3) pen += carddraw;
+            if (p.playactions.Count > 0) pen += p.playactions.Count; // draw first!
+            else if (p.owncards.Count < 4) pen -= (4 - p.owncards.Count) * 4;
+            if (p.ownMinionsInDeckCost0) pen -= carddraw * 5;
+            return pen;
+        }
+        ///**************************************抽牌修正*******************************************
+        public int CardDrawsimDeck(Playfield p )//根据牌库进行计算抽牌价值对原算法进行修正
+        {
+
+            
             Dictionary<CardDB.cardIDEnum, int> deck = p.Decknow();
             int cardvalue =0;
 
@@ -1547,15 +1557,9 @@
                     }
                 }
             }
-            pen -= cardvalue / 30 - 2;
-
-///********************************************************************
-            if (p.ownMinions.Count < 3) pen += carddraw;
-            if (p.playactions.Count > 0) pen += p.playactions.Count; // draw first!
-            else if (p.owncards.Count < 4) pen -= (4 - p.owncards.Count) * 4;
-            if (p.ownMinionsInDeckCost0) pen -= carddraw * 5;
-            return pen;
+            return  (cardvalue/30-2);
         }
+///********************************************************************
 
         public bool CardNeedNow(Playfield p,int n)//1、伤害牌 2、斩杀 3、召唤随从或随从牌  4、回血或嘲讽 5、AOE 
         {

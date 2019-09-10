@@ -6771,6 +6771,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
                 if (s == CardDB.cardName.unknown && !nopen) 
                 {
+                    this.evaluatePenality -= prozis.penman.CardDrawsimDeck(this);//根据牌库进行计算抽牌价值以概率加权平均,对原算法进行修正。
 
                     if (ownDeckSize == 0)
                     {
