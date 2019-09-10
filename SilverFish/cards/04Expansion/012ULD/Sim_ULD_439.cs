@@ -1,5 +1,5 @@
 using HREngine.Bots;
-using SilverFish.Enums;
+ 
 
 namespace SilverFish.cards._04Expansion._012ULD
 {
@@ -19,8 +19,8 @@ namespace SilverFish.cards._04Expansion._012ULD
         /// <param name="choice"></param>
         public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
         {
-            p.drawACard(CardIdEnum.ULD_439t, own.own, true); //沙漠胡蜂 Sandwasp
-            p.drawACard(CardIdEnum.ULD_439t, own.own, true);
+            p.drawACard(CardDB.cardIDEnum.ULD_439t, own.own, true); //沙漠胡蜂 Sandwasp
+            p.drawACard(CardDB.cardIDEnum.ULD_439t, own.own, true);
         }
     }
 }

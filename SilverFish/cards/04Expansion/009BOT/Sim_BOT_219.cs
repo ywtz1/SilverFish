@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SilverFish.Enums;
+
 
 namespace HREngine.Bots
 {
@@ -15,7 +15,7 @@ namespace HREngine.Bots
 			
             int pos = (ownplay) ? p.ownMinions.Count : p.enemyMinions.Count;
             
-			p.drawACard(CardIdEnum.BOT_219t, ownplay);
+			p.drawACard(CardDB.cardIDEnum.BOT_219t, ownplay);
 		}
 	}
 }

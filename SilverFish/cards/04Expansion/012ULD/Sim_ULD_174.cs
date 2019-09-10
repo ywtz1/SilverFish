@@ -1,5 +1,5 @@
 using HREngine.Bots;
-using SilverFish.Enums;
+
 
 namespace SilverFish.cards._04Expansion._012ULD
 {
@@ -17,7 +17,7 @@ namespace SilverFish.cards._04Expansion._012ULD
         /// <param name="m"></param>
         public override void onDeathrattle(Playfield p, Minion m)
         {
-            CardDB.Card c = CardDB.Instance.getCardDataFromID(CardIdEnum.ULD_174t);
+            CardDB.Card c = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.ULD_174t);
             p.CallKid(c, m.zonepos - 1, m.own);
         }
     }
