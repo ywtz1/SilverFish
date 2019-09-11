@@ -6568,7 +6568,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             ||ownHeroAblility.card.name == CardDB.cardName.heartofvirnaal))//腐化水源 维尔纳尔之心
             {
                 if(!this.ownAbilityReady )m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
-                else if(p.ownMaxMana > 7)this.evaluatePenality += 5;//尽量使用两次战吼 利用好手牌 打出卡差
+                else if(this.ownMaxMana > 7)this.evaluatePenality += 5;//尽量使用两次战吼 利用好手牌 打出卡差
                 else this.evaluatePenality += 3;
             }
 

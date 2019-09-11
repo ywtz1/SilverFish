@@ -14,7 +14,8 @@ namespace HREngine.Bots
             {
                 foreach (Minion m in p.ownMinions)
                 {
-                    if(target.handcard.card.battlecry)p.drawACard(target.handcard.card.name, ownplay, true);
+                    if(m.handcard.card.battlecry)
+                    p.drawACard(m.handcard.card.name, own.own, true);
                 }           
             }
         }
