@@ -6564,9 +6564,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
                 }
             }
-            if(!this.ownAbilityReady && (this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.ULD_291p
+            if((this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.ULD_291p
             ||ownHeroAblility.card.name == CardDB.cardName.heartofvirnaal))//腐化水源 维尔纳尔之心
-            m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
+            {
+                if(!this.ownAbilityReady )m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
+                else if(p.ownMaxMana > 7)this.evaluatePenality += 5;//尽量使用两次战吼 利用好手牌 打出卡差
+                else this.evaluatePenality += 3;
+            }
 
             if(hc.card.Modular)this.cili(m);
 

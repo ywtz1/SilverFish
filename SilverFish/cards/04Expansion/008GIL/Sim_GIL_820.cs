@@ -31,6 +31,8 @@ namespace HREngine.Bots
                         VirtualTarget =(p.ownMinions.Count!=0||p.ownMinions.Count!=0)?(p.ownMinions.Count>=p.ownMinions.Count? p.searchRandomMinion(p.ownMinions, searchmode.searchHighestAttack):p.searchRandomMinion(p.enemyMinions, searchmode.searchHighestAttack)):p.enemyHero;
 
                         c.CardSimulation.getBattlecryEffect(p,own,VirtualTarget,choice);
+                        pen++;
+
                     }
 
                 }
@@ -46,6 +48,8 @@ namespace HREngine.Bots
                         for(int i = 1;i<e.Value;i++)
                         {
                             c.CardSimulation.getBattlecryEffect(p,own,VirtualTarget,choice);
+                            pen++;
+
                         }
 
                     }
