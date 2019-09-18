@@ -100,8 +100,9 @@ namespace HREngine.Bots
                 retval += m.Attack * 2;
                 retval += m.handcard.card.rarity;
                 if (m.windfury) {retval += 1; if(!m.playedThisTurn) retval += m.Attack;}//风怒修改
+                if (m.reborn) {retval += 1+ m.Attack/2 ;}
                 if (m.divineshild) retval += 1;
-                if (m.lifesteal) retval += 1;
+                if (m.lifesteal) retval += m.Attack/2;
                 if (m.stealth) retval += 1;
                 if (m.handcard.card.isSpecialMinion && !m.silenced)
                 {
@@ -114,7 +115,7 @@ namespace HREngine.Bots
                 }
                 //if (!m.taunt && m.stealth && penman.specialMinions.ContainsKey(m.name)) retval += 20;
                 //if (m.poisonous) retval += 1;
-                if (m.lifesteal) retval += m.Attack/2;
+                if (m.lifesteal&& p.ownHero.HealthPoints<14) retval += m.Attack/2;
                 if (m.divineshild && m.taunt) retval += 4;
                 //if (m.taunt && m.handcard.card.name == CardDB.cardName.frog) owntaunt++;
                 //if (m.handcard.card.isToken && m.Angr <= 2 && m.Hp <= 2) retval -= 5;

@@ -9,6 +9,11 @@ None;warlock;None;Discard:2;3
 
 None;hunter;priest;Discard:2;4
 
+//**********闸蟹术************
+ICC_041;warlock;shaman;Hold:1;/
+ICC_041;warlock;pala;Hold:1;/
+ICC_041;warlock;warlock;Hold:1;/
+ICC_041;warlock;thief;Hold:1;/
 
 
 //**********战吼任务萨***********

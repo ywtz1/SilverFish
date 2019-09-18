@@ -5055,13 +5055,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     
                     //if(hc.card.cardIDenum == CardDB.cardIDEnum.LOOT_504t) this.removeCard(hc);
 
-                    if(hc.discardOnOwnTurnEnd==true)
+                    if(hc.discardOnOwnTurnEnd)
                     {
                         //if(!hc.card.Echo)//非回响
-                        if(hc.card.cardIDenum == CardDB.cardIDEnum.LOOT_504t)this.evaluatePenality += 10;
+                        if(hc.card.cardIDenum == CardDB.cardIDEnum.LOOT_504t)this.evaluatePenality += 7;
                         else
                         {
-                            this.evaluatePenality += 20;
+                            this.evaluatePenality += 15;
                             hc.card.CardSimulation.onCardDicscard(this, hc, null, 0); 
                             //hc.card2.CardSimulation.onCardDicscard(this, hc, null, 0); 
                         }
@@ -7350,8 +7350,8 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
             if(this.enemyHeroStartClass == TAG_CLASS.PRIEST && !m.own)this.evaluatePenality-=15;//牧师变型防止复活
             else if(!m.own && m.name==CardDB.cardName.voidlord)this.evaluatePenality-=15;//Voidlord虚空领主
-            else if(m.own &&m.name==CardDB.cardName.mogufleshshaper)this.evaluatePenality-=15;//Mogu Fleshshaper魔古血肉塑造者
-            else if(m.own &&m.name==CardDB.cardName.gigglinginventor)this.evaluatePenality-=15;
+            //else if(m.own &&m.name==CardDB.cardName.mogufleshshaper)this.evaluatePenality-=15;//Mogu Fleshshaper魔古血肉塑造者
+            //else if(m.own &&m.name==CardDB.cardName.gigglinginventor)this.evaluatePenality-=15;
 
             else if(m.own)
             {
