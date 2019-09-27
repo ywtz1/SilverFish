@@ -7353,16 +7353,28 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             //else if(m.own &&m.name==CardDB.cardName.mogufleshshaper)this.evaluatePenality-=15;//Mogu Fleshshaper魔古血肉塑造者
             //else if(m.own &&m.name==CardDB.cardName.gigglinginventor)this.evaluatePenality-=15;
 
-            else if(m.own)
+            else 
             {
                 int minionvalue = m.HealthPoints * 2 + m.Attack;
                 if (m.divineshild) minionvalue = minionvalue * 3 / 2;
-                minionvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
+                if(!m.silenced)
+                {
+                    if(m.reborn) minionvalue += m.Attack +1;
+                    minionvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
+                    if(m.handcard.card.deathrattle) minionvalue+= 3;
+                }
+
 
                 int cvalue = c.Health * 2 + c.Attack;
                 if (c.Shield) cvalue = cvalue * 3 / 2;
-                cvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(c.name);
-                this.evaluatePenality+= (minionvalue - cvalue + 9);
+                if(!m.silenced)
+                {
+                    if(m.reborn) minionvalue += m.Attack +1;
+                    cvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
+                    if(m.handcard.card.deathrattle) cvalue+= 3;
+                }
+                if(m.own) this.evaluatePenality += (minionvalue - cvalue + 9);
+                else this.evaluatePenality -= (minionvalue - cvalue + 9);
             }
 
 
