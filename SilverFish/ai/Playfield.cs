@@ -7003,7 +7003,12 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public Dictionary<CardDB.cardIDEnum, int> Decknow()//当前牌库  //报错
         {
-            Dictionary<CardDB.cardIDEnum, int> deck =this.prozis.turnDeck;
+            Dictionary<CardDB.cardIDEnum, int> deck =new Dictionary<CardDB.cardIDEnum, int>();
+            foreach (KeyValuePair<CardDB.cardIDEnum, int> e in this.prozis.turnDeck)
+            {
+                deck.Add(e.Key, e.Value);
+            }
+
 
 
             foreach (KeyValuePair<CardDB.cardIDEnum, int> e in this.returntodecklist)
@@ -7361,7 +7366,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 {
                     if(m.reborn) minionvalue += m.Attack +1;
                     minionvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
-                    if(m.handcard.card.deathrattle) minionvalue+= 3;
+                    if(m.handcard.card.deathrattle) minionvalue+= 1;
                 }
 
 
@@ -7371,7 +7376,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 {
                     if(m.reborn) minionvalue += m.Attack +1;
                     cvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
-                    if(m.handcard.card.deathrattle) cvalue+= 3;
+                    if(m.handcard.card.deathrattle) cvalue+= 1;
                 }
                 if(m.own) this.evaluatePenality += (minionvalue - cvalue + 9);
                 else this.evaluatePenality -= (minionvalue - cvalue + 9);

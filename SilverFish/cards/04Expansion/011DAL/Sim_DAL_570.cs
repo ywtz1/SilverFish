@@ -16,6 +16,15 @@ namespace HREngine.Bots
             {
                 int n=p.ownMinions.Count;
                 p.evaluatePenality -= 5*n;
+                            foreach (KeyValuePair<CardDB.cardIDEnum, int> cid in p.Decknow())
+                            {
+
+                                if (cid.Key==CardDB.cardIDEnum.ULD_304)
+                                {
+                                    p.evaluatePenality -=5;
+                                    break;
+                                }
+                            }
             }
         }
 

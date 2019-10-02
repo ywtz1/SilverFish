@@ -12,7 +12,18 @@ namespace HREngine.Bots
 		{
 
             p.drawACard (CardDB.cardName.unknown,ownplay,false);
-            
+            //Dictionary<CardDB.cardIDEnum, int> deck =p.Decknow();
+
+            foreach (KeyValuePair<CardDB.cardIDEnum, int> cid in p.Decknow())
+            {
+
+                if (cid.Key==CardDB.cardIDEnum.ULD_304)
+                {
+                	p.evaluatePenality -=50;
+                	break;
+                }
+            }
+
             p.drawACard (CardDB.cardName.unknown,ownplay,false);
 		}
 	}

@@ -13,8 +13,10 @@ None;hunter;priest;Discard:2;4
 ICC_041;warlock;shaman;Hold:1;/
 ICC_041;warlock;pala;Hold:1;/
 ICC_041;warlock;warlock;Hold:1;/
-ICC_041;warlock;thief;Hold:1;/
+ICC_041;pala;None;Hold:1;/
 
+//********************国王骑
+BOT_436;pala;None;Hold:1;/
 
 //**********战吼任务萨***********
 EX1_245;shaman;None;Discard:2;/
