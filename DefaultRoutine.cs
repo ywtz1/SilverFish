@@ -1207,6 +1207,7 @@ def Execute():
                                             break;
                                     }
                                     bestval = ai.mainTurnSimulator.DoAllMoves(tmpPlf);
+                                    if (PenalityManager.Instance.discoverCardPriority(tmpPlf,discoverCards)==i) bestval += 50;
                                     if (discoverCards[i].card.Shield&&ai.bestmove.card.card.name==CardDB.cardName.anewchallenger) bestval += 30;
                                     if (discoverCards[i].card.name==CardDB.cardName.zuljin) bestval += 30;
                                     if (discoverCards[i].card.name == CardDB.cardName.bloodimp) bestval -= 20;
