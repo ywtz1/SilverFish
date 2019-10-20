@@ -1090,12 +1090,12 @@
                     {
     
                         case CardDB.cardName.innerrage: //留一下innerrage怒火中烧
-                        if (m.HealthPoints >= 2) return 5; 
-                        if (m.HealthPoints >= 3) return 2; 
+                        if (m.HealthPoints >= 2 &&m.own) return 5; 
+                        if (m.HealthPoints >= 3 &&m.own) return 2; 
                         break;
                         case CardDB.cardName.crueltaskmaster: //留一下严酷的监工
-                        if (m.HealthPoints >= 2) return 5; 
-                        if (m.HealthPoints >= 3) return 2; 
+                        if (m.HealthPoints >= 2 &&m.own) return 5; 
+                        if (m.HealthPoints >= 3 &&m.own) return 2; 
                         break;
                         case CardDB.cardName.demonfire: if ((TAG_RACE)m.handcard.card.race == TAG_RACE.DEMON) return 0; break;
                         case CardDB.cardName.demonheart: if ((TAG_RACE)m.handcard.card.race == TAG_RACE.DEMON) return 0; break;

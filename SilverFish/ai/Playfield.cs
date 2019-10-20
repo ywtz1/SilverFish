@@ -5061,7 +5061,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         if(hc.card.cardIDenum == CardDB.cardIDEnum.LOOT_504t)this.evaluatePenality += 7;
                         else
                         {
-                            this.evaluatePenality += 15;
+                            this.evaluatePenality += 6;
                             hc.card.CardSimulation.onCardDicscard(this, hc, null, 0); 
                             //hc.card2.CardSimulation.onCardDicscard(this, hc, null, 0); 
                         }
@@ -6569,7 +6569,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 if(!this.ownAbilityReady )m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
                 else if(this.ownMaxMana > 7)this.evaluatePenality += 5;//尽量使用两次战吼 利用好手牌 打出卡差
-                else this.evaluatePenality += 3;
+                else this.evaluatePenality += 1;
             }
 
             if(hc.card.Modular)this.cili(m);
