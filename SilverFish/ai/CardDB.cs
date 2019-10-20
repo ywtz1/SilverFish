@@ -102,7 +102,8 @@ namespace HREngine.Bots
 
         public cardName cardNameStringToEnum(string s, cardIDEnum tempCardIdEnum)
         {
-            if (Enum.TryParse(s, false, out cardName nameEnum))
+            cardName nameEnum;
+            if (Enum.TryParse(s, false, out  nameEnum))
             {
                 return nameEnum;
             }
@@ -227,7 +228,7 @@ namespace HREngine.Bots
                     var implementedCardSimCount = instance.cardlist.Count(x =>x.CardSimulationImplemented);
                     var percentage = implementedCardSimCount / (double)totalCardSimCount;
                     Helpfunctions.Instance.ErrorLog(
-                        $"Card simulation implemented {percentage:P}, {implementedCardSimCount}/{totalCardSimCount}");
+                        "Card simulation implemented {percentage:P}, {implementedCardSimCount}/{totalCardSimCount}");
 
                     instance.setAdditionalData();
                 }

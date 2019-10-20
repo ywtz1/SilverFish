@@ -79,7 +79,7 @@ namespace HREngine.Bots
                 }
                 return _ownHeroPowerCost;
             }
-            set => _ownHeroPowerCost = value;
+            set { _ownHeroPowerCost = value;}
         }
 
         private int _ownHeroPowerCost = -1;

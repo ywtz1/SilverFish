@@ -10,7 +10,8 @@ namespace SilverFish.Helpers
 
         private static string CombatLogFolder = "CombatLogs";
 
-        private static string MainLogFileName { get; set; }
+        private static string MainLogFileName ;
+		private static string _CombatLogFileName = "Combat.log";
 
         private static void AppendText(object obj, string fileName, string subfolder = "")
         {
@@ -32,14 +33,14 @@ namespace SilverFish.Helpers
         private static void AppendText(string filePath, object obj)
         {
             using (StreamWriter sw = File.AppendText(filePath))
-            {
-                sw.WriteLine(obj?.ToString());
+            {if(obj!=null)
+                sw.WriteLine(obj.ToString());
             }
         }
 
         private static void WriteAllText(string filePath, object obj)
-        {
-            File.WriteAllText(filePath, obj?.ToString());
+        {if(obj!=null)
+            File.WriteAllText(filePath, obj.ToString());
         }
 
         private static void WriteAllText(object obj, string fileName, string subfolder)
@@ -61,10 +62,15 @@ namespace SilverFish.Helpers
 
         public static void WriteNotImplementedCardSimulationLog(string content)
         {
-            WriteAllText(content, $"CardNotImplemented-{DateTime.Now:yyyyMMdd}.csv", string.Empty);
+            WriteAllText(content, "CardNotImplemented-{DateTime.Now:yyyyMMdd}.csv", string.Empty);
         }
 
-        public static string CombatLogFileName { get; set; } = "Combat.log";
+        public static string CombatLogFileName
+		   {
+		   get { return _CombatLogFileName; }
+		   set {  _CombatLogFileName=value; }
+		   }
+
 
         public static void WriteCombatLog(object obj)
         {
@@ -73,7 +79,7 @@ namespace SilverFish.Helpers
 
         public static void WriteMainLog(object obj)
         {
-            MainLogFileName = $"ChuckSilverFishAi-{DateTime.Now:yyyyMMdd}.log";
+            MainLogFileName = "ChuckSilverFishAi-{DateTime.Now:yyyyMMdd}.log";
             AppendText(obj, MainLogFileName);
         }
 

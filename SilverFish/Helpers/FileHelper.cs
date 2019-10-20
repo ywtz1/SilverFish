@@ -10,7 +10,7 @@ namespace SilverFish.Helpers
             var folder = Path.GetDirectoryName(filePath);
             if (string.IsNullOrEmpty(folder))
             {
-                throw new Exception($"Can not get folder from {filePath}");
+                throw new Exception("Can not get folder from {filePath}");
             }
 
             if (!Directory.Exists(folder))

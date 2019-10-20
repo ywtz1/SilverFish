@@ -979,7 +979,7 @@ namespace HREngine.Bots
                 j++;
             }
 
-            Console.WriteLine($"i = {i}");
+            Console.WriteLine("i = {i}");
             LogHelper.WriteCombatLog("rdy");
 
             //Set default settings for behaviour

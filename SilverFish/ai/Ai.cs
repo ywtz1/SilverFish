@@ -155,7 +155,7 @@ namespace HREngine.Bots
             {
                 i++;
                 this.bestActions.Add(new Action(a));
-                LogHelper.WriteCombatLog($"Action{i}:");
+                LogHelper.WriteCombatLog("Action{i}:");
                 a.print();
             }
 
@@ -324,7 +324,7 @@ namespace HREngine.Bots
             var heroAbilityCard = posmoves[0].ownHeroAblility.card;
             LogHelper.WriteCombatLog("ability " + heroAbilityCard.name + " is playable :" + heroAbilityCard.canplayCard(posmoves[0], 2, true) + " cost/mana: "
                       + heroAbilityCard.getManaCost(posmoves[0], 2) + "/" + posmoves[0].mana);
-            LogHelper.WriteCombatLog($"### Print current board state end ###{Environment.NewLine}{Environment.NewLine}");
+            LogHelper.WriteCombatLog("### Print current board state end ###{Environment.NewLine}{Environment.NewLine}");
 
             DateTime strt = DateTime.Now;
             // lethalcheck

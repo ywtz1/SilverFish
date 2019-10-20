@@ -21,7 +21,7 @@ namespace HREngine.Bots
                 var array = item.Split('-');
                 if (array.Length != 2)
                 {
-                    throw new Exception($"{item} can not be parsed for special name");
+                    throw new Exception("{item} can not be parsed for special name");
                 }
 
                 string key = array[0];

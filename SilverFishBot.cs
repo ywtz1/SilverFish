@@ -206,9 +206,9 @@ namespace HREngine.Bots
             Questmanager.Instance.Reset();
             if (!singleLog)
             {
-                LogHelper.CombatLogFileName = $"Combat-{DateTime.Now:yyyyMMdd-HHmmss}.log";
+                LogHelper.CombatLogFileName = "Combat-{DateTime.Now:yyyyMMdd-HHmmss}.log";
                 Helpfunctions.Instance.InfoLog("#######################################################");
-                Helpfunctions.Instance.InfoLog($"fight is logged in: {LogHelper.GetCombatLogFilePath()}");
+                Helpfunctions.Instance.InfoLog("fight is logged in: {LogHelper.GetCombatLogFilePath()}");
                 Helpfunctions.Instance.InfoLog("#######################################################");
             }
             startDeck.Clear();
@@ -718,8 +718,8 @@ namespace HREngine.Bots
                     m.cantBeTargetedBySpellsOrHeroPowers = (entitiy.GetTag(GAME_TAG.CANT_BE_TARGETED_BY_HERO_POWERS) == 0) ? false : true;
 
                     m.charge = entitiy.HasCharge ? 1 : 0;
-                    m.rush = entitiy.HasChuckRush ? 1 : 0;
-                    m.reborn = (entitiy.GetTag(GAME_TAG.REBORN) == 0) ? false : true;
+                    m.rush = entitiy.HasRush ? 1 : 0;
+                    //m.reborn = (entitiy.GetTag(GAME_TAG.REBORN) == 0) ? false : true;
 
 
 

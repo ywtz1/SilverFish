@@ -6,10 +6,25 @@ namespace SilverFish.Helpers
 {
     public class EvenDeckHelper
     {
-        public static bool EvenDeckChecked { get; set; }
 
-        public static bool IsEvenDeck { get; set; }
+		private static bool _EvenDeckChecked;
+		private static bool _IsEvenDeck;
 
+
+		//[DefaultValue(false)]
+        public static bool EvenDeckChecked 
+		{
+            get {  return _EvenDeckChecked; }
+			set {  _EvenDeckChecked = value; }
+
+        }
+		//[DefaultValue(false)]
+
+        public static bool IsEvenDeck 
+		{
+            get { return _IsEvenDeck; }
+			set {  _IsEvenDeck=value; }
+        }
         public static void Reset()
         {
             EvenDeckChecked = false;

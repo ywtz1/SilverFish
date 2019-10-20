@@ -4,7 +4,13 @@ namespace SilverFish.Helpers
 {
     public class MulliganStartedEventArgs
     {
-        public bool ConcedeSuccessfully { get; set; }
+		private bool _ConcedeSuccessfully;
+
+        public bool ConcedeSuccessfully
+		{
+            get { return _ConcedeSuccessfully; }
+			set {_ConcedeSuccessfully=value;}
+        }
     }
 
     public class CustomEventManager
@@ -13,15 +19,17 @@ namespace SilverFish.Helpers
         {
 
         }
-
-        public static CustomEventManager Instance { get; } = new CustomEventManager();
+		private static CustomEventManager _Instance = new CustomEventManager();
+        public static CustomEventManager Instance 
+		{ get {return _Instance;} } 
 
         public event EventHandler<MulliganStartedEventArgs> MulliganStarted;
 
         public bool OnMulliganStarted()
         {
             MulliganStartedEventArgs eventArgs = new MulliganStartedEventArgs();
-            MulliganStarted?.Invoke(this, eventArgs);
+            if(MulliganStarted!=null)
+			MulliganStarted.Invoke(this, eventArgs);
             return eventArgs.ConcedeSuccessfully;
         }
     }

@@ -9,9 +9,19 @@ namespace SilverFish.Helpers
 {
     public class NotImplementedInfo
     {
-        public CardDB.Card Card { get; set; }
+		private CardDB.Card _Card;
+		private int _Counter;
+        public CardDB.Card Card 
+		{
+            get { return _Card; }
+			set {_Card=value;}
+        }
 
-        public int Counter { get; set; }
+        public int Counter
+		{
+            get { return _Counter; }
+			set {_Counter=value;}
+        }
     }
 
     public class CardNotImplementedHelper
@@ -71,7 +81,7 @@ namespace SilverFish.Helpers
                 else
                 {
                     stringBuilder.AppendLine("CardId,CardName");
-                    var array1 = SingleGameCards.Values.Select(x => $"{x.cardIDenum},{x.name}");
+                    var array1 = SingleGameCards.Values.Select(x => "{x.cardIDenum},{x.name}");
                     var result1 = string.Join(Environment.NewLine, array1);
                     stringBuilder.AppendLine(result1);
                     LogHelper.WriteNotImplementedCardSimulationLog(stringBuilder.ToString());
@@ -82,7 +92,7 @@ namespace SilverFish.Helpers
 
             stringBuilder.AppendLine("CardId,CardName,Count");
             var list = NotImplementedCards.Values.OrderByDescending(x => x.Counter);
-            var array = list.Select(x => $"{x.Card.cardIDenum},{x.Card.name},{x.Counter}");
+            var array = list.Select(x => "{x.Card.cardIDenum},{x.Card.name},{x.Counter}");
             var result = string.Join(Environment.NewLine, array);
             stringBuilder.AppendLine(result);
             LogHelper.WriteNotImplementedCardSimulationLog(stringBuilder.ToString());

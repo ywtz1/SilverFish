@@ -20,27 +20,28 @@ namespace SilverFish.Helpers
         {
             SimTemplate result = new SimTemplate();
 
-            var className = $"Sim_{tempCardIdEnum}";
+            var className = "Sim_{tempCardIdEnum}";
             var list = GetTypeByName(className);
             if (list.Count != 1)
             {
                 if (list.Count >= 2)
                 {
                     var content = string.Join(",", list.Select(x => x.FullName));
-                    throw new Exception($"Find multiple card simulation class for {tempCardIdEnum} : {content}");
+                    throw new Exception("Find multiple card simulation class for {tempCardIdEnum} : {content}");
                 }
             }
             else
             {
                 var type = list[0];
                 var simTemplateInstance = Activator.CreateInstance(type);
-                if (simTemplateInstance is SimTemplate temp)
+                if (simTemplateInstance is SimTemplate)
                 {
+					SimTemplate temp = new SimTemplate();
                     result = temp;
                 }
                 else
                 {
-                    throw new Exception($"class {className} should inherit from {typeof(SimTemplate)}");
+                    throw new Exception("class {className} should inherit from {typeof(SimTemplate)}");
                 }
             }
 

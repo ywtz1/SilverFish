@@ -4,7 +4,7 @@ using System.IO;
 using Hearthbuddy.Windows;
 using HREngine.Bots;
 using log4net;
-
+using Logger = Triton.Common.LogUtilities.Logger;
 namespace SilverFish.Helpers
 {
     /// <summary>
@@ -14,7 +14,7 @@ namespace SilverFish.Helpers
     public class Helpfunctions
     {
         /// <summary>The logger for this type.</summary>
-        private static readonly ILog Log = MainWindow.ChuckLog;
+        private static readonly ILog Log = Logger.GetLoggerInstanceForType();
         public List<Playfield> storedBoards = new List<Playfield>();
 
 
@@ -66,17 +66,18 @@ namespace SilverFish.Helpers
 
         public void ErrorLog(object obj)
         {
-            Log.ErrorFormat(obj?.ToString());
+			if(obj!=null)
+            Log.ErrorFormat(obj.ToString());
         }
 
         public void InfoLog(object obj)
-        {
-            Log.InfoFormat(obj?.ToString());
+        {if(obj!=null)
+            Log.InfoFormat(obj.ToString());
         }
 
         public void WarnLog(object obj)
-        {
-            Log.WarnFormat(obj?.ToString());
+        {if(obj!=null)
+            Log.WarnFormat(obj.ToString());
         }
 
         private string sendbuffer = "";

@@ -2,6 +2,9 @@
 using System.IO;
 using SilverFish.Helpers;
 
+
+
+
 namespace HREngine.Bots
 {
     public class Settings
@@ -52,18 +55,21 @@ namespace HREngine.Bots
         public int numberOfThreads = 32;
         public bool simulateEnemysTurn = true;
         public int secondTurnAmount = 256;
-        public string DataFolderPath { get; set; } = string.Empty;
-        public string LogFolderPath { get; set; } = string.Empty;
-        public string LogFileName { get; set; } = "SilverFish.log";
+        public string DataFolderPath = "";
+        public string LogFolderPath  = "";
+        public string LogFileName  = "SilverFish.log";
 
-        public string LogFilePath => Path.Combine(LogFolderPath, LogFileName);
+        public string LogFilePath 
+		{
+		 get{return Path.Combine(LogFolderPath, LogFileName);}
+		 }
 
-        public string BaseDirectory { get; set; } = AppDomain.CurrentDomain.BaseDirectory;
+        public string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
         public bool concede = false;
         public bool enemyConcede = false;
 
-        public bool writeToSingleFile { get; set; }
+        public bool writeToSingleFile =false;
 
         public bool learnmode = true;
         public bool printlearnmode = true;
@@ -109,7 +115,7 @@ namespace HREngine.Bots
                 {
                     var customSettingFilePath = pathToSettings;
                     pathToSettings = Path.Combine(SilverFishBot.Instance.BehaviorPath[behavName], "_settings.txt");
-                    Helpfunctions.Instance.WarnLog($"Can not find custom setting file {customSettingFilePath}, so use default setting file {pathToSettings}");
+                    Helpfunctions.Instance.WarnLog("Can not find custom setting file {customSettingFilePath}, so use default setting file {pathToSettings}");
                 }
             }
 
@@ -121,7 +127,7 @@ namespace HREngine.Bots
             }
             try
             {
-                Helpfunctions.Instance.InfoLog($"Load settings for Behavior {behavName}");
+                Helpfunctions.Instance.InfoLog("Load settings for Behavior {behavName}");
                 string[] lines = File.ReadAllLines(pathToSettings);
                 string[] tmp;
                 int valueInt;
@@ -180,37 +186,37 @@ namespace HREngine.Bots
             catch (Exception ex)
             {
                 Helpfunctions.Instance.ErrorLog(behavName + " _settings.txt - read error. We continue with the default settings.");
-                Helpfunctions.Instance.ErrorLog(ex.ToString());
+                Helpfunctions.Instance.ErrorLog(ex);
                 EndOfSetSettings();
                 return;
             }
-            Helpfunctions.Instance.InfoLog($"Behavior {behavName} settings are loaded.");
+            Helpfunctions.Instance.InfoLog("Behavior {behavName} settings are loaded.");
         }
 
         private void EndOfSetSettings()
         {
             setWeights(this.alpha);
 
-            Helpfunctions.Instance.InfoLog($"set enemy-face-hp to: {enfacehp}");
-            Helpfunctions.Instance.InfoLog($"set weaponOnlyAttackMobsUntilEnemyFaceHp to: {weaponOnlyAttackMobsUntilEnfacehp}");
+            Helpfunctions.Instance.InfoLog("set enemy-face-hp to: {enfacehp}");
+            Helpfunctions.Instance.InfoLog("set weaponOnlyAttackMobsUntilEnemyFaceHp to: {weaponOnlyAttackMobsUntilEnfacehp}");
             ComboBreaker.Instance.attackFaceHP = this.enfacehp;
 
             Ai.Instance.setMaxWide(this.maxwide);
-            Helpfunctions.Instance.InfoLog($"set maxWide to: {maxwide}");
+            Helpfunctions.Instance.InfoLog("set maxWide to: {maxwide}");
 
             Ai.Instance.setTwoTurnSimulation(false, this.twotsamount);
-            Helpfunctions.Instance.InfoLog($"calculate the second turn of the {twotsamount} best boards");
-            Helpfunctions.Instance.InfoLog($"simulates the enemy turn on your second turn is {twotsamount > 0}");
+            Helpfunctions.Instance.InfoLog("calculate the second turn of the {twotsamount} best boards");
+            Helpfunctions.Instance.InfoLog("simulates the enemy turn on your second turn is {twotsamount > 0}");
 
-            Helpfunctions.Instance.InfoLog($"playing around secrets is {useSecretsPlayAround}");
+            Helpfunctions.Instance.InfoLog("playing around secrets is {useSecretsPlayAround}");
 
             if (this.playaround)
             {
                 Ai.Instance.setPlayAround();
             }
-            Helpfunctions.Instance.InfoLog($"activated playAround AOE Spells is {playaround}");
+            Helpfunctions.Instance.InfoLog("activated playAround AOE Spells is {playaround}");
 
-            Helpfunctions.Instance.InfoLog($"write log to single file is {writeToSingleFile}");
+            Helpfunctions.Instance.InfoLog("write log to single file is {writeToSingleFile}");
         }
 
         public void setWeights(int alpha)
@@ -218,7 +224,7 @@ namespace HREngine.Bots
             float a = ((float)alpha) / 100f;
             this.firstweight = 1f - a;
             this.secondweight = a;
-            Helpfunctions.Instance.InfoLog($"current alpha is {secondweight}");
+            Helpfunctions.Instance.InfoLog("current alpha is {secondweight}");
         }
     }
 }
