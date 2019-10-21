@@ -30,6 +30,7 @@ namespace HREngine.Bots
 
 
 			}
+			p.evaluatePenality  += p.playactions.Count*10;
 
 
 		}
