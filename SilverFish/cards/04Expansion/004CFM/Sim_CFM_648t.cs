@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HREngine.Bots
 {
-	class Sim_ : SimTemplate //* Little Friend
+	class Sim_CFM_648t : SimTemplate //* Little Friend
 	{
 		// -
 	}

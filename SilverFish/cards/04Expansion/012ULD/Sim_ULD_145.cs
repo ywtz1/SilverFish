@@ -1,6 +1,6 @@
 using HREngine.Bots;
 
-namespace SilverFish.cards._04Expansion._012ULDS
+namespace SilverFish.cards._04Expansion._012ULD
 {
     /// <summary>
     /// Brazen Zealot

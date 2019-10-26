@@ -1,7 +1,7 @@
 using HREngine.Bots;
  
 
-namespace SilverFish.cards._04Expansion._012ULD
+namespace HREngine.Bots
 {
     /// <summary>
     /// Zephrys the Great

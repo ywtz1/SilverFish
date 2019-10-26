@@ -1,6 +1,6 @@
 ﻿using HREngine.Bots;
 
-namespace SilverFish.cards._04Expansion._003OG
+namespace HREngine.Bots
 {
     /// <summary>
     /// Thing from Below

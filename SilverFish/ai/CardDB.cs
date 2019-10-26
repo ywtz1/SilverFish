@@ -221,14 +221,16 @@ namespace HREngine.Bots
                     // have to do it 2 times (or the kids inside the simcards will not have a simcard :D
                     foreach (Card c in instance.cardlist)
                     {
-                        c.CardSimulation = CardHelper.GetCardSimulation(c.cardIDenum);
+                        //c.CardSimulation = CardHelper.GetCardSimulation(c.cardIDenum);
+                        c.CardSimulation = CardHelper.getSimCard(c.cardIDenum);
+
                     }
 
                     var totalCardSimCount = instance.cardlist.Count;
                     var implementedCardSimCount = instance.cardlist.Count(x =>x.CardSimulationImplemented);
-                    var percentage = implementedCardSimCount / (double)totalCardSimCount;
+                    var percentage = 100*implementedCardSimCount / (double)totalCardSimCount;
                     Helpfunctions.Instance.ErrorLog(
-                        string.Format("Card simulation implemented {0:0.00}%, {1}/{2}",percentage,implementedCardSimCount,totalCardSimCount));
+                        string.Format("Card simulation implemented {1}/{2} = {0}% ",percentage,implementedCardSimCount,totalCardSimCount));
 
                     instance.setAdditionalData();
                 }
