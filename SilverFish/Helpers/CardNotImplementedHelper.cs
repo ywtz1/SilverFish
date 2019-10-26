@@ -71,7 +71,7 @@ namespace SilverFish.Helpers
 
         public static void Save()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            /*StringBuilder stringBuilder = new StringBuilder();
             if (NotImplementedCards.Count == 0)
             {
                 if (SingleGameCards.Count == 0)
@@ -80,8 +80,8 @@ namespace SilverFish.Helpers
                 }
                 else
                 {
-                    stringBuilder.AppendLine("CardId,CardName");
-                    var array1 = SingleGameCards.Values.Select(x => "{x.cardIDenum},{x.name}");
+                    stringBuilder.AppendLine(CardId+","+CardName);
+                    var array1 = SingleGameCards.Values.Select(x => x.cardIDenum+","+x.name);
                     var result1 = string.Join(Environment.NewLine, array1);
                     stringBuilder.AppendLine(result1);
                     LogHelper.WriteNotImplementedCardSimulationLog(stringBuilder.ToString());
@@ -90,12 +90,12 @@ namespace SilverFish.Helpers
                 return;
             }
 
-            stringBuilder.AppendLine("CardId,CardName,Count");
+            stringBuilder.AppendLine(CardId+","+CardName+","+Count);
             var list = NotImplementedCards.Values.OrderByDescending(x => x.Counter);
-            var array = list.Select(x => "{x.Card.cardIDenum},{x.Card.name},{x.Counter}");
+            var array = list.Select(x => x.Card.cardIDenum+","+x.Card.name+","+x.Counter);
             var result = string.Join(Environment.NewLine, array);
             stringBuilder.AppendLine(result);
-            LogHelper.WriteNotImplementedCardSimulationLog(stringBuilder.ToString());
+            LogHelper.WriteNotImplementedCardSimulationLog(stringBuilder.ToString());*/
         }
 
     }

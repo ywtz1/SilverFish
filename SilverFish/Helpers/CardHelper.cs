@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using HREngine.Bots;
 
+
 namespace SilverFish.Helpers
 {
     public class CardHelper
@@ -18,30 +19,31 @@ namespace SilverFish.Helpers
 
         public static SimTemplate GetCardSimulation(CardDB.cardIDEnum tempCardIdEnum)
         {
-            SimTemplate result = new SimTemplate();
+            var result = new SimTemplate();
 
-            var className = "Sim_{tempCardIdEnum}";
+
+            var className = ("Sim_"+tempCardIdEnum);
             var list = GetTypeByName(className);
             if (list.Count != 1)
             {
                 if (list.Count >= 2)
                 {
                     var content = string.Join(",", list.Select(x => x.FullName));
-                    throw new Exception("Find multiple card simulation class for {tempCardIdEnum} : {content}");
+                    throw new Exception("Find multiple card simulation class for "+tempCardIdEnum +":"+ content);
                 }
             }
             else
             {
                 var type = list[0];
-                var simTemplateInstance = Activator.CreateInstance(type);
+                var simTemplateInstance = Activator.CreateInstance(typeof(SimTemplate),className);
                 if (simTemplateInstance is SimTemplate)
                 {
-					SimTemplate temp = new SimTemplate();
-                    result = temp;
+					
+                    //result = simTemplateInstance;
                 }
                 else
                 {
-                    throw new Exception("class {className} should inherit from {typeof(SimTemplate)}");
+                    throw new Exception("class " + className + " should inherit from " +typeof(SimTemplate));
                 }
             }
 
