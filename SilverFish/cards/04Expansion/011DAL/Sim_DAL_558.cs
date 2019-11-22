@@ -6,8 +6,8 @@ namespace HREngine.Bots
 {
     class Sim_DAL_558 : SimTemplate //* 大法师瓦格斯
 	{
-
-
+        CardDB.Card spell = null; 
+        int n =0;
 
         public override void onCardIsGoingToBePlayed(Playfield p, Handmanager.Handcard hc, bool ownplay, Minion m)
         {
@@ -16,10 +16,19 @@ namespace HREngine.Bots
             if (m.own && ownplay)
             {
                 if(hc.card.type == CardDB.cardtype.SPELL)
-                p.evaluatePenality -= hc.card.cost*2;
+                spell = hc.card;
+                n++;
             }
         
 
+        }
+        public override void onTurnEndsTrigger(Playfield p, Minion triggerEffectMinion, bool turnEndOfOwner)
+        {
+            if (triggerEffectMinion.own == turnEndOfOwner && n>0 && spell !=null)
+            {
+                if(n>1)p.evaluatePenality -= 20;
+                spell.CardSimulation.onCardPlay(p,ownplay,(p.ownMinions.Count!=0||p.ownMinions.Count!=0)?(p.ownMinions.Count>=p.ownMinions.Count? p.searchRandomMinion(p.ownMinions, searchmode.searchHighestAttack):p.searchRandomMinion(p.enemyMinions, searchmode.searchHighestAttack)):p.enemyHero,2);
+            }
         }
 	}
 }
