@@ -32,7 +32,7 @@ namespace HREngine.Bots
         }*/
         public override void onTurnEndsTrigger(Playfield p, Minion triggerEffectMinion, bool turnEndOfOwner)
         {
-            n=p.cardsPlayedThisTurn-p.mobsplayedThisTurn;
+            n=p.cardsPlayedThisTurn-p.mobsplayedThisTurn;//英雄牌无法计算
             spell= p.SpellLastPlayed;
             if (triggerEffectMinion.own == turnEndOfOwner && n>0 && spell !=null)
             {
