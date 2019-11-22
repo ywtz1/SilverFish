@@ -9,7 +9,7 @@ namespace HREngine.Bots
         CardDB.Card spell = null; 
         int n =0;
 
-        public override void onCardIsGoingToBePlayed(Playfield p, Handmanager.Handcard hc, bool ownplay, Minion m)
+        /*public override void onCardIsGoingToBePlayed(Playfield p, Handmanager.Handcard hc, bool ownplay, Minion m)
         {
 
   
@@ -22,14 +22,6 @@ namespace HREngine.Bots
         
 
         }
-        public override void onTurnEndsTrigger(Playfield p, Minion triggerEffectMinion, bool turnEndOfOwner)
-        {
-            if (triggerEffectMinion.own == turnEndOfOwner && n>0 && spell !=null)
-            {
-                if(n>1)p.evaluatePenality -= 20;
-                spell.CardSimulation.onCardPlay(p,turnEndOfOwner,(p.ownMinions.Count!=0||p.ownMinions.Count!=0)?(p.ownMinions.Count>=p.ownMinions.Count? p.searchRandomMinion(p.ownMinions, searchmode.searchHighestAttack):p.searchRandomMinion(p.enemyMinions, searchmode.searchHighestAttack)):p.enemyHero,2);
-            }
-        }
         public override void onTurnStartTrigger(Playfield p, Minion triggerEffectMinion, bool turnStartOfOwner)
         {
             if (triggerEffectMinion.own == turnStartOfOwner)
@@ -37,6 +29,17 @@ namespace HREngine.Bots
                 spell = null; 
                 n =0;
             }
+        }*/
+        public override void onTurnEndsTrigger(Playfield p, Minion triggerEffectMinion, bool turnEndOfOwner)
+        {
+            n=p.cardsPlayedThisTurn-p.mobsplayedThisTurn;
+            spell= p.SpellLastPlayed;
+            if (triggerEffectMinion.own == turnEndOfOwner && n>0 && spell !=null)
+            {
+                if(n>1)p.evaluatePenality -= 20;
+                spell.CardSimulation.onCardPlay(p,turnEndOfOwner,(p.ownMinions.Count!=0||p.ownMinions.Count!=0)?(p.ownMinions.Count>=p.ownMinions.Count? p.searchRandomMinion(p.ownMinions, searchmode.searchHighestAttack):p.searchRandomMinion(p.enemyMinions, searchmode.searchHighestAttack)):p.enemyHero,2);
+            }
         }
+
 	}
 }

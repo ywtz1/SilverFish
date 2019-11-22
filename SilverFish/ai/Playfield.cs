@@ -75,6 +75,7 @@ namespace HREngine.Bots
         public List<CardDB.cardIDEnum> yongwanlist = new List<CardDB.cardIDEnum>();//用了两张的卡
         //public int ownHeroGotDmgbyown;
         public int nzhaomu=0;//招募数
+        public CardDB.Card SpellLastPlayed = null;
 
 
 
@@ -421,6 +422,7 @@ namespace HREngine.Bots
             this.yongwanlist = new List<CardDB.cardIDEnum>();//用了两张的卡
             //this.ownHeroGotDmgbyown;
             this.nzhaomu=0;//招募数
+            this.SpellLastPlayed=null;
 
 
             this.nextEntity = 1000;
@@ -1241,6 +1243,7 @@ namespace HREngine.Bots
             this.enemyHeroPowerExtraDamageturn = p.enemyHeroPowerExtraDamageturn;
             this.penpen=p.penpen;//砰砰突袭
             this.OwnLastDiedMinion = p.OwnLastDiedMinion;
+            this.SpellLastPlayed = p.SpellLastPlayed;
 
             //this.frostmournekill = p.frostmournekill;
             this.frostmournekill.Clear();
@@ -4200,6 +4203,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 this.playedPreparation = false;
                 this.spellsplayedSinceRecalc++;
+                this.SpellLastPlayed=c;
                 if (target != null)
                 {
                     hc.extraParam2 = choice;
