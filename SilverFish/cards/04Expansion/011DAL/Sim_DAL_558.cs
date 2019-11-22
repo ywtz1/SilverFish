@@ -27,7 +27,7 @@ namespace HREngine.Bots
             if (triggerEffectMinion.own == turnEndOfOwner && n>0 && spell !=null)
             {
                 if(n>1)p.evaluatePenality -= 20;
-                spell.CardSimulation.onCardPlay(p,p.own,(p.ownMinions.Count!=0||p.ownMinions.Count!=0)?(p.ownMinions.Count>=p.ownMinions.Count? p.searchRandomMinion(p.ownMinions, searchmode.searchHighestAttack):p.searchRandomMinion(p.enemyMinions, searchmode.searchHighestAttack)):p.enemyHero,2);
+                spell.CardSimulation.onCardPlay(p,turnEndOfOwner,(p.ownMinions.Count!=0||p.ownMinions.Count!=0)?(p.ownMinions.Count>=p.ownMinions.Count? p.searchRandomMinion(p.ownMinions, searchmode.searchHighestAttack):p.searchRandomMinion(p.enemyMinions, searchmode.searchHighestAttack)):p.enemyHero,2);
             }
         }
         public override void onTurnStartTrigger(Playfield p, Minion triggerEffectMinion, bool turnStartOfOwner)
