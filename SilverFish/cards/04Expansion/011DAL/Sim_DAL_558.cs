@@ -30,5 +30,13 @@ namespace HREngine.Bots
                 spell.CardSimulation.onCardPlay(p,ownplay,(p.ownMinions.Count!=0||p.ownMinions.Count!=0)?(p.ownMinions.Count>=p.ownMinions.Count? p.searchRandomMinion(p.ownMinions, searchmode.searchHighestAttack):p.searchRandomMinion(p.enemyMinions, searchmode.searchHighestAttack)):p.enemyHero,2);
             }
         }
+        public override void onTurnStartTrigger(Playfield p, Minion triggerEffectMinion, bool turnStartOfOwner)
+        {
+            if (triggerEffectMinion.own == turnStartOfOwner)
+            {
+                spell = null; 
+                n =0;
+            }
+        }
 	}
 }
