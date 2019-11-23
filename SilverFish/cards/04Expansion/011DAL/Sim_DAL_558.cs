@@ -36,7 +36,7 @@ namespace HREngine.Bots
             spell= p.SpellLastPlayed;
             if (triggerEffectMinion.own == turnEndOfOwner && n>0 && spell !=null)
             {
-                if(n>1)p.evaluatePenality -= 20;
+                if(n>1)p.evaluatePenality += 20;
                 spell.CardSimulation.onCardPlay(p,turnEndOfOwner,(p.ownMinions.Count!=0||p.ownMinions.Count!=0)?(p.ownMinions.Count>=p.ownMinions.Count? p.searchRandomMinion(p.ownMinions, searchmode.searchHighestAttack):p.searchRandomMinion(p.enemyMinions, searchmode.searchHighestAttack)):p.enemyHero,2);
             }
         }

@@ -8,11 +8,12 @@ namespace HREngine.Bots
 	{
 		public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
 		{
-			if(target!=null&&target.Attack<p.mana)
+			if(target!=null&&target.Attack<=p.mana)
 			{
 				p.minionGetDestroyed(target);
 				p.mana=0;
 			}
+			else p.evaluatePenality += 20;
 		}
 	}
 }
