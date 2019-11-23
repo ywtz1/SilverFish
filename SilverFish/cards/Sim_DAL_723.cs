@@ -14,6 +14,7 @@ namespace HREngine.Bots
 				p.mana=0;
 			}
 			else p.evaluatePenality += 20;
+			
 		}
 	}
 }

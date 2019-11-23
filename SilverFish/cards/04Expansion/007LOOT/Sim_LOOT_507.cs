@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using SilverFish.Helpers;
 namespace HREngine.Bots
 {
 	class Sim_LOOT_507 : SimTemplate //* Resurrect
@@ -13,13 +13,14 @@ namespace HREngine.Bots
         public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
         {
             int i=0;
-            //if (p.numberofOwnDiedMinion >= 1)
+            if (p.numberofOwnDiedMinion >= 1&&p.OwnLastDiedMinion!=CardDB.cardIDEnum.None)
             {
                 int pos = ownplay ? p.ownMinions.Count : p.enemyMinions.Count;
                 if(p.numberofOwnDiedMinion == 1)
                 {
+                    Helpfunctions.Instance.ErrorLog("### numberofOwnDiedMinion"+p.numberofOwnDiedMinion);
                     int posi = ownplay ? p.ownMinions.Count : p.enemyMinions.Count;
-                    kid = CardDB.Instance.getCardDataFromID((p.OwnLastDiedMinion == CardDB.cardIDEnum.None) ? CardDB.cardIDEnum.EX1_345t : p.OwnLastDiedMinion); // Shadow of Nothing 0:1 or ownMinion
+                    kid = CardDB.Instance.getCardDataFromID(p.OwnLastDiedMinion); // Shadow of Nothing 0:1 or ownMinion
                     p.CallKid(kid, posi, ownplay, false);
                 }
                 else
@@ -43,16 +44,25 @@ namespace HREngine.Bots
             }
 
         }
+        
 
         public  override void inhand(Playfield p, Handmanager.Handcard hc, bool wasOwnCard, Handmanager.Handcard triggerhc)
         {
-            int n=0;
-            if(hc.card.type == CardDB.cardtype.SPELL)n++;
-
-            if(n >=4)
+            
+            if(wasOwnCard&&hc.card.type == CardDB.cardtype.SPELL)
             {
+                triggerhc.shenji++;
+                
+                //Helpfunctions.Instance.ErrorLog("###507 n "+triggerhc.shenji);
+            }
+
+            if(triggerhc.shenji>3)
+            {
+
                 p.drawACard(CardDB.cardName.diamondspellstone, wasOwnCard, true);
                 p.removeCard(triggerhc);
+                Helpfunctions.Instance.ErrorLog("### LOOT_507 drawACard");
+                
             }
 
         }

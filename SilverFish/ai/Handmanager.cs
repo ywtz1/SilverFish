@@ -22,6 +22,7 @@ namespace HREngine.Bots
             public bool extraParam3 = false;
             public bool discardOnOwnTurnEnd = false;
             public int valanyr = 0;
+            public int shenji = 0;
 
             public Handcard()
             {
@@ -38,6 +39,7 @@ namespace HREngine.Bots
                 this.elemPoweredUp = hc.elemPoweredUp;
                 this.discardOnOwnTurnEnd = hc.discardOnOwnTurnEnd;
                 this.valanyr = hc.valanyr;
+                this.shenji = hc.shenji;
             }
             public Handcard(CardDB.Card c)
             {
@@ -56,6 +58,7 @@ namespace HREngine.Bots
                 this.elemPoweredUp = hc.elemPoweredUp;
                 this.discardOnOwnTurnEnd = false;
                 this.valanyr = hc.valanyr;
+                this.shenji = hc.shenji;
             }
 
             public int getManaCost(Playfield p)

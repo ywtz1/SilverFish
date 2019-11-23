@@ -13,7 +13,7 @@ namespace HREngine.Bots
 
         public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
         {
-            //if (p.numberofOwnDiedMinion >= 1)
+            if (p.numberofOwnDiedMinion >= 1&&p.OwnLastDiedMinion!=CardDB.cardIDEnum.None)
             {
                 int i=0;
                 int pos = ownplay ? p.ownMinions.Count : p.enemyMinions.Count;
@@ -21,7 +21,7 @@ namespace HREngine.Bots
                 if(p.numberofOwnDiedMinion == 1)
                 {
                     int posi = ownplay ? p.ownMinions.Count : p.enemyMinions.Count;
-                    kid = CardDB.Instance.getCardDataFromID((p.OwnLastDiedMinion == CardDB.cardIDEnum.None) ? CardDB.cardIDEnum.EX1_345t : p.OwnLastDiedMinion); // Shadow of Nothing 0:1 or ownMinion
+                    kid = CardDB.Instance.getCardDataFromID(p.OwnLastDiedMinion); // Shadow of Nothing 0:1 or ownMinion
                 p.CallKid(kid, posi, ownplay, false);
                 }
                 else

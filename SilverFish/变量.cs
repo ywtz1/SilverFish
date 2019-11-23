@@ -1,4 +1,4 @@
-﻿using SilverFish.Helpers;
+using SilverFish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -8,13 +8,19 @@ namespace HREngine.Bots
 
     public class a
     {
-        public void gamestart()
-        {}
-        public void turnstart()
+
+
+        public void gamestart(Playfield p)
         {
 
         }
-        public void turnend()
+        public void playacard(Playfield p)
+        {}
+        public void turnstart(Playfield p)
+        {
+
+        }
+        public void turnend(Playfield p)
         {
 
         }

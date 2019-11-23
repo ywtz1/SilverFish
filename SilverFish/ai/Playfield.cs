@@ -4883,11 +4883,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         m.handcard.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, m);
                     }
                 }
-
-                foreach (Handmanager.Handcard ohc in this.owncards)
+                for (int i = 0; i < this.owncards.Count; i++)//foreach (Handmanager.Handcard ohc in this.owncards)
                 {
+                    Handmanager.Handcard ohc = this.owncards[i];
+
                     ohc.card.CardSimulation.inhand(this, hc, own, ohc);
                     //ohc.card2.CardSimulation.inhand(this, hc, own, ohc);
+                    
                     switch (ohc.card.name)
                     {
                         case CardDB.cardName.shadowreflection:
@@ -7022,13 +7024,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 deck[e.Key]  += e.Value;
                 else deck.Add(e.Key, e.Value);
             }
-            foreach (KeyValuePair<CardDB.cardIDEnum, int> e in Probabilitymaker.Instance.ownCardsOut)
+            /*foreach (KeyValuePair<CardDB.cardIDEnum, int> e in Probabilitymaker.Instance.ownCardsOut)
             {
                 CardDB.Card c = CardDB.Instance.getCardDataFromID(e.Key);
                 if(deck.ContainsKey(e.Key))
                 if(deck[e.Key] >= e.Value)deck[e.Key]  -= e.Value;
                 else deck[e.Key] = 0;
-            }
+            }*/
 
             return deck;
 

@@ -2,7 +2,7 @@ None;None;None;Discard:2;4
 
 None;shaman;None;Discard:2;3
 None;thief;None;Discard:2;3
-None;priest;None;Discard:2;4
+None;priest;None;Discard:2;5
 None;warlock;None;Discard:2;3
 None;pala;None;Discard:2;3
 None;warlock;None;Discard:2;3
@@ -23,6 +23,10 @@ EX1_245;shaman;None;Discard:2;/
 DAL_071;shaman;None;Discard:2;/
 ULD_158;shaman;None;Discard:2;/
 EX1_015;shaman;None;Discard:2;/
+//**********复活牧***********
+ICC_235;priest;None;Hold:1;/
+DS1_233;priest;None;Discard:2;/
+
 
 //**********奥秘法***********
 

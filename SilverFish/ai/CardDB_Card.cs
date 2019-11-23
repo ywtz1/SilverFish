@@ -65,6 +65,7 @@ namespace HREngine.Bots
             public int needMinOwnMinions = 0;
             public int needMinionsCapIfAvailable = 0;
             public int needControlaSecret = 0;
+            public int shenji= 0;
 
             //additional data
             public bool isToken = false;
@@ -163,6 +164,7 @@ namespace HREngine.Bots
                 this.cardIDenum = c.cardIDenum;
                 this.CardSimulation = c.CardSimulation;
                 this.isToken = c.isToken;
+                this.shenji= c.shenji;
             }
 
             public bool isRequirementInList(CardDB.ErrorType2 et)
