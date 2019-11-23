@@ -6719,6 +6719,8 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             (this.penpen|| this.ownHero.handcard.card.name == CardDB.cardName.drboommadgenius))//penpen砰砰突袭
             this.minionGetRush(m);
 
+            LogHelper.WriteCombatLog("CallKid" +card.name +" "+card.cardIDenum);
+
         }
         
         public void minionGetFrozen(Minion target)
