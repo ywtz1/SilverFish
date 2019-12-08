@@ -1506,12 +1506,12 @@ def Execute():
 
         private void GameEventManagerOnNewGame(object sender, NewGameEventArgs newGameEventArgs)
         {
-            Log.InfoFormat("[Set new log file:] Start");
+            /*Log.InfoFormat("[Set new log file:] Start");
             Hrtprozis prozis = Hrtprozis.Instance;
             prozis.clearAllNewGame();
             EvenDeckHelper.Reset();
             SilverFishBot.Instance.SetNewLogFile();
-            Log.InfoFormat("[Set new log file:] End");
+            Log.InfoFormat("[Set new log file:] End");*/
         }
 
         private void GameEventManagerOnQuestUpdate(object sender, QuestUpdateEventArgs questUpdateEventArgs)

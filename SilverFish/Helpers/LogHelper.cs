@@ -72,6 +72,7 @@ namespace SilverFish.Helpers
 		   }
 
 
+
         public static void WriteCombatLog(object obj)
         {
             AppendText(obj, CombatLogFileName, CombatLogFolder);

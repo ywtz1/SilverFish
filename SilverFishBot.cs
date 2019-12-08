@@ -206,7 +206,8 @@ namespace HREngine.Bots
             Questmanager.Instance.Reset();
             if (!singleLog)
             {
-                LogHelper.CombatLogFileName = "Combat-{DateTime.Now:yyyyMMdd-HHmmss}.log";
+                LogHelper.CombatLogFileName = "Combat-"+DateTime.Now.ToString("_yyyy-MM-dd_HH-mm-ss")+".log";
+                
                 Helpfunctions.Instance.InfoLog("#######################################################");
                 Helpfunctions.Instance.InfoLog("fight is logged in: {LogHelper.GetCombatLogFilePath()}");
                 Helpfunctions.Instance.InfoLog("#######################################################");
