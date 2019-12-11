@@ -256,6 +256,8 @@ namespace HREngine.Bots
             this.cardlist.Add(plchldr);
             this.unknownCard = cardlist[0];
             string name = "";
+            bool CARDNAME185=false;//
+            bool CARDTEXT184=false;//
             foreach (string s in lines)
             {
                 if (s.Contains("/Entity"))
@@ -460,41 +462,84 @@ namespace HREngine.Bots
                 if (s.Contains("<Tag enumID=\"185\""))
                 {
                     string temp = string.Empty;
-                    try
+                    if(s.Contains("</Tag>"))
                     {
-                        temp = s.Split(new string[] {"value=\"0\">"}, StringSplitOptions.RemoveEmptyEntries)[1];
-                    }
-                    catch
-                    {
-                        Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
-                            .ErrorFormat("[Unidentified Tag enumID 185 :" + s + "]");
-                        continue;
+                        try
+                        {
+                            temp = s.Split(new string[] {"value=\"0\">"}, StringSplitOptions.RemoveEmptyEntries)[1];
+                        }
+                        catch
+                        {
+                            Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
+                                .ErrorFormat("[Unidentified Tag enumID 185 :" + s + "]");
+                            continue;
+                        }
+                    
+                        temp = temp.Split(new string[] {"</Tag>"}, StringSplitOptions.RemoveEmptyEntries)[0];
+                        temp = TrimHelper.TrimEnglishName(temp);
+                        c.name = this.cardNameStringToEnum(temp, c.cardIDenum);
+                        name = temp;
+
                     }
 
-                    temp = temp.Split(new string[] {"</Tag>"}, StringSplitOptions.RemoveEmptyEntries)[0];
-                    temp = TrimHelper.TrimEnglishName(temp);
-                    c.name = this.cardNameStringToEnum(temp, c.cardIDenum);
-                    name = temp;
+
+                    else CARDNAME185=true;
 
 
                     continue;
                 }
 
-                //cardtextinhand
-                if (s.Contains("<Tag enumID=\"184\""))
+                if (s.Contains("<enUS>")&&CARDNAME185)
                 {
-                    string temp = s.Split(new string[] {"value=\"0\">"}, StringSplitOptions.RemoveEmptyEntries)[1];
-                    temp = temp.Split(new string[] {"</Tag>"}, StringSplitOptions.RemoveEmptyEntries)[0];
+                    string temp = string.Empty;
+                    CARDNAME185=false;
+                    temp = s.Split(new string[] {"<enUS>"}, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split(new string[] {"</enUS>"}, StringSplitOptions.RemoveEmptyEntries)[0];
+                    temp = TrimHelper.TrimEnglishName(temp);
+                    temp = temp.Replace("&quot;", "");
+                    c.name = this.cardNameStringToEnum(temp, c.cardIDenum);
+                    name = temp;
+                    continue;
+                }
+
+                if (s.Contains("<enUS>")&&CARDTEXT184)
+                {
+                    string temp = string.Empty;
+                    CARDTEXT184=false;
+                    temp = s.Split(new string[] {"<enUS>"}, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split(new string[] {"</enUS>"}, StringSplitOptions.RemoveEmptyEntries)[0];
                     temp = temp.Replace("&lt;", "");
                     temp = temp.Replace("b&gt;", "");
                     temp = temp.Replace("/b&gt;", "");
                     temp = temp.ToLower(new System.Globalization.CultureInfo("en-US", false));
+                        if (temp.Contains("choose one"))
+                        {
+                            c.choice = true;
+                            //LogHelper.WriteCombatLog(c.name + " is choice");
+                        }
+                        continue;
+                    
+                }
 
-                    if (temp.Contains("choose one"))
+                //cardtextinhand
+                if (s.Contains("<Tag enumID=\"184\""))
+                {
+                    if(s.Contains("</Tag>"))
                     {
-                        c.choice = true;
-                        //LogHelper.WriteCombatLog(c.name + " is choice");
+                        string temp = s.Split(new string[] {"value=\"0\">"}, StringSplitOptions.RemoveEmptyEntries)[1];
+                        temp = temp.Split(new string[] {"</Tag>"}, StringSplitOptions.RemoveEmptyEntries)[0];
+                        temp = temp.Replace("&lt;", "");
+                        temp = temp.Replace("b&gt;", "");
+                        temp = temp.Replace("/b&gt;", "");
+                        temp = temp.ToLower(new System.Globalization.CultureInfo("en-US", false));
+
+                        if (temp.Contains("choose one"))
+                        {
+                            c.choice = true;
+                            //LogHelper.WriteCombatLog(c.name + " is choice");
+                        }
                     }
+                    else CARDTEXT184=true;
 
                     continue;
                 }

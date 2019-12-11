@@ -28,6 +28,7 @@
             temp = temp.Replace("+", "");
             temp = temp.Replace("’", "");
             temp = temp.Replace("=", "");
+            temp = temp.Replace("&quot;", "");
             return temp;
         }
     }
