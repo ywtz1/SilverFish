@@ -11,9 +11,11 @@ namespace HREngine.Bots
 
 		public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
 		{
-            int dmg = (ownplay) ? p.getSpellDamageDamage(1) : p.getEnemySpellDamageDamage(1);
-            p.minionGetDamageOrHeal(target, dmg);
-            p.minionGetTempBuff(target, 2,0);
+            if(target!=null)
+            {
+            	int dmg = (ownplay) ? p.getSpellDamageDamage(1) : p.getEnemySpellDamageDamage(1);
+                        p.minionGetDamageOrHeal(target, dmg);
+                        p.minionGetTempBuff(target, 2,0);}
 		}
 
 	}

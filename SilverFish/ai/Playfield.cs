@@ -4047,6 +4047,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 case CardDB.cardName.livewirelance://电缆长枪
                      this.drawACard(CardDB.cardName.witchylackey, own);
                      break;
+                case CardDB.cardName.ancharrr://海盗之瞄
+                     this.drawACard(CardDB.cardName.witchylackey, own);
+                     break;
                 case CardDB.cardName.woecleaver:
                      this.zhaomu(own,TAG_RACE.INVALID,0,0);
                      break;
