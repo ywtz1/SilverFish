@@ -4018,8 +4018,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             this.ownAbilityReady = true;
             else this.enemyAbilityReady = true;
 
-            foreach (Minion m in (own ? this.ownMinions : this.enemyMinions))
+            for (int i = 0; i < (own ? this.ownMinions.Count : this.enemyMinions.Count); i++)
+            //foreach (Minion m in (own ? this.ownMinions : this.enemyMinions))
             {
+                Minion m = own ? this.ownMinions[i] : this.enemyMinions[i] ;
                 if (m.silenced) continue;
                 switch(m.name)
                 {
@@ -4032,13 +4034,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         CallKid(kid, (own ? this.ownMinions.Count : this.enemyMinions.Count), own, false);
                         break;
                 
-                    
+                   
                 } 
 
-              }
+            }
 
             //heal whether truesilverchampion equipped
-            switch (weapon.name)
+            switch(weapon.name)
             {
                 case CardDB.cardName.silversword://银剑
                      this.allMinionOfASideGetBuffed(own, 1, 1);
@@ -8006,7 +8008,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionGetDamageOrHeal(Minion m, int dmgOrHeal, bool dontDmgLoss = false)
         {
-            
+            if (m==null)return;
             if(isOwnTurn&& m == this.ownHero &&dmgOrHeal>0 )//收到自己卡牌的伤害
             {
                 this.damagebyown+=dmgOrHeal;
