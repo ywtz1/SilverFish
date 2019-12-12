@@ -10,6 +10,7 @@ namespace HREngine.Bots
 	
         public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
         {
+            if(target==null)return;
             p.minionGetBuffed(target, 4, 4);
             if (!target.taunt)
             {

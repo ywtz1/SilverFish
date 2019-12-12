@@ -19,8 +19,8 @@ CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_050); 
 
 public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
 {
-	if(target!=null)
-    p.minionGetDamageOrHeal(target, 2);
+	if(target==null)return;
+	p.minionGetDamageOrHeal(target, 2);
 	if(target.HealthPoints <2)
 	{
 		int pos = ownplay ? p.ownMinions.Count : p.enemyMinions.Count;

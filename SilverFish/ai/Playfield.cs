@@ -1,4 +1,4 @@
-﻿using SilverFish.Helpers;
+using SilverFish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -75,6 +75,7 @@ namespace HREngine.Bots
         public List<CardDB.cardIDEnum> yongwanlist = new List<CardDB.cardIDEnum>();//用了两张的卡
         //public int ownHeroGotDmgbyown;
         public int nzhaomu=0;//招募数
+        public int nqiqiu=0;//祈求迦拉克隆
         public CardDB.Card SpellLastPlayed = null;
 
 
@@ -422,6 +423,7 @@ namespace HREngine.Bots
             this.yongwanlist = new List<CardDB.cardIDEnum>();//用了两张的卡
             //this.ownHeroGotDmgbyown;
             this.nzhaomu=0;//招募数
+            this.nqiqiu=0;//祈求迦拉克隆
             this.SpellLastPlayed=null;
 
 
@@ -1270,6 +1272,7 @@ namespace HREngine.Bots
                     this.yongwanlist.Add(ywl);
                 }
             this.nzhaomu=p.nzhaomu;//招募数
+            this.nqiqiu=p.nqiqiu;//祈求迦拉克隆次数
 
 
         }
@@ -6730,6 +6733,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         
         public void minionGetFrozen(Minion target)
         {
+            if(target==null)return;
             target.frozen = true;
             if (target.isHero) return;
             if (this.anzMoorabi > 1)
@@ -6939,6 +6943,51 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     break;
                    }
               }
+
+        }
+
+
+        public void qiqiu()
+        {
+            this.nqiqiu++;
+            
+            //if(this.ownHeroStartClass != TAG_CLASS.INVALID);
+            if(this.isOwnTurn)
+            {
+                switch (ownHeroStartClass)
+                {
+                    case TAG_CLASS.MAGE:
+                        
+                        break;
+                    case TAG_CLASS.HUNTER:
+                       
+                        break;
+                    case TAG_CLASS.PRIEST:
+                        
+                        break;
+                    case TAG_CLASS.SHAMAN:
+                        CardDB.Card kid1 = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.DRG_238t14t3);
+                        int posi = this.isOwnTurn ? this.ownMinions.Count : this.enemyMinions.Count;
+                        this.CallKid(kid1, posi, this.isOwnTurn, false);
+                        break;
+                    case TAG_CLASS.PALADIN:
+                        
+                        break;
+                    case TAG_CLASS.DRUID:
+                        
+                        break;
+                    case TAG_CLASS.WARLOCK:
+                        
+                        break;
+                    case TAG_CLASS.WARRIOR:
+                        
+                        break;
+                    case TAG_CLASS.ROGUE:
+                        this.drawACard(CardDB.cardName.facelesslackey, this.isOwnTurn, true);
+                        break;
+                }
+            }
+
 
         }
         public int restcard(CardDB.cardIDEnum idkey,int moshi=1)//moshi1 有招募  0动物伙伴和凶猛狂暴
@@ -7274,6 +7323,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionGetDestroyed(Minion m)
         {
+            if(m==null)return;
             if (m.own)
             {
                 if (m.playedThisTurn && m.charge == 0) this.lostDamage += m.HealthPoints * 2 + m.Attack * 2 + (m.windfury ? m.Attack : 0) + ((m.handcard.card.isSpecialMinion && !m.taunt) ? 20 : 0);
@@ -7302,12 +7352,14 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionGetArmor(Minion m, int armor)
         {
+            if(m==null)return;
             m.armor += armor;
             this.triggerAHeroGotArmor(m.own);
         }
 
         public void minionReturnToHand(Minion m, bool own, int manachange , int adatt=0, int adHp =0)
         {
+            if(m==null)return;
             List<Minion> temp = (m.own) ? this.ownMinions : this.enemyMinions;
             m.handcard.card.CardSimulation.onAuraEnds(this, m);
             temp.Remove(m);
@@ -7333,6 +7385,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionReturnToDeck(Minion m, bool own,int numberofc=1)
         {
+            if(m==null)return;
             List<Minion> temp = (m.own) ? this.ownMinions : this.enemyMinions;
             m.handcard.card.CardSimulation.onAuraEnds(this, m);
             temp.Remove(m);
@@ -7344,6 +7397,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         }
         public void minionAddToDeck(Minion m, bool own,int numberofc=1)
         {
+            if(m==null)return;
             if(own)
             {
              if(this.returntodecklist.ContainsKey(m.handcard.card.cardIDenum))
@@ -7358,6 +7412,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionTransform(Minion m, CardDB.Card c)
         {
+            if(m==null)return;
             m.handcard.card.CardSimulation.onAuraEnds(this, m);//end aura of the minion
 
             Handmanager.Handcard hc = new Handmanager.Handcard(c) { entity = m.entitiyID };
@@ -7524,6 +7579,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionGetRush(Minion m)
         {
+            if(m==null)return;
             
             m.rush=1;
             if (m.playedThisTurn&&m.charge==0)
@@ -7533,12 +7589,14 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         }
         public void minionLostRush(Minion m)
         {
+            if(m==null)return;
             m.rush=0;
             m.updateReadyness();
         }
 
         public void minionGetWindfurry(Minion m)
         {
+            if(m==null)return;
             if (m.windfury) return;
             m.windfury = true;
             m.updateReadyness();
@@ -7546,17 +7604,20 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionGetCharge(Minion m)
         {
+            if(m==null)return;
             m.charge++;
             m.updateReadyness();
         }
 
         public void minionLostCharge(Minion m)
         {
+            if(m==null)return;
             m.charge--;
             m.updateReadyness();
         }
         public void minionGetTaunt(Minion m)
         {
+            if(m==null)return;
             if (!m.taunt)
             {
                 m.taunt = true;
@@ -7601,6 +7662,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionGetTempBuff(Minion m, int tempAttack, int tempHp)
         {
+            if(m==null)return;
             if (!m.silenced && m.name == CardDB.cardName.lightspawn) return;
             if (tempAttack < 0 && -tempAttack > m.Attack)
             {
@@ -7612,6 +7674,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionGetAdjacentBuff(Minion m, int angr, int vert)
         {
+            if(m==null)return;
             if (!m.silenced && m.name == CardDB.cardName.lightspawn) return;
             m.Attack += angr;
             m.AdjacentAttack += angr;
@@ -7628,6 +7691,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionGetBuffed(Minion m, int attackbuff, int hpbuff)
         {
+            if(m==null)return;
             if (attackbuff != 0) m.Attack = Math.Max(0, m.Attack + attackbuff);
 
             if (hpbuff != 0)
@@ -7685,6 +7749,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
          //随从失去圣盾
         public void minionLosesDivineShield(Minion m)
         {
+            if(m==null)return;
             m.divineshild = false;
             if (m.own) this.tempTrigger.ownMinionLosesDivineShield++;
             else this.tempTrigger.enemyMinionLosesDivineShield++;
@@ -7963,6 +8028,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionSetAngrToX(Minion m, int newAngr)
         {
+            if(m==null)return;
             if (!m.silenced && m.name == CardDB.cardName.lightspawn) return;
             m.Attack = newAngr;
             m.tempAttack = 0;
@@ -7971,6 +8037,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionSetLifetoX(Minion m, int newHp)
         {
+            if(m==null)return;
             minionGetOrEraseAllAreaBuffs(m, false);
             m.HealthPoints = newHp;
             m.maxHp = newHp;
@@ -7981,6 +8048,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionSetAngrToHP(Minion m)
         {
+            if(m==null)return;
             m.Attack = m.HealthPoints;
             m.tempAttack = 0;
             this.minionGetOrEraseAllAreaBuffs(m, true);
@@ -7989,7 +8057,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void minionSwapAngrAndHP(Minion m)
         {
-            
+            if(m==null)return;
             bool woundedbef = m.wounded;
             int temp = m.Attack;
             m.Attack = m.HealthPoints;
