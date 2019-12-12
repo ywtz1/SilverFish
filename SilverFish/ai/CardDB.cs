@@ -105,7 +105,7 @@ namespace HREngine.Bots
                     }
                     var a= s;
                     {
-                        string filename = filepath + "\\sim\\Sim_" + a + ".txt";
+                        string filename = filepath + "\\sim\\Sim_" + a + ".cs";
                         FileStream fs = File.Create(filename);
                         fs.Close();
                         string text = "using System;" + "\r\n" + "using System.Collections.Generic;" + "\r\n" + "using System.Text;"
@@ -154,7 +154,7 @@ namespace HREngine.Bots
             else
             {
                 nameEnum = GetSpecialCardNameEnumFromCardIdEnum(tempCardIdEnum);
-                if (nameEnum == cardName.unknown)
+                if (nameEnum == cardName.unknown&&s!="3ofkindcheckplayerenchant")
                 {
                     Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
                         .ErrorFormat("[Unidentified card name :" + s + "]");
