@@ -6991,6 +6991,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         public void qiqiu()
         {
             this.nqiqiu++;
+            this.evaluatePenality-=2;
             
             //if(this.ownHeroStartClass != TAG_CLASS.INVALID);
             if(this.isOwnTurn)
@@ -7471,6 +7472,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 int minionvalue = m.HealthPoints * 2 + m.Attack;
                 if (m.divineshild) minionvalue = minionvalue * 3 / 2;
+                if (m.Ready) minionvalue *=2;
                 if(!m.silenced)
                 {
                     if(m.reborn) minionvalue += m.Attack +1;
@@ -7481,14 +7483,16 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
                 int cvalue = c.Health * 2 + c.Attack;
                 if (c.Shield) cvalue = cvalue * 3 / 2;
+                if(c.Rush) cvalue = cvalue * 3 / 2;
+                if(c.Charge) cvalue = cvalue * 2;
                 if(!m.silenced)
                 {
                     if(m.reborn) minionvalue += m.Attack +1;
                     cvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
                     if(m.handcard.card.deathrattle) cvalue+= 1;
                 }
-                if(m.own) this.evaluatePenality += (minionvalue - cvalue + 9);
-                else this.evaluatePenality -= (minionvalue - cvalue + 9);
+                if(m.own) this.evaluatePenality += (minionvalue - cvalue + 12);
+                else this.evaluatePenality -= (minionvalue - cvalue + 12);
             }
 
 

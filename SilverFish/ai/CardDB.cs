@@ -103,9 +103,11 @@ namespace HREngine.Bots
                     {
                         Directory.CreateDirectory(filepath);
                     }
+                    
+                    if(s=="")return CardDB.cardIDEnum.None;
                     var a= s;
                     {
-                        string filename = filepath + "\\sim\\Sim_" + a + ".cs";
+                        string filename = filepath + "\\Sim_" + a + ".cs";
                         FileStream fs = File.Create(filename);
                         fs.Close();
                         string text = "using System;" + "\r\n" + "using System.Collections.Generic;" + "\r\n" + "using System.Text;"
@@ -299,9 +301,21 @@ namespace HREngine.Bots
         {
             InitSpecialNames();
             string[] lines = new string[0] { };
+            string[] lines2 = new string[0] { };
+            
             string path = Settings.Instance.DataFolderPath;
+
             string cardDbPath = Path.Combine(path, "_carddb.txt");
+            string cardDbPath2 = Path.Combine(path, "_carddb11.txt");
+            
             lines = System.IO.File.ReadAllLines(cardDbPath);
+            lines2 = System.IO.File.ReadAllLines(cardDbPath2);
+
+            string[] lines3 = lines.Concat(lines2).ToArray();
+            lines=lines3;
+
+
+
             Helpfunctions.Instance.InfoLog("read carddb.txt " + lines.Length + " lines");
             cardlist.Clear();
             this.cardidToCardList.Clear();
@@ -315,6 +329,8 @@ namespace HREngine.Bots
             string name = "";
             bool CARDNAME185=false;//
             bool CARDTEXT184=false;//
+            //bool duplicatecard=false;//该卡重复
+            
             foreach (string s in lines)
             {
                 if (s.Contains("/Entity"))
@@ -336,16 +352,17 @@ namespace HREngine.Bots
                     if (c.name != CardDB.cardName.unknown)
                     {
 
-                        this.cardlist.Add(c);
+                        
                         //LogHelper.WriteCombatLog(c.name);
                         if (!this.cardidToCardList.ContainsKey(c.cardIDenum))
                         {
+                            this.cardlist.Add(c);
                             this.cardidToCardList.Add(c.cardIDenum, c);
                         }
                         else
                         {
-                            Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
-                                .ErrorFormat("[c.cardIDenum:" + c.cardIDenum + "] already exists in cardidToCardList");
+                            //Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
+                                //.ErrorFormat("[c.cardIDenum:" + c.cardIDenum + "] already exists in cardidToCardList");
                         }
                     }
 
@@ -353,12 +370,17 @@ namespace HREngine.Bots
 
                 if (s.Contains("<Entity CardID=\"") && s.Contains(" version=\""))
                 {
-                    c = new Card();
-                    de = 0;
+
+                    
                     string temp = s.Split(new string[] {"CardID=\""}, StringSplitOptions.None)[1];
                     temp = temp.Replace("\">", "");
                     temp = temp.Split(new string[] {"\""}, StringSplitOptions.None)[0];
+
+                    if(!allCardIDS.Contains(temp)) 
                     allCardIDS.Add(temp);
+                    c = new Card();
+                    de = 0;
+
                     c.cardIDenum = this.cardIdstringToEnum(temp);
 
                     //token:
