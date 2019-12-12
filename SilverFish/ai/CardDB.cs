@@ -125,8 +125,12 @@ namespace HREngine.Bots
                     using (System.IO.StreamWriter file1 = new System.IO.StreamWriter(@filename1, true))
 
                     {
-                        string text = "case CardDB.cardIDEnum." + a + ":" + "\r\n" + "  return new Sim_" + a + "();" + "\r\n";
-                        file1.Write( text);
+                        if(a!=""&&a!=null)
+                        {
+                            string text = "case CardDB.cardIDEnum." + a + ":" + "\r\n" + "  return new Sim_" + a + "();" + "\r\n";
+                            file1.Write( text);
+                        }
+                        
                     }
 
                     string filename2 = filepath + "\\cardID.txt";
@@ -138,8 +142,12 @@ namespace HREngine.Bots
                     using (System.IO.StreamWriter file2 = new System.IO.StreamWriter(@filename2, true))
 
                     {
-                        string text = a+"," + "\r\n";
-                        file2.Write( text);
+                        if(a!=""&&a!=null)
+                        {
+                            string text = a+"," + "\r\n";
+                            file2.Write( text);
+                        }
+                        
                     }
 
                 return CardDB.cardIDEnum.None;

@@ -55,7 +55,8 @@ namespace HREngine.Bots
                     }
 
                 }
-                p.evaluatePenality-=pen;
+                //p.evaluatePenality-=pen;
+                if(p.owncards.Count>1)p.evaluatePenality+=p.owncards.Count*7;//剩余手牌大等于三张（包括沙德沃克）
 
             }
         }
