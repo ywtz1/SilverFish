@@ -6730,6 +6730,47 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
 
         }
+        public void CallKid(CardDB.cardIDEnum cardid, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
+        {
+            CardDB.Card card = CardDB.Instance.getCardDataFromID(cardid);
+            int allowed = 7;
+            allowed += (oneMoreIsAllowed) ? 1 : 0;
+
+            if (own)
+            {
+                if (this.ownMinions.Count >= allowed)
+                {
+                    if (spawnKid) this.evaluatePenality += 10;
+                    else this.evaluatePenality += 20;
+                    return;
+                }
+            }
+            else
+            {
+                if (this.enemyMinions.Count >= allowed)
+                {
+                    if (spawnKid) this.evaluatePenality -= 10;
+                    else this.evaluatePenality -= 20;
+                    return;
+                }
+            }
+            int mobplace = zonePosition + 1;
+
+            //create minion (+triggers)
+            Handmanager.Handcard hc = new Handmanager.Handcard(card)
+            {
+                entity = this.getNextEntity()
+            };
+            Minion m = createNewMinion(hc, mobplace, own);
+            //put it on battle field (+triggers)
+            addMinionToBattlefield(m);
+            if((TAG_RACE)m.handcard.card.race ==TAG_RACE.MECHANICAL && 
+            (this.penpen|| this.ownHero.handcard.card.name == CardDB.cardName.drboommadgenius))//penpen砰砰突袭
+            this.minionGetRush(m);
+
+
+
+        }
         
         public void minionGetFrozen(Minion target)
         {

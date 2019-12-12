@@ -8,11 +8,11 @@ namespace HREngine.Bots
 	{
 		        CardDB.Card card = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_112);
 
-		public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
+        public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
         {
             
-            p.setNewHeroPower(CardDB.cardIDEnum.DRG_238p2, ownplay); //
-            if (ownplay) p.ownHero.armor += 5;
+            p.setNewHeroPower(CardDB.cardIDEnum.DRG_238p2, own.own); //
+            if (own.own) p.ownHero.armor += 5;
             else p.enemyHero.armor += 5;
             
             if(p.nqiqiu>=4)
@@ -21,7 +21,7 @@ namespace HREngine.Bots
                 p.drawACard(CardDB.cardName.unknown, true, false);
                 p.drawACard(CardDB.cardName.unknown, true, false);
                 p.drawACard(CardDB.cardName.unknown, true, false);
-                p.equipWeapon(card,ownplay);
+                p.equipWeapon(card,own.own);
             }
             else if (p.nqiqiu>=2)
             {

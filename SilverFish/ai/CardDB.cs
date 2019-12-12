@@ -105,7 +105,7 @@ namespace HREngine.Bots
                     }
                     var a= s;
                     {
-                        string filename = filepath + "\\Unidentified\\sim\\Sim_" + a + ".cs";
+                        string filename = filepath + "\\sim\\Sim_" + a + ".txt";
                         FileStream fs = File.Create(filename);
                         fs.Close();
                         string text = "using System;" + "\r\n" + "using System.Collections.Generic;" + "\r\n" + "using System.Text;"
@@ -114,7 +114,7 @@ namespace HREngine.Bots
                         File.WriteAllText(filename, text);
 
                     }
-                    string filename1 = filepath + "\\Unidentified\\casereturn.cs";
+                    string filename1 = filepath + "\\casereturn.txt";
                     if (!File.Exists(filename1))
                     {
                         FileStream fs1 = File.Create(filename1);
@@ -127,7 +127,7 @@ namespace HREngine.Bots
                         file1.Write( text);
                     }
 
-                    string filename2 = filepath + "\\Unidentified\\cardID.cs";
+                    string filename2 = filepath + "\\cardID.txt";
                     if (!File.Exists(filename2))
                     {
                         FileStream fs2 = File.Create(filename2);
@@ -159,7 +159,7 @@ namespace HREngine.Bots
                     Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
                         .ErrorFormat("[Unidentified card name :" + s + "]");
                     string filepath =  Settings.Instance.DataFolderPath;
-                    string filename3 = filepath + "\\Unidentified\\cardName.cs";
+                    string filename3 = filepath + "\\cardName.txt";
                     if (!File.Exists(filename3))
                     {
                         FileStream fs3 = File.Create(filename3);
