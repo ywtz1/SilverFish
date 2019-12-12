@@ -96,6 +96,50 @@ namespace HREngine.Bots
             else
             {
                 Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType().ErrorFormat("[Unidentified card ID :" + s + "]");
+                
+                    string filepath =  Settings.Instance.DataFolderPath;
+            ;
+                    if (!Directory.Exists(filepath))
+                    {
+                        Directory.CreateDirectory(filepath);
+                    }
+                    var a= s;
+                    {
+                        string filename = filepath + "\\Unidentified\\sim\\Sim_" + a + ".cs";
+                        FileStream fs = File.Create(filename);
+                        fs.Close();
+                        string text = "using System;" + "\r\n" + "using System.Collections.Generic;" + "\r\n" + "using System.Text;"
+                            + "\r\n" + "\r\n" + "namespace HREngine.Bots" + "\r\n" + "{" + "\r\n" + "\t" + "class Sim_" + a + "  : SimTemplate"
+                            + "\r\n" + "\r\n" + "\t" + "{" + "\r\n" + "\t" + "}" + "\r\n" + "}";
+                        File.WriteAllText(filename, text);
+
+                    }
+                    string filename1 = filepath + "\\Unidentified\\casereturn.cs";
+                    if (!File.Exists(filename1))
+                    {
+                        FileStream fs1 = File.Create(filename1);
+                        fs1.Close();
+                    }
+                    using (System.IO.StreamWriter file1 = new System.IO.StreamWriter(@filename1, true))
+
+                    {
+                        string text = "case CardDB.cardIDEnum." + a + ":" + "\r\n" + "  return new Sim_" + a + "();" + "\r\n";
+                        file1.Write( text);
+                    }
+
+                    string filename2 = filepath + "\\Unidentified\\cardID.cs";
+                    if (!File.Exists(filename2))
+                    {
+                        FileStream fs2 = File.Create(filename2);
+                        fs2.Close();
+                    }
+                    using (System.IO.StreamWriter file2 = new System.IO.StreamWriter(@filename2, true))
+
+                    {
+                        string text = a+"," + "\r\n";
+                        file2.Write( text);
+                    }
+
                 return CardDB.cardIDEnum.None;
             }
         }
@@ -114,6 +158,19 @@ namespace HREngine.Bots
                 {
                     Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
                         .ErrorFormat("[Unidentified card name :" + s + "]");
+                    string filepath =  Settings.Instance.DataFolderPath;
+                    string filename3 = filepath + "\\Unidentified\\cardName.cs";
+                    if (!File.Exists(filename3))
+                    {
+                        FileStream fs3 = File.Create(filename3);
+                        fs3.Close();
+                    }
+                    using (System.IO.StreamWriter file3 = new System.IO.StreamWriter(@filename3, true))
+
+                    {
+                        string text = s+"," + "\r\n";
+                        file3.Write( text);
+                    }
                 }
             }
 
