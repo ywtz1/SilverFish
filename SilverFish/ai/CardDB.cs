@@ -314,7 +314,7 @@ namespace HREngine.Bots
             string path = Settings.Instance.DataFolderPath;
 
             string cardDbPath = Path.Combine(path, "_carddb.txt");
-            string cardDbPath2 = Path.Combine(path, "_carddb11.txt");
+            string cardDbPath2 = Path.Combine(path, "CardDefs.xml");
             
             lines = System.IO.File.ReadAllLines(cardDbPath);
             lines2 = System.IO.File.ReadAllLines(cardDbPath2);
