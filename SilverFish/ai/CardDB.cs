@@ -104,8 +104,9 @@ namespace HREngine.Bots
                         Directory.CreateDirectory(filepath);
                     }
                     
-                    if(s=="")return CardDB.cardIDEnum.None;
+                    
                     var a= s;
+                    if(a!=""&&a!=null)
                     {
                         string filename = filepath + "\\Sim_" + a + ".cs";
                         FileStream fs = File.Create(filename);
@@ -114,16 +115,16 @@ namespace HREngine.Bots
                             + "\r\n" + "\r\n" + "namespace HREngine.Bots" + "\r\n" + "{" + "\r\n" + "\t" + "class Sim_" + a + "  : SimTemplate"
                             + "\r\n" + "\r\n" + "\t" + "{" + "\r\n" + "\t" + "}" + "\r\n" + "}";
                         File.WriteAllText(filename, text);
-
                     }
+
                     string filename1 = filepath + "\\casereturn.txt";
                     if (!File.Exists(filename1))
                     {
                         FileStream fs1 = File.Create(filename1);
                         fs1.Close();
                     }
-                    using (System.IO.StreamWriter file1 = new System.IO.StreamWriter(@filename1, true))
 
+                    using (System.IO.StreamWriter file1 = new System.IO.StreamWriter(@filename1, true))
                     {
                         if(a!=""&&a!=null)
                         {
@@ -139,8 +140,8 @@ namespace HREngine.Bots
                         FileStream fs2 = File.Create(filename2);
                         fs2.Close();
                     }
+                    
                     using (System.IO.StreamWriter file2 = new System.IO.StreamWriter(@filename2, true))
-
                     {
                         if(a!=""&&a!=null)
                         {
@@ -892,6 +893,15 @@ namespace HREngine.Bots
                     temp = temp.Split('\"')[0];
                     int ti = Convert.ToInt32(temp);
                     if (ti == 1) c.Morph = true;
+                    continue;
+                }               
+                //祈求 EMPOWER
+                if (s.Contains("<Tag enumID=\"1263\""))
+                {
+                    string temp = s.Split(new string[] {"value=\""}, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split('\"')[0];
+                    int ti = Convert.ToInt32(temp);
+                    if (ti == 1) c.Empower = true;
                     continue;
                 }
 

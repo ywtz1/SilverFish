@@ -14,6 +14,7 @@ namespace HREngine.Bots
             	kid1.Health+=3;
             	kid1.Attack+=3;
             }
+            else p.evaluatePenality+=10;
         	int posi = ownplay ? p.ownMinions.Count : p.enemyMinions.Count;
             p.CallKid(kid1, posi, ownplay, false);
             p.CallKid(kid1, posi, ownplay, false);

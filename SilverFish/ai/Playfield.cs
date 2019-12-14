@@ -76,6 +76,7 @@ namespace HREngine.Bots
         //public int ownHeroGotDmgbyown;
         public int nzhaomu=0;//招募数
         public int nqiqiu=0;//祈求迦拉克隆
+
         public CardDB.Card SpellLastPlayed = null;
 
 
@@ -395,36 +396,23 @@ namespace HREngine.Bots
                 this.pIdHistory.Add(pID);
             }
 
-            //this.lingjie=0;//莫瑞甘的灵界
-            //this.Echocardplayed=null;//回响
-            //this.Echocardplayed2=null;//回响
-            this.HeroPowerkilledaminion = 0;
-            this.HeroPowerhealDamage = 0;//英雄技能造成伤害
-            this.HeroPowerhealDamage2 = 0;//敌方
-            this.HeroPowerusedtime = 0;//英雄技能使用次数
-            this.HeroPowerusedtime2 = 0;
-            this.OwnLastDiedMinion = CardDB.cardIDEnum.None;
-            this.numberofOwnDiedMinion = 0;//复活计数
-            this.numberofOwnDiedMinion2=0;
-            this.numberofDiedMinion = 0;
-            this.damagebyown = 0;//法术紫水晶
-            this.duoluozhixue= 0;//堕落之血 
-            this.fatiaojiqiren = 1;
-            this.fatiaojiqiren2 = 1;
-            this.ownHeroPowerExtraDamageturn = 0;//本回合英雄技能额外伤害
-            this.enemyHeroPowerExtraDamageturn = 0;
-            this.penpen=false;//砰砰突袭
+            varadd.PlayfieldLoadVar(this);
 
-            //List<CardDB.cardIDEnum> OwnDiedMinion = new List<CardDB.cardIDEnum>();
-            this.frostmournekill = new List<CardDB.cardIDEnum>();
-            this.OwnDiedMinions = new Dictionary<CardDB.cardIDEnum, int>();
-            this.returntodecklist = new Dictionary<CardDB.cardIDEnum, int>();
 
-            this.yongwanlist = new List<CardDB.cardIDEnum>();//用了两张的卡
-            //this.ownHeroGotDmgbyown;
-            this.nzhaomu=0;//招募数
-            this.nqiqiu=0;//祈求迦拉克隆
-            this.SpellLastPlayed=null;
+            /*foreach (KeyValuePair<CardDB.cardIDEnum, int> e in Probabilitymaker.Instance.ownCardsOut)
+            {
+                CardDB.Card c = CardDB.Instance.getCardDataFromID(e.Key);
+                if( c.Empower) 
+                {
+                    if(c.cardIDenum==CardDB.cardIDEnum.DRG_218)
+                    nqiqiu+= 2*e.Value;
+
+                    else nqiqiu+= e.Value;
+                }
+
+            }*/
+
+            
 
 
             this.nextEntity = 1000;
@@ -6992,6 +6980,8 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         {
             this.nqiqiu++;
             this.evaluatePenality-=2;
+            //Helpfunctions.Instance.ErrorLog("祈求迦拉克隆次数："+this.nqiqiu);
+
             
             //if(this.ownHeroStartClass != TAG_CLASS.INVALID);
             if(this.isOwnTurn)

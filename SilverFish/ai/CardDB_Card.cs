@@ -21,7 +21,8 @@ namespace HREngine.Bots
             public int Health = 0;
 			public bool Reborn = false;//复生
             public bool Modular = false;//磁力
-            public bool Echo = false;
+            public bool Echo = false;//回响
+            public bool Empower = false;//祈求
 
             public bool Collectible = true;
             public int Durability = 0;//for weapons
@@ -117,6 +118,7 @@ namespace HREngine.Bots
                 this.Charge = c.Charge;
 				this.Rush = c.Rush;
                 this.Echo = c.Echo;
+                this.Empower = c.Empower;
                 this.choice = c.choice;
                 this.Combo = c.Combo;
                 this.cost = c.cost;

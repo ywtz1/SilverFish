@@ -505,6 +505,8 @@ def Execute():
         /// <returns></returns>
         public async Task MulliganLogic(MulliganData mulliganData)
         {
+            varadd.gamestart();//自定义变量初始化 在留牌阶段初始化
+            
             bool concedeSuccessfully = CustomEventManager.Instance.OnMulliganStarted();
 
 
@@ -848,6 +850,7 @@ def Execute():
             }
 
             //play the move#########################################################################
+            varadd.VarSaveFrombestplay(Ai.Instance.bestplay);//从bestplay保存变量
 
             {
                 moveTodo.print();
@@ -1512,6 +1515,7 @@ def Execute():
             EvenDeckHelper.Reset();
             SilverFishBot.Instance.SetNewLogFile();
             Log.InfoFormat("[Set new log file:] End");*/
+            
         }
 
         private void GameEventManagerOnQuestUpdate(object sender, QuestUpdateEventArgs questUpdateEventArgs)
