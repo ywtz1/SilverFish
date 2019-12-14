@@ -406,7 +406,7 @@ namespace HREngine.Bots
                 return;
             }
             
-            help.InfoLog("[Combo] Load combos for {behavName}");
+            help.InfoLog("[Combo] Load combos for " +behavName);
             string[] lines = new string[0] { };
             combos.Clear();
             playByValue.Clear();

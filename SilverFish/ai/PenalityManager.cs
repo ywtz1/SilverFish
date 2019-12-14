@@ -4486,6 +4486,8 @@
 
         private void setupUsefulNeedKeepDatabase()
         {
+            UsefulNeedKeepDatabase.Add(CardDB.cardName.skybarge, 4);
+            UsefulNeedKeepDatabase.Add(CardDB.cardName.phasestalker, 4);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.acidmaw, 4);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.addledgrizzly, 9);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.airelemental, 6);
