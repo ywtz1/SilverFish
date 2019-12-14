@@ -5140,6 +5140,8 @@
 
         private void setupEnemyTargetPriority()//优先解的随从
         {
+            priorityTargets.Add(CardDB.cardName.skybarge, 5);
+
             priorityTargets.Add(CardDB.cardName.phasestalker, 3);
             priorityTargets.Add(CardDB.cardName.mogufleshshaper, 1);
             priorityTargets.Add(CardDB.cardName.gigglinginventor, 1);

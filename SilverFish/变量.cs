@@ -45,7 +45,7 @@ namespace HREngine.Bots
 
         public static void gamestart()//初始化
         {
-            Helpfunctions.Instance.ErrorLog("[varadd]游戏开始 初始化");
+            Helpfunctions.Instance.ErrorLog("[自定义变量]游戏开始 初始化变量");
 
             //lingjie=0;//莫瑞甘的灵界
             //Echocardplayed=null;//回响
@@ -107,7 +107,7 @@ namespace HREngine.Bots
             //ownHeroGotDmgbyown;
             nzhaomu=p.nzhaomu;//招募数
             nqiqiu=p.nqiqiu;//祈求迦拉克隆
-            if(nqiqiu>0)Helpfunctions.Instance.ErrorLog("[varadd]祈求迦拉克隆次数："+nqiqiu);
+            if(nqiqiu>0)Helpfunctions.Instance.ErrorLog("[自定义变量]祈求迦拉克隆次数："+nqiqiu);
         }
         public static void PlayfieldLoadVar(Playfield p)
         {
