@@ -5056,6 +5056,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 {
                     
                     //if(hc.card.cardIDenum == CardDB.cardIDEnum.LOOT_504t) this.removeCard(hc);
+                    if (hc.card.cardIDenum == CardDB.cardIDEnum.DAL_007||hc.card.cardIDenum == CardDB.cardIDEnum.DAL_008||
+                        hc.card.cardIDenum == CardDB.cardIDEnum.DAL_009||hc.card.cardIDenum == CardDB.cardIDEnum.DAL_010||
+                        hc.card.cardIDenum == CardDB.cardIDEnum.DAL_011)
+                    hc.shenji++;
 
                     if(hc.discardOnOwnTurnEnd)
                     {

@@ -70,6 +70,7 @@ namespace HREngine.Bots
                 {
                     retval += 12;
                 }
+                else retval += 1;//冻住了没有武器的敌人
             }
 
             //RR card draw value depending on the turn and distance to lethal

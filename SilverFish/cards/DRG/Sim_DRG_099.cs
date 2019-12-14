@@ -31,7 +31,9 @@ namespace HREngine.Bots
                 }
                 if (choice == 1 )
                 {
-                    p.minionGetDamageOrHeal(p.enemyHero, 5);
+                    p.minionGetDamageOrHeal(p.enemyHero, 5); 
+                    p.minionGetDamageOrHeal(p.ownHero, -5);
+
                 }
             }
             else p.drawACard(CardDB.cardName.galakrondthetempest, own.own, false);

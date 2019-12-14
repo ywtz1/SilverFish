@@ -980,6 +980,28 @@ namespace HREngine.Bots
                 {
                     string temp = s.Split(new string[] {"<Tag name=\""}, StringSplitOptions.RemoveEmptyEntries)[1];
                     temp = temp.Split('\"')[0];
+                    continue;
+
+                }
+
+                if (s.Contains("TAG_SCRIPT_DATA_NUM_1"))
+                {
+                    string temp = s.Split(new string[] {"value=\""}, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split('\"')[0];
+                    int ti = Convert.ToInt32(temp);
+                    //if (ti == 1) c.;//数字型升级 eg每回合结束升级
+                    continue;
+
+
+                }
+                if (s.Contains("TAG_SCRIPT_DATA_NUM_2"))
+                {
+                    string temp = s.Split(new string[] {"value=\""}, StringSplitOptions.RemoveEmptyEntries)[1];
+                    temp = temp.Split('\"')[0];
+                    int ti = Convert.ToInt32(temp);
+                    //if (ti == 2) ;//升级
+                    continue;
+                    
 
                 }
 

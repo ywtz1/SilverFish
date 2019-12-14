@@ -24,6 +24,7 @@ namespace HREngine.Bots
             public bool Echo = false;//回响
             public bool Empower = false;//祈求
 
+
             public bool Collectible = true;
             public int Durability = 0;//for weapons
             public bool tank = false;

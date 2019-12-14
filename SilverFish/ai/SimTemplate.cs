@@ -133,10 +133,11 @@
         {
             return;
         }
-        public virtual void inhand(Playfield p, Handmanager.Handcard hc, bool wasOwnCard, Handmanager.Handcard triggerhc)
+        public virtual void inhand(Playfield p, Handmanager.Handcard hc, bool wasOwnCard, Handmanager.Handcard triggerhc)//cardinhand
         {
             return;
         }
+        
 
 
     }

@@ -107,7 +107,7 @@ namespace HREngine.Bots
             //ownHeroGotDmgbyown;
             nzhaomu=p.nzhaomu;//招募数
             nqiqiu=p.nqiqiu;//祈求迦拉克隆
-            Helpfunctions.Instance.ErrorLog("[varadd]祈求迦拉克隆次数："+nqiqiu);
+            if(nqiqiu>0)Helpfunctions.Instance.ErrorLog("[varadd]祈求迦拉克隆次数："+nqiqiu);
         }
         public static void PlayfieldLoadVar(Playfield p)
         {

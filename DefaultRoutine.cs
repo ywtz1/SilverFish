@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -1265,6 +1265,12 @@ def Execute():
                                     if (!found) Log.ErrorFormat("[AI] sourceEntityId is missing");
                                     break;
                             }
+
+                        if (sourceEntityCId == CardDB.cardIDEnum.DRG_099)//克罗斯·龙蹄
+                            {
+                                discoverCards[i].card.CardSimulation.onCardPlay(tmpPlf, true, tmpPlf.ownHero, 0);
+                                bestval = ai.mainTurnSimulator.DoAllMoves(tmpPlf);
+                            }
                             if (bestDiscoverValue <= bestval)
                             {
                                 bestDiscoverValue = bestval;
@@ -1274,7 +1280,8 @@ def Execute():
                     }
                     ai.mainTurnSimulator.setSecondTurnSimu(true, dirtyTwoTurnSim);
                 }
-                if (sourceEntityCId == CardDB.cardIDEnum.UNG_035) dirtychoice = new Random().Next(0, 2);
+                if (sourceEntityCId == CardDB.cardIDEnum.UNG_035) dirtychoice = new Random().Next(0, 2);//好奇的萤根草
+
                 if (dirtychoice == 0) dirtychoice = 1;
                 else if (dirtychoice == 1) dirtychoice = 0;
                 int ttf = (int)(DateTime.Now - tmp).TotalMilliseconds;
@@ -1507,7 +1514,7 @@ def Execute():
             ThreadPool.QueueUserWorkItem(CardNotImplementedHelper.GameOver);
         }
 
-        private void GameEventManagerOnNewGame(object sender, NewGameEventArgs newGameEventArgs)
+        private void GameEventManagerOnNewGame(object sender, NewGameEventArgs newGameEventArgs)//会一直重复执行
         {
             /*Log.InfoFormat("[Set new log file:] Start");
             Hrtprozis prozis = Hrtprozis.Instance;
