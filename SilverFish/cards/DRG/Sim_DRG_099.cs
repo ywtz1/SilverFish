@@ -36,7 +36,39 @@ namespace HREngine.Bots
 
                 }
             }
-            else p.drawACard(CardDB.cardName.galakrondthetempest, own.own, false);
+            else if(own.own)
+            {
+                switch (p.ownHeroStartClass)
+                {
+                    case TAG_CLASS.MAGE:
+                        
+                        break;
+                    case TAG_CLASS.HUNTER:
+                       
+                        break;
+                    case TAG_CLASS.PRIEST:
+                        p.drawACard(CardDB.cardIDEnum.DRG_660, own.own, false);
+                        break;
+                    case TAG_CLASS.SHAMAN:
+                        p.drawACard(CardDB.cardName.galakrondthetempest, own.own, false);//620
+                        break;
+                    case TAG_CLASS.PALADIN:
+                        
+                        break;
+                    case TAG_CLASS.DRUID:
+                        
+                        break;
+                    case TAG_CLASS.WARLOCK:
+                        p.drawACard(CardDB.cardIDEnum.DRG_600, own.own, false);
+                        break;
+                    case TAG_CLASS.WARRIOR:
+                        p.drawACard(CardDB.cardIDEnum.DRG_650, own.own, false);
+                        break;
+                    case TAG_CLASS.ROGUE:
+                        p.drawACard(CardDB.cardIDEnum.DRG_610, own.own, false);
+                        break;
+                }
+            }
         }
    	}
 }

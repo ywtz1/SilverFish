@@ -4,7 +4,21 @@ using System.Text;
 
 namespace HREngine.Bots
 {
-	class Sim_BOT_531  : SimTemplate
+	class Sim_BOT_531 : SimTemplate //星界密使
 	{
+	    //    战吼：</b>在本回合中，你的下一个法术将获得<b>法术伤害+2
+	 
+	    public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
+	    {
+	        if (own.own)
+	        {
+	            p.spellpower += 2;
+	        }
+	        else
+	        {
+	            p.enemyspellpower += 2;
+	        }
+	    }
 	}
+
 }

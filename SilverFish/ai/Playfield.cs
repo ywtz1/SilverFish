@@ -6681,6 +6681,17 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         /// <param name="own"></param>
         /// <param name="spawnKid">call kid triggered by another minion</param>
         /// <param name="oneMoreIsAllowed">for deathrattle minion to call kid(such as Voidlord)</param>
+        public void callKid(CardDB.Card card, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
+        {
+            this.CallKid(card,zonePosition,own,spawnKid,oneMoreIsAllowed);
+        }
+
+        public void CallKid(CardDB.cardIDEnum cardid, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
+        {
+            CardDB.Card card = CardDB.Instance.getCardDataFromID(cardid);
+            this.CallKid(card,zonePosition,own,spawnKid,oneMoreIsAllowed);
+
+        }
         public void CallKid(CardDB.Card card, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
         {
             
@@ -6722,47 +6733,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
 
         }
-        public void CallKid(CardDB.cardIDEnum cardid, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
-        {
-            CardDB.Card card = CardDB.Instance.getCardDataFromID(cardid);
-            int allowed = 7;
-            allowed += (oneMoreIsAllowed) ? 1 : 0;
 
-            if (own)
-            {
-                if (this.ownMinions.Count >= allowed)
-                {
-                    if (spawnKid) this.evaluatePenality += 10;
-                    else this.evaluatePenality += 20;
-                    return;
-                }
-            }
-            else
-            {
-                if (this.enemyMinions.Count >= allowed)
-                {
-                    if (spawnKid) this.evaluatePenality -= 10;
-                    else this.evaluatePenality -= 20;
-                    return;
-                }
-            }
-            int mobplace = zonePosition + 1;
-
-            //create minion (+triggers)
-            Handmanager.Handcard hc = new Handmanager.Handcard(card)
-            {
-                entity = this.getNextEntity()
-            };
-            Minion m = createNewMinion(hc, mobplace, own);
-            //put it on battle field (+triggers)
-            addMinionToBattlefield(m);
-            if((TAG_RACE)m.handcard.card.race ==TAG_RACE.MECHANICAL && 
-            (this.penpen|| this.ownHero.handcard.card.name == CardDB.cardName.drboommadgenius))//penpen砰砰突袭
-            this.minionGetRush(m);
-
-
-
-        }
         
         public void minionGetFrozen(Minion target)
         {
@@ -6983,7 +6954,14 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         public void qiqiu()
         {
             this.nqiqiu++;
-            this.evaluatePenality-=2;
+            if(this.nqiqiu<2)this.evaluatePenality-=2;
+            if(this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p5||
+                this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p4||
+                this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p3||
+                this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p2||
+                this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p)
+            {}
+            else if(this.nqiqiu<4)this.evaluatePenality-=2;
             //Helpfunctions.Instance.ErrorLog("祈求迦拉克隆次数："+this.nqiqiu);
 
             
