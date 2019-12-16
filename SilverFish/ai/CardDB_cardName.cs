@@ -7916,6 +7916,7 @@ retiredtreasurehunter,
 upgradedfauna,
 newrecruits,
 relicologist,
+emptylootbox,
 
 
         }
