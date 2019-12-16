@@ -28,11 +28,13 @@ namespace HREngine.Bots
             {
                 p.CallKid(kid2, posi, ownplay, false);
                 p.CallKid(kid2, posi, ownplay, false);
+                p.evaluatePenality+=10;
             }
             else 
             {
                 p.CallKid(kid1, posi, ownplay, false);
                 p.CallKid(kid1, posi, ownplay, false);
+                p.evaluatePenality+=20;
             }
         }
         public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
