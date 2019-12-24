@@ -3838,6 +3838,7 @@
             DamageRandomDatabase.Add(CardDB.cardName.rumblingelemental, 1);
             DamageRandomDatabase.Add(CardDB.cardName.shadowboxer, 1);
             DamageRandomDatabase.Add(CardDB.cardName.shipscannon, 2);
+            DamageRandomDatabase.Add(CardDB.cardName.skybarge, 2);
             DamageRandomDatabase.Add(CardDB.cardName.spreadingmadness, 1);
             DamageRandomDatabase.Add(CardDB.cardName.throwrocks, 3);
             DamageRandomDatabase.Add(CardDB.cardName.timepieceofhorror, 1);
@@ -4486,7 +4487,7 @@
 
         private void setupUsefulNeedKeepDatabase()
         {
-            UsefulNeedKeepDatabase.Add(CardDB.cardName.skybarge, 4);
+            
             UsefulNeedKeepDatabase.Add(CardDB.cardName.phasestalker, 4);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.acidmaw, 4);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.addledgrizzly, 9);
@@ -4590,6 +4591,7 @@
             UsefulNeedKeepDatabase.Add(CardDB.cardName.shadowboxer, 11);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.shakuthecollector, 25);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.shipscannon, 10);
+            UsefulNeedKeepDatabase.Add(CardDB.cardName.skybarge, 10);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.siegeengine, 8);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.siltfinspiritwalker, 5);
             UsefulNeedKeepDatabase.Add(CardDB.cardName.silverhandregent, 14);
@@ -4933,6 +4935,7 @@
             specialMinions.Add(CardDB.cardName.shiftingshade, 0);
             specialMinions.Add(CardDB.cardName.shimmeringtempest, 0);
             specialMinions.Add(CardDB.cardName.shipscannon, 0);
+            specialMinions.Add(CardDB.cardName.skybarge, 0);
             specialMinions.Add(CardDB.cardName.siltfinspiritwalker, 0);
             specialMinions.Add(CardDB.cardName.silverhandregent, 0);
             specialMinions.Add(CardDB.cardName.smalltimebuccaneer, 0);
@@ -5629,6 +5632,7 @@
             silenceTargets.Add(CardDB.cardName.shiftingshade, 0);
             silenceTargets.Add(CardDB.cardName.shimmeringtempest, 0);
             silenceTargets.Add(CardDB.cardName.shipscannon, 0);
+            silenceTargets.Add(CardDB.cardName.skybarge, 0);
             silenceTargets.Add(CardDB.cardName.siegeengine, 0);
             silenceTargets.Add(CardDB.cardName.siltfinspiritwalker, 0);
             silenceTargets.Add(CardDB.cardName.silverhandregent, 0);
@@ -6144,6 +6148,7 @@
             GangUpDatabase.Add(CardDB.cardName.shadowfiend, 1);
             GangUpDatabase.Add(CardDB.cardName.shakuthecollector, 5);
             GangUpDatabase.Add(CardDB.cardName.shipscannon, 0);
+            GangUpDatabase.Add(CardDB.cardName.skybarge, 0);
             GangUpDatabase.Add(CardDB.cardName.siltfinspiritwalker, 0);
             GangUpDatabase.Add(CardDB.cardName.sludgebelcher, 5);
             GangUpDatabase.Add(CardDB.cardName.sneedsoldshredder, 5);

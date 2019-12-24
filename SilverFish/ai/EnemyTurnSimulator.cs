@@ -528,6 +528,15 @@
                             p.minionGetDamageOrHeal(target, 1);
                         }
                         continue;
+                    case CardDB.cardName.skybarge:
+                        if (p.enemyAnzCards >= 2)
+                        {
+                            Minion target = p.ownHero;
+                            if (p.ownMinions.Count > 0) target = p.searchRandomMinion(p.ownMinions, searchmode.searchLowestHP);
+                            if (target == null) target = p.ownHero;
+                            p.minionGetDamageOrHeal(target, 1);
+                        }
+                        continue;
                     case CardDB.cardName.tundrarhino:
                         p.CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_125), p.enemyMinions.Count, false, true, true);
                         continue;

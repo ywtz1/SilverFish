@@ -1275,6 +1275,7 @@ def Execute():
                             {
                                 bestDiscoverValue = bestval;
                                 dirtychoice = i;
+                                if(i==-1)dirtychoice=0;
                             }
                         }
                     }
