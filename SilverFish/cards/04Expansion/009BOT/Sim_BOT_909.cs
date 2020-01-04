@@ -11,7 +11,7 @@ namespace HREngine.Bots
         public override void onCardPlay(Playfield p, bool ownplay, Minion target, int choice)
         {
 
-                foreach ( KeyValuePair<CardDB.cardIDEnum, int> cn in p.prozis.turnDeck)
+                /*foreach ( KeyValuePair<CardDB.cardIDEnum, int> cn in p.prozis.turnDeck)
                 {
                     c = CardDB.Instance.getCardDataFromID(cn.Key);
 
@@ -24,8 +24,9 @@ namespace HREngine.Bots
                     }
                 }
                 if(c2!=null)p.drawACard(c2.cardIDenum, ownplay);
-                if(c3!=null)p.drawACard(c3.cardIDenum, ownplay);
-                //p.drawACard(CardDB.cardName.unknown, ownplay);
+                if(c3!=null)p.drawACard(c3.cardIDenum, ownplay);*/
+                p.drawACard(CardDB.cardName.unknown, ownplay);
+                p.drawACard(CardDB.cardName.unknown, ownplay);
 
 
         }
