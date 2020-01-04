@@ -6942,8 +6942,23 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     this.minionGetSilenced(mown);
                     this.minionGetDestroyed(mown);
                     //break;
-                    if(m.Ready)
-                    this.evaluatePenality -= (mown.Attack+mown.HealthPoints)*2;//鼓励使用磁力
+                    
+                    //鼓励使用磁力
+
+                    int minionvalue = m.HealthPoints * 2 + m.Attack;
+                    if (m.divineshild) minionvalue = minionvalue * 3 / 2;
+                    
+                    if (m.windfury) minionvalue+= m.Attack;
+                    if (m.Ready) minionvalue *=2;
+                    if(!m.silenced)
+                    {
+                        //if(m.reborn) minionvalue += m.Attack +1;
+                        minionvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
+                        //if(m.handcard.card.deathrattle) minionvalue+= 1;
+                    }
+
+                    this.evaluatePenality -= minionvalue;
+
                     break;
                    }
               }

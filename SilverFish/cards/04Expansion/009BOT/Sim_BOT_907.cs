@@ -21,6 +21,7 @@ namespace HREngine.Bots
                         //hc.addHp++;
                         //p.anzOwnExtraAngrHp += 2;
                         hc.manacost--;
+                        p.evaluatePenality -= 2;
                     }
                 }
             }
