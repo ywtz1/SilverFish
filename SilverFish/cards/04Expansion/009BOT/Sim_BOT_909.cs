@@ -25,8 +25,8 @@ namespace HREngine.Bots
                 }
                 if(c2!=null)p.drawACard(c2.cardIDenum, ownplay);
                 if(c3!=null)p.drawACard(c3.cardIDenum, ownplay);*/
-                p.drawACard(CardDB.cardName.unknown, ownplay);
-                p.drawACard(CardDB.cardName.unknown, ownplay);
+                p.drawACard(CardDB.cardName.annoyotron, ownplay);//吵吵
+                p.drawACard(CardDB.cardName.galvanizer, ownplay);//通电机器人
 
 
         }

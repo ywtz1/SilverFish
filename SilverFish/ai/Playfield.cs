@@ -6945,10 +6945,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     
                     //鼓励使用磁力
 
-                    int minionvalue = m.HealthPoints * 2 + m.Attack;
+                    int minionvalue = mown.HealthPoints * 2 + mown.Attack;
                     if (m.divineshild) minionvalue = minionvalue * 3 / 2;
                     
-                    if (m.windfury) minionvalue+= m.Attack;
+                    if (m.windfury) minionvalue+= mown.Attack;
                     if (m.Ready) minionvalue *=2;
                     if(!m.silenced)
                     {
