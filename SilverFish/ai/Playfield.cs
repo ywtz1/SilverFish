@@ -6949,11 +6949,11 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     if (m.divineshild) minionvalue = minionvalue * 3 / 2;
                     
                     if (m.windfury) minionvalue+= mown.Attack;
-                    if (m.Ready) minionvalue *=2;
+                    if (m.Ready&&!m.frozen) minionvalue *=2;
                     if(!m.silenced)
                     {
                         //if(m.reborn) minionvalue += m.Attack +1;
-                        minionvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
+                        //minionvalue += prozis.penman.getValueOfUsefulNeedKeepPriority(m.handcard.card.name);
                         //if(m.handcard.card.deathrattle) minionvalue+= 1;
                     }
 
