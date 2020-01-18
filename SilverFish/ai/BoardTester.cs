@@ -1,4 +1,4 @@
-﻿using SilverFish.Helpers;
+﻿using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -709,7 +709,7 @@ namespace HREngine.Bots
                         tempminion.entitiyID = ent;
                         tempminion.handcard.entity = ent;
                         tempminion.Attack = attack;
-                        tempminion.HealthPoints = hp;
+                        tempminion.Hp = hp;
                         tempminion.maxHp = maxhp;
                         tempminion.Ready = ready;
                         tempminion.numAttacksThisTurn = natt;
@@ -864,7 +864,7 @@ namespace HREngine.Bots
                         tempminion.entitiyID = ent;
                         tempminion.handcard.entity = ent;
                         tempminion.Attack = attack;
-                        tempminion.HealthPoints = hp;
+                        tempminion.Hp = hp;
                         tempminion.maxHp = maxhp;
                         tempminion.Ready = ready;
                         tempminion.numAttacksThisTurn = natt;
@@ -983,7 +983,7 @@ namespace HREngine.Bots
             LogHelper.WriteCombatLog("rdy");
 
             //Set default settings for behaviour
-            Settings.Instance.SetSettings(this.botBehavior);
+            Settings.Instance.setSettings(this.botBehavior);
             Settings.Instance.test = true;
 
             //Apply settings from this UILogg
@@ -1010,7 +1010,7 @@ namespace HREngine.Bots
 
 
             //set Simulation stuff
-            Ai.Instance.botBase = SilverFishBot.Instance.getBehaviorByName(this.botBehavior);
+            Ai.Instance.botBase = Silverfish.Instance.getBehaviorByName(this.botBehavior);
             RulesEngine.Instance.setCardIdRulesGame(heroNametoClass(this.ownheroname), heroNametoClass(this.enemyheroname));
             RulesEngine.Instance.setRulesTurn((gTurn + 1) / 2);
             Ai.Instance.setMaxWide(this.maxwide);
@@ -1057,7 +1057,7 @@ namespace HREngine.Bots
             this.enemyHero.cardClass = heroNametoClass(this.enemyheroname);
             
             this.ownHero.Attack = ownHeroAttack;
-            this.ownHero.HealthPoints = ownherohp;
+            this.ownHero.Hp = ownherohp;
             this.ownHero.armor = ownherodefence;
             this.ownHero.frozen = ownHeroFrozen;
             this.ownHero.immuneWhileAttacking = ownHeroimmunewhileattacking;
@@ -1067,7 +1067,7 @@ namespace HREngine.Bots
             this.ownHero.stealth = ownHeroStealth;
 
             this.enemyHero.Attack = enemyWeapon.Angr;
-            this.enemyHero.HealthPoints = enemyherohp;
+            this.enemyHero.Hp = enemyherohp;
             this.enemyHero.frozen = enemyFrozen;
             this.enemyHero.armor = enemyherodefence;
             this.enemyHero.immune = enemyHeroImmune;
@@ -1109,7 +1109,7 @@ namespace HREngine.Bots
                 zonepos = zonepos,
                 entitiyID = hc.entity,
                 Attack = hc.card.Attack,
-                HealthPoints = hc.card.Health,
+                Hp = hc.card.Health,
                 maxHp = hc.card.Health,
                 name = hc.card.name,
                 playedThisTurn = true,
@@ -1137,7 +1137,7 @@ namespace HREngine.Bots
 
             if (m.name == CardDB.cardName.lightspawn)
             {
-                m.Attack = m.HealthPoints;
+                m.Attack = m.Hp;
             }
             return m;
         }

@@ -77,18 +77,18 @@
                 havedonesomething = false;
                 foreach (Playfield p in temp)
                 {
-                    if (p.complete || p.ownHero.HealthPoints <= 0)
+                    if (p.complete || p.ownHero.Hp <= 0)
                     {
                         continue;
                     }
 
-                    List<Action> actions = movegen.GetMoveList(p, usePenalityManager, useCutingTargets, true);
+                    List<Action> actions = movegen.getMoveList(p, usePenalityManager, useCutingTargets, true);
                     foreach (Action a in actions)
                     {
                         havedonesomething = true;
                         Playfield pf = new Playfield(p);
                         pf.doAction(a);
-                        if (pf.ownHero.HealthPoints > 0) this.posmoves.Add(pf);
+                        if (pf.ownHero.Hp > 0) this.posmoves.Add(pf);
                         if (totalboards > 0) this.calculated++;
                     }
 
@@ -214,7 +214,7 @@
                         //retvalues.Add(t);
                         retvaluesPrio.Add(t);
                         priomins = true;
-                        //LogHelper.WriteCombatLog(m.name + " is added to targetlist");
+                        //help.logg(m.name + " is added to targetlist");
                         continue;
                     }*/
 
@@ -225,13 +225,13 @@
                     foreach (Minion mnn in temp)
                     {
                         // special minions are allowed to attack in silended and unsilenced state!
-                        //LogHelper.WriteCombatLog(mnn.silenced + " " + m.silenced + " " + mnn.name + " " + m.name + " " + penman.specialMinions.ContainsKey(m.name));
+                        //help.logg(mnn.silenced + " " + m.silenced + " " + mnn.name + " " + m.name + " " + penman.specialMinions.ContainsKey(m.name));
 
                         bool otherisSpecial = mnn.handcard.card.isSpecialMinion;
 
                         if ((!isSpecial || (isSpecial && m.silenced)) && (!otherisSpecial || (otherisSpecial && mnn.silenced))) // both are not special, if they are the same, dont add
                         {
-                            if (mnn.Attack == m.Attack && mnn.HealthPoints == m.HealthPoints && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal) goingtoadd = false;
+                            if (mnn.Attack == m.Attack && mnn.Hp == m.Hp && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal) goingtoadd = false;
                             continue;
                         }
 
@@ -242,7 +242,7 @@
                                 continue;
                             }
                             // same name -> test whether they are equal
-                            if (mnn.Attack == m.Attack && mnn.HealthPoints == m.HealthPoints && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal) goingtoadd = false;
+                            if (mnn.Attack == m.Attack && mnn.Hp == m.Hp && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal) goingtoadd = false;
                             continue;
                         }
 
@@ -252,17 +252,17 @@
                     {
                         addedmins.Add(m);
                         retvalues.Add(t);
-                        //LogHelper.WriteCombatLog(m.name + " " + m.id +" is added to targetlist");
+                        //help.logg(m.name + " " + m.id +" is added to targetlist");
                     }
                     else
                     {
-                        //LogHelper.WriteCombatLog(m.name + " is not needed to attack");
+                        //help.logg(m.name + " is not needed to attack");
                         continue;
                     }
 
                 }
             }
-            //LogHelper.WriteCombatLog("end targetcutting");
+            //help.logg("end targetcutting");
             if (priomins) return retvaluesPrio;
 
             return retvalues;

@@ -12,7 +12,7 @@ enfacehp = 30;  // hp of enemy when your hero is allowed to attack the enemy fac
 // 5 - don't attack face until enfacehp (except: you have any* weapon generating card in hand with attack > 1 (or if they both have attack = 1))(* except Upgrade!)
 weaponOnlyAttackMobsUntilEnfacehp = 5;
 
-maxwide = 9000;   // number of boards which are taken to the next deep-lvl
+maxwide = 7000;   // number of boards which are taken to the next deep-lvl
 playaround = true;  // play around some enemys aoe-spells
 // these two parameters are value between 0 and 100 (0 <= Your_Value <= 100)
 playaroundprob = 50;    // probability where the enemy NOT plays the aoe-spell: 100 - enemy never plays aoe-spell, 0 - always uses

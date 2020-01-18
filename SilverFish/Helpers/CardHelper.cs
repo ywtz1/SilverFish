@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HREngine.Bots;
-using SilverFish.cards._04Expansion._012ULD;
+using Silverfish.cards._04Expansion._012ULD;
 
-using SilverFish.cards._04Expansion._006ICC;
-using SilverFish.cards._04Expansion._008GIL;
-namespace SilverFish.Helpers
+using Silverfish.cards._04Expansion._006ICC;
+using Silverfish.cards._04Expansion._008GIL;
+namespace Silverfish.Helpers
 {
     public class CardHelper
     {
@@ -19,7 +19,7 @@ namespace SilverFish.Helpers
             AssemblyTypes = assembly.GetTypes();
         }
 
-        public static SimTemplate GetCardSimulation(CardDB.cardIDEnum tempCardIdEnum)
+        public static SimTemplate Getsim_card(CardDB.cardIDEnum tempCardIdEnum)
         {
             var result = new SimTemplate();
 
@@ -64,9 +64,9 @@ namespace SilverFish.Helpers
             return collection.ToList();
         }
 
-        public static bool IsCardSimulationImplemented(SimTemplate cardSimulation)
+        public static bool Issim_cardImplemented(SimTemplate sim_card)
         {
-            var type = cardSimulation.GetType();
+            var type = sim_card.GetType();
             var baseType = typeof(SimTemplate);
             bool implemented = type.IsSubclassOf(baseType);
             return implemented;

@@ -88,7 +88,7 @@ namespace HREngine.Bots
         public bool cantAttackHeroes = false;
         public bool cantAttack = false;
 
-        public int HealthPoints { get; set; }
+        public int Hp { get; set; }
 
         public int maxHp = 0;
         public int armor = 0;
@@ -186,7 +186,7 @@ namespace HREngine.Bots
             this.enemyPowerWordGlory = m.enemyPowerWordGlory;
             this.spellpower = m.spellpower;
 
-            this.HealthPoints = m.HealthPoints;
+            this.Hp = m.Hp;
             this.maxHp = m.maxHp;
             this.armor = m.armor;
 
@@ -275,7 +275,7 @@ namespace HREngine.Bots
             this.enemyPowerWordGlory = m.enemyPowerWordGlory;
             this.spellpower = m.spellpower;
 
-            this.HealthPoints = m.HealthPoints;
+            this.Hp = m.Hp;
             this.maxHp = m.maxHp;
             this.armor = m.armor;
 
@@ -327,7 +327,7 @@ namespace HREngine.Bots
         /// <param name="dontCalcLostDmg"></param>
         public void getDamageOrHeal(int dmg, Playfield p, bool isMinionAttack, bool dontCalcLostDmg)
         {
-            if (this.HealthPoints <= 0) return;
+            if (this.Hp <= 0) return;
 
             if (this.immune && dmg > 0 || this.untouchable) return;
             
@@ -387,11 +387,11 @@ namespace HREngine.Bots
                     }
                 }
 
-                int copy = this.HealthPoints;
+                int copy = this.Hp;
                 if (heal > 0)
                 {
-                    this.HealthPoints = Math.Min(this.maxHp, this.HealthPoints + heal);
-                    if (copy < this.HealthPoints)
+                    this.Hp = Math.Min(this.maxHp, this.Hp + heal);
+                    if (copy < this.Hp)
                     {
                         p.tempTrigger.charsGotHealed++;
                         this.anzGotHealed++;
@@ -401,12 +401,12 @@ namespace HREngine.Bots
                 else if (dmg > 0)
                 {
                     int rest = this.armor - dmg;
-                    if (rest < 0) this.HealthPoints += rest;
+                    if (rest < 0) this.Hp += rest;
                     this.armor = Math.Max(0, this.armor - dmg);
 
 
-                    if (this.cantLowerHPbelowONE && this.HealthPoints <= 0) this.HealthPoints = 1;
-                    if (copy > this.HealthPoints)
+                    if (this.cantLowerHPbelowONE && this.Hp <= 0) this.Hp = 1;
+                    if (copy > this.Hp)
                     {
                         this.anzGotDmg++;
                         this.GotDmgValue += dmg;
@@ -420,7 +420,7 @@ namespace HREngine.Bots
                             p.tempTrigger.enemyMinionsGotDmg++;
                             p.tempTrigger.enemyHeroGotDmg++;
                         }
-                        p.secretTrigger_HeroGotDmg(this.own, copy - this.HealthPoints);
+                        p.secretTrigger_HeroGotDmg(this.own, copy - this.Hp);
                     }
                 }
                 return;
@@ -448,37 +448,37 @@ namespace HREngine.Bots
                 return;
             }
 
-            if (this.cantLowerHPbelowONE && damage >= 1 && damage >= this.HealthPoints) damage = this.HealthPoints - 1;
+            if (this.cantLowerHPbelowONE && damage >= 1 && damage >= this.Hp) damage = this.Hp - 1;
 
-            if (!own && !dontCalcLostDmg && this.HealthPoints < damage && p.turnCounter == 0)
+            if (!own && !dontCalcLostDmg && this.Hp < damage && p.turnCounter == 0)
             {
                 if (isMinionAttack)
                 {
-                    p.lostDamage += (damage - this.HealthPoints);
+                    p.lostDamage += (damage - this.Hp);
                 }
                 else
                 {
-                    p.lostDamage += (damage - this.HealthPoints) * (damage - this.HealthPoints);
+                    p.lostDamage += (damage - this.Hp) * (damage - this.Hp);
                 }
             }
 
-            int hpcopy = this.HealthPoints;
+            int hpcopy = this.Hp;
 
             if (damage >= 1)
             {
-                this.HealthPoints = this.HealthPoints - damage;
+                this.Hp = this.Hp - damage;
             }
 
             if (heal >= 1)
             {
-                if (own && !dontCalcLostDmg && heal <= 999 && this.HealthPoints + heal > this.maxHp) p.lostHeal += this.HealthPoints + heal - this.maxHp;
+                if (own && !dontCalcLostDmg && heal <= 999 && this.Hp + heal > this.maxHp) p.lostHeal += this.Hp + heal - this.maxHp;
 
-                this.HealthPoints = this.HealthPoints + Math.Min(heal, this.maxHp - this.HealthPoints);
+                this.Hp = this.Hp + Math.Min(heal, this.maxHp - this.Hp);
             }
 
 
 
-            if (this.HealthPoints > hpcopy)
+            if (this.Hp > hpcopy)
             {
                 //minionWasHealed
                 p.tempTrigger.minionsGotHealed++;
@@ -486,7 +486,7 @@ namespace HREngine.Bots
                 this.anzGotHealed++;
                 this.GotHealedValue += heal;
             }
-            else if (this.HealthPoints < hpcopy)
+            else if (this.Hp < hpcopy)
             {
                 if (this.own) p.tempTrigger.ownMinionsGotDmg++;
                 else p.tempTrigger.enemyMinionsGotDmg++;
@@ -495,16 +495,16 @@ namespace HREngine.Bots
                 {
                     if (p.anzAcidmaw == 1)
                     {
-                        if (this.name != CardDB.cardName.acidmaw) this.HealthPoints = 0;
+                        if (this.name != CardDB.cardName.acidmaw) this.Hp = 0;
                     }
-                    else this.HealthPoints = 0;
+                    else this.Hp = 0;
                 }
 
                 this.anzGotDmg++;
                 this.GotDmgValue += dmg;
             }
 
-            if (this.maxHp == this.HealthPoints)
+            if (this.maxHp == this.Hp)
             {
                 this.wounded = false;
             }
@@ -517,20 +517,20 @@ namespace HREngine.Bots
 
             if (this.name == CardDB.cardName.lightspawn && !this.silenced)
             {
-                this.Attack = this.HealthPoints;
+                this.Attack = this.Hp;
             }
 
             if (woundedbefore && !this.wounded)
             {
-                this.handcard.card.CardSimulation.onEnrageStop(p, this);
+                this.handcard.card.sim_card.onEnrageStop(p, this);
             }
 
             if (!woundedbefore && this.wounded)
             {
-                this.handcard.card.CardSimulation.onEnrageStart(p, this);
+                this.handcard.card.sim_card.onEnrageStart(p, this);
             }
             
-            if (this.HealthPoints <= 0)
+            if (this.Hp <= 0)
             {
                 this.minionDied(p);
             }
@@ -674,7 +674,7 @@ namespace HREngine.Bots
             //delete enrage (if minion is silenced the first time)
             if (wounded && handcard.card.Enrage && !silenced)
             {
-                handcard.card.CardSimulation.onEnrageStop(p, this);
+                handcard.card.sim_card.onEnrageStop(p, this);
             }
 
             //reset attack
@@ -685,14 +685,14 @@ namespace HREngine.Bots
             //reset hp and heal it
             if (maxHp < handcard.card.Health)//minion has lower maxHp as his card -> heal his hp
             {
-                HealthPoints += handcard.card.Health - maxHp; //heal minion
+                Hp += handcard.card.Health - maxHp; //heal minion
             }
             maxHp = handcard.card.Health;
-            if (HealthPoints > maxHp) HealthPoints = maxHp;
+            if (Hp > maxHp) Hp = maxHp;
 
             if (!silenced)//minion WAS not silenced, deactivate his aura
             {
-                handcard.card.CardSimulation.onAuraEnds(p, this);
+                handcard.card.sim_card.onAuraEnds(p, this);
             }
 
             silenced = true;
@@ -724,15 +724,15 @@ namespace HREngine.Bots
             {
                 if (m.taunt && !m.silenced)
                 {
-                    if (this.HealthPoints > m.HealthPoints && (m.HealthPoints + m.Attack + m.Attack * (m.windfury ? 1 : 0)) > (targetTaumt.HealthPoints + targetTaumt.Attack + targetTaumt.Attack * (targetTaumt.windfury ? 1 : 0))) targetTaumt = m;
+                    if (this.Hp > m.Hp && (m.Hp + m.Attack + m.Attack * (m.windfury ? 1 : 0)) > (targetTaumt.Hp + targetTaumt.Attack + targetTaumt.Attack * (targetTaumt.windfury ? 1 : 0))) targetTaumt = m;
                 }
                 else
                 {
-                    if (this.HealthPoints > m.HealthPoints && (m.HealthPoints + m.Attack + m.Attack * (m.windfury ? 1 : 0)) > (target.HealthPoints + target.Attack + target.Attack * (target.windfury ? 1 : 0))) target = m;
+                    if (this.Hp > m.Hp && (m.Hp + m.Attack + m.Attack * (m.windfury ? 1 : 0)) > (target.Hp + target.Attack + target.Attack * (target.windfury ? 1 : 0))) target = m;
                 }
             }
-            if (targetTaumt.HealthPoints > 0) return targetTaumt;
-            if (target.HealthPoints > 0) return target;
+            if (targetTaumt.Hp > 0) return targetTaumt;
+            if (target.Hp > 0) return target;
             return null;
         }
 

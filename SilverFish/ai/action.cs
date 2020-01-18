@@ -9,7 +9,7 @@
 //todo deathlord-guessing
 //todo kelthuzad dont know which minion died this turn in rl
 
- using SilverFish.Helpers;
+ using Silverfish.Helpers;
 
  namespace HREngine.Bots
 {
@@ -49,8 +49,8 @@
             this.target = targetM;
             this.penalty = pen;
             this.druidchoice = choice;
-            if (ownM != null) prevHpOwn = ownM.HealthPoints;
-            if (targetM != null) prevHpTarget = targetM.HealthPoints;
+            if (ownM != null) prevHpOwn = ownM.Hp;
+            if (targetM != null) prevHpTarget = targetM.Hp;
         }
         
         public Action(Action a)
@@ -88,26 +88,26 @@
 
                     if (this.druidchoice >= 1) playaction += " choice " + this.druidchoice;
 
-                    LogHelper.WriteCombatLog(playaction);
+                    help.writeToBuffer(playaction);
                 }
                 if (this.actionType == actionEnum.attackWithMinion)
                 {
-                    LogHelper.WriteCombatLog("attack " + this.own.entitiyID + " enemy " + this.target.entitiyID);
+                    help.writeToBuffer("attack " + this.own.entitiyID + " enemy " + this.target.entitiyID);
                 }
                 if (this.actionType == actionEnum.attackWithHero)
                 {
-                    LogHelper.WriteCombatLog("heroattack " + this.target.entitiyID);
+                    help.writeToBuffer("heroattack " + this.target.entitiyID);
                 }
                 if (this.actionType == actionEnum.useHeroPower)
                 {
 
                     if (this.target != null)
                     {
-                        LogHelper.WriteCombatLog("useability on target " + this.target.entitiyID);
+                        help.writeToBuffer("useability on target " + this.target.entitiyID);
                     }
                     else
                     {
-                        LogHelper.WriteCombatLog("useability");
+                        help.writeToBuffer("useability");
                     }
                 }
                 return;
@@ -129,25 +129,25 @@
 
                 if (this.druidchoice >= 1) playaction += " choice " + this.druidchoice;
 
-                LogHelper.WriteCombatLog(playaction);
+                help.logg(playaction);
             }
             if (this.actionType == actionEnum.attackWithMinion)
             {
-                LogHelper.WriteCombatLog("attacker: " + this.own.entitiyID + " enemy: " + this.target.entitiyID);
+                help.logg("attacker: " + this.own.entitiyID + " enemy: " + this.target.entitiyID);
             }
             if (this.actionType == actionEnum.attackWithHero)
             {
-                LogHelper.WriteCombatLog("attack with hero, enemy: " + this.target.entitiyID);
+                help.logg("attack with hero, enemy: " + this.target.entitiyID);
             }
             if (this.actionType == actionEnum.useHeroPower)
             {
-                LogHelper.WriteCombatLog("useability ");
+                help.logg("useability ");
                 if (this.target != null)
                 {
-                    LogHelper.WriteCombatLog("on enemy: " + this.target.entitiyID);
+                    help.logg("on enemy: " + this.target.entitiyID);
                 }
             }
-            LogHelper.WriteCombatLog("");
+            help.logg("");
         }
         
         public string printString()

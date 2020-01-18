@@ -34,7 +34,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0" Content="DefaultBehavior: "  Margin="3,5,3,1" ToolTipService.ToolTip="Behavior by default."/>
+                    <Label Grid.Row="0" Grid.Column="0" Content="策略模式切换: "  Margin="3,5,3,1" ToolTipService.ToolTip="模式选择."/>
                     <ComboBox x:Name="defaultBehaviorComboBox1" Grid.Row="0" Grid.Column="1" Margin="3" IsEditable="False" />
                 </Grid>
                 <Grid>
@@ -51,19 +51,19 @@
         				<ColumnDefinition Width="Auto" />
         			</Grid.ColumnDefinitions>
 
-        			<Label Grid.Row="0" Grid.Column="0" Content="ArenaPreferredClass1: "  Margin="3,5,3,1" ToolTipService.ToolTip="The first hero choice for arena if present."/>
+        			<Label Grid.Row="0" Grid.Column="0" Content="竞技场优先种族1: "  Margin="3,5,3,1" ToolTipService.ToolTip="第一优先种族."/>
         			<ComboBox x:Name="ArenaPreferredClass1ComboBox" Grid.Row="0" Grid.Column="1" Margin="3" IsEditable="False" />
 
-        			<Label Grid.Row="1" Grid.Column="0" Content="ArenaPreferredClass2: "  Margin="3,5,3,1" ToolTipService.ToolTip="The second hero choice for arena if present."/>
+        			<Label Grid.Row="1" Grid.Column="0" Content="竞技场优先种族2: "  Margin="3,5,3,1" ToolTipService.ToolTip="第二优先种族."/>
         			<ComboBox x:Name="ArenaPreferredClass2ComboBox" Grid.Row="1" Grid.Column="1" Margin="3" IsEditable="False" />
 
-        			<Label Grid.Row="2" Grid.Column="0" Content="ArenaPreferredClass3: "  Margin="3,5,3,1" ToolTipService.ToolTip="The third hero choice for arena if present."/>
+        			<Label Grid.Row="2" Grid.Column="0" Content="竞技场优先种族3: "  Margin="3,5,3,1" ToolTipService.ToolTip="第三优先种族."/>
         			<ComboBox x:Name="ArenaPreferredClass3ComboBox" Grid.Row="2" Grid.Column="1" Margin="3" IsEditable="False" />
 
-        			<Label Grid.Row="3" Grid.Column="0" Content="ArenaPreferredClass4: "  Margin="3,5,3,1" ToolTipService.ToolTip="The fourth hero choice for arena if present."/>
+        			<Label Grid.Row="3" Grid.Column="0" Content="竞技场优先种族4: "  Margin="3,5,3,1" ToolTipService.ToolTip="第四优先种族."/>
         			<ComboBox x:Name="ArenaPreferredClass4ComboBox" Grid.Row="3" Grid.Column="1" Margin="3" IsEditable="False" />
 
-        			<Label Grid.Row="4" Grid.Column="0" Content="ArenaPreferredClass5: "  Margin="3,5,3,1" ToolTipService.ToolTip="The fifth hero choice for arena if present."/>
+        			<Label Grid.Row="4" Grid.Column="0" Content="竞技场优先种族5: "  Margin="3,5,3,1" ToolTipService.ToolTip="第五优先种族."/>
         			<ComboBox x:Name="ArenaPreferredClass5ComboBox" Grid.Row="4" Grid.Column="1" Margin="3" IsEditable="False" />
         		</Grid>
         	</StackPanel>

@@ -1,4 +1,4 @@
-using SilverFish.Helpers;
+﻿using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -569,8 +569,8 @@ namespace HREngine.Bots
             this.enemyDeckSize = prozis.enemyDeckSize;
 
             //need the following for manacost-calculation
-            this.ownHeroHpStarted = this.ownHero.HealthPoints;
-            this.enemyHeroHpStarted = this.enemyHero.HealthPoints;
+            this.ownHeroHpStarted = this.ownHero.Hp;
+            this.enemyHeroHpStarted = this.enemyHero.Hp;
             this.ownWeaponAttackStarted = this.ownWeapon.Angr;
             this.ownCardsCountStarted = this.owncards.Count;
             this.enemyCardsCountStarted = this.enemyAnzCards;
@@ -613,7 +613,7 @@ namespace HREngine.Bots
 
             foreach (Minion m in this.ownMinions)
             {
-                if (m.HealthPoints < m.maxHp && m.HealthPoints >= 1) this.startedWithDamagedMinions = true;
+                if (m.Hp < m.maxHp && m.Hp >= 1) this.startedWithDamagedMinions = true;
 
                 this.spellpowerStarted += m.spellpower;
                 if (m.silenced) continue;
@@ -1318,9 +1318,9 @@ namespace HREngine.Bots
                 return false;
             }
 
-            if (this.ownHero.HealthPoints != p.ownHero.HealthPoints || this.ownHero.Attack != p.ownHero.Attack || this.ownHero.armor != p.ownHero.armor || this.ownHero.frozen != p.ownHero.frozen || this.ownHero.immuneWhileAttacking != p.ownHero.immuneWhileAttacking || this.ownHero.immune != p.ownHero.immune)
+            if (this.ownHero.Hp != p.ownHero.Hp || this.ownHero.Attack != p.ownHero.Attack || this.ownHero.armor != p.ownHero.armor || this.ownHero.frozen != p.ownHero.frozen || this.ownHero.immuneWhileAttacking != p.ownHero.immuneWhileAttacking || this.ownHero.immune != p.ownHero.immune)
             {
-                if (logg) LogHelper.WriteCombatLog("ownhero changed " + this.ownHero.HealthPoints + " " + p.ownHero.HealthPoints + " " + this.ownHero.Attack + " " + p.ownHero.Attack + " " + this.ownHero.armor + " " + p.ownHero.armor + " " + this.ownHero.frozen + " " + p.ownHero.frozen + " " + this.ownHero.immuneWhileAttacking + " " + p.ownHero.immuneWhileAttacking + " " + this.ownHero.immune + " " + p.ownHero.immune);
+                if (logg) LogHelper.WriteCombatLog("ownhero changed " + this.ownHero.Hp + " " + p.ownHero.Hp + " " + this.ownHero.Attack + " " + p.ownHero.Attack + " " + this.ownHero.armor + " " + p.ownHero.armor + " " + this.ownHero.frozen + " " + p.ownHero.frozen + " " + this.ownHero.immuneWhileAttacking + " " + p.ownHero.immuneWhileAttacking + " " + this.ownHero.immune + " " + p.ownHero.immune);
                 return false;
             }
             if (this.ownHero.Ready != p.ownHero.Ready || !this.ownWeapon.isEqual(p.ownWeapon) || this.ownHero.numAttacksThisTurn != p.ownHero.numAttacksThisTurn || this.ownHero.windfury != p.ownHero.windfury)
@@ -1328,9 +1328,9 @@ namespace HREngine.Bots
                 if (logg) LogHelper.WriteCombatLog("weapon changed " + this.ownHero.Ready + " " + p.ownHero.Ready + " " + this.ownWeapon.Angr + " " + p.ownWeapon.Angr + " " + this.ownWeapon.Durability + " " + p.ownWeapon.Durability + " " + this.ownHero.numAttacksThisTurn + " " + p.ownHero.numAttacksThisTurn + " " + this.ownHero.windfury + " " + p.ownHero.windfury + " " + this.ownWeapon.poisonous + " " + p.ownWeapon.poisonous + " " + this.ownWeapon.lifesteal + " " + p.ownWeapon.lifesteal);
                 return false;
             }
-            if (this.enemyHero.HealthPoints != p.enemyHero.HealthPoints || !this.enemyWeapon.isEqual(p.enemyWeapon) || this.enemyHero.armor != p.enemyHero.armor || this.enemyHero.frozen != p.enemyHero.frozen || this.enemyHero.immune != p.enemyHero.immune)
+            if (this.enemyHero.Hp != p.enemyHero.Hp || !this.enemyWeapon.isEqual(p.enemyWeapon) || this.enemyHero.armor != p.enemyHero.armor || this.enemyHero.frozen != p.enemyHero.frozen || this.enemyHero.immune != p.enemyHero.immune)
             {
-                if (logg) LogHelper.WriteCombatLog("enemyhero changed " + this.enemyHero.HealthPoints + " " + p.enemyHero.HealthPoints + " " + this.enemyWeapon.Angr + " " + p.enemyWeapon.Angr + " " + this.enemyHero.armor + " " + p.enemyHero.armor + " " + this.enemyWeapon.Durability + " " + p.enemyWeapon.Durability + " " + this.enemyHero.frozen + " " + p.enemyHero.frozen + " " + this.enemyHero.immune + " " + p.enemyHero.immune + " " + this.enemyWeapon.poisonous + " " + p.enemyWeapon.poisonous + " " + this.enemyWeapon.lifesteal + " " + p.enemyWeapon.lifesteal);
+                if (logg) LogHelper.WriteCombatLog("enemyhero changed " + this.enemyHero.Hp + " " + p.enemyHero.Hp + " " + this.enemyWeapon.Angr + " " + p.enemyWeapon.Angr + " " + this.enemyHero.armor + " " + p.enemyHero.armor + " " + this.enemyWeapon.Durability + " " + p.enemyWeapon.Durability + " " + this.enemyHero.frozen + " " + p.enemyHero.frozen + " " + this.enemyHero.immune + " " + p.enemyHero.immune + " " + this.enemyWeapon.poisonous + " " + p.enemyWeapon.poisonous + " " + this.enemyWeapon.lifesteal + " " + p.enemyWeapon.lifesteal);
                 return false;
             }
 
@@ -1360,7 +1360,7 @@ namespace HREngine.Bots
                 Minion dis = this.ownMinions[i]; Minion pis = p.ownMinions[i];
 
                 if (dis.name != pis.name) minionbool = false;
-                if (dis.Attack != pis.Attack || dis.HealthPoints != pis.HealthPoints || dis.maxHp != pis.maxHp || dis.numAttacksThisTurn != pis.numAttacksThisTurn) minionbool = false;
+                if (dis.Attack != pis.Attack || dis.Hp != pis.Hp || dis.maxHp != pis.maxHp || dis.numAttacksThisTurn != pis.numAttacksThisTurn) minionbool = false;
                 if (dis.Ready != pis.Ready) minionbool = false; // includes frozen, exhaunted
                 if (dis.playedThisTurn != pis.playedThisTurn) minionbool = false;
                 if (dis.silenced != pis.silenced || dis.stealth != pis.stealth || dis.taunt != pis.taunt || dis.windfury != pis.windfury || dis.zonepos != pis.zonepos) minionbool = false;
@@ -1383,7 +1383,7 @@ namespace HREngine.Bots
                 Minion dis = this.enemyMinions[i]; Minion pis = p.enemyMinions[i];
 
                 if (dis.name != pis.name) minionbool = false;
-                if (dis.Attack != pis.Attack || dis.HealthPoints != pis.HealthPoints || dis.maxHp != pis.maxHp || dis.numAttacksThisTurn != pis.numAttacksThisTurn) minionbool = false;
+                if (dis.Attack != pis.Attack || dis.Hp != pis.Hp || dis.maxHp != pis.maxHp || dis.numAttacksThisTurn != pis.numAttacksThisTurn) minionbool = false;
                 if (dis.Ready != pis.Ready) minionbool = false; // includes frozen, exhaunted
                 if (dis.playedThisTurn != pis.playedThisTurn) minionbool = false;
                 if (dis.silenced != pis.silenced || dis.stealth != pis.stealth || dis.taunt != pis.taunt || dis.windfury != pis.windfury || dis.zonepos != pis.zonepos) minionbool = false;
@@ -1452,11 +1452,11 @@ namespace HREngine.Bots
 
             if (this.ownHeroName != p.ownHeroName || this.enemyHeroName != p.enemyHeroName || this.enemySecretCount != p.enemySecretCount) return false;
 
-            if (this.ownHero.HealthPoints != p.ownHero.HealthPoints || this.ownHero.Attack != p.ownHero.Attack || this.ownHero.armor != p.ownHero.armor || this.ownHero.frozen != p.ownHero.frozen || this.ownHero.immuneWhileAttacking != p.ownHero.immuneWhileAttacking || this.ownHero.immune != p.ownHero.immune) return false;
+            if (this.ownHero.Hp != p.ownHero.Hp || this.ownHero.Attack != p.ownHero.Attack || this.ownHero.armor != p.ownHero.armor || this.ownHero.frozen != p.ownHero.frozen || this.ownHero.immuneWhileAttacking != p.ownHero.immuneWhileAttacking || this.ownHero.immune != p.ownHero.immune) return false;
 
             if (this.ownHero.Ready != p.ownHero.Ready || !this.ownWeapon.isEqual(p.ownWeapon) || this.ownHero.numAttacksThisTurn != p.ownHero.numAttacksThisTurn || this.ownHero.windfury != p.ownHero.windfury) return false;
 
-            if (this.enemyHero.HealthPoints != p.enemyHero.HealthPoints || !this.enemyWeapon.isEqual(p.enemyWeapon) || this.enemyHero.armor != p.enemyHero.armor || this.enemyHero.frozen != p.enemyHero.frozen || this.enemyHero.immune != p.enemyHero.immune) return false;
+            if (this.enemyHero.Hp != p.enemyHero.Hp || !this.enemyWeapon.isEqual(p.enemyWeapon) || this.enemyHero.armor != p.enemyHero.armor || this.enemyHero.frozen != p.enemyHero.frozen || this.enemyHero.immune != p.enemyHero.immune) return false;
             
 
 
@@ -1471,7 +1471,7 @@ namespace HREngine.Bots
                 //if (dis.entitiyID == 0) dis.entitiyID = pis.entitiyID;
                 //if (pis.entitiyID == 0) pis.entitiyID = dis.entitiyID;
                 if (dis.entitiyID != pis.entitiyID) minionbool = false;
-                if (dis.Attack != pis.Attack || dis.HealthPoints != pis.HealthPoints || dis.maxHp != pis.maxHp || dis.numAttacksThisTurn != pis.numAttacksThisTurn) minionbool = false;
+                if (dis.Attack != pis.Attack || dis.Hp != pis.Hp || dis.maxHp != pis.maxHp || dis.numAttacksThisTurn != pis.numAttacksThisTurn) minionbool = false;
                 if (dis.Ready != pis.Ready) minionbool = false; // includes frozen, exhaunted
                 if (dis.playedThisTurn != pis.playedThisTurn) minionbool = false;
                 if (dis.silenced != pis.silenced || dis.stealth != pis.stealth || dis.taunt != pis.taunt || dis.windfury != pis.windfury || dis.zonepos != pis.zonepos) minionbool = false;
@@ -1496,7 +1496,7 @@ namespace HREngine.Bots
                 //if (dis.entitiyID == 0) dis.entitiyID = pis.entitiyID;
                 //if (pis.entitiyID == 0) pis.entitiyID = dis.entitiyID;
                 if (dis.entitiyID != pis.entitiyID) minionbool = false;
-                if (dis.Attack != pis.Attack || dis.HealthPoints != pis.HealthPoints || dis.maxHp != pis.maxHp || dis.numAttacksThisTurn != pis.numAttacksThisTurn) minionbool = false;
+                if (dis.Attack != pis.Attack || dis.Hp != pis.Hp || dis.maxHp != pis.maxHp || dis.numAttacksThisTurn != pis.numAttacksThisTurn) minionbool = false;
                 if (dis.Ready != pis.Ready) minionbool = false; // includes frozen, exhaunted
                 if (dis.playedThisTurn != pis.playedThisTurn) minionbool = false;
                 if (dis.silenced != pis.silenced || dis.stealth != pis.stealth || dis.taunt != pis.taunt || dis.windfury != pis.windfury || dis.zonepos != pis.zonepos) minionbool = false;
@@ -1599,12 +1599,12 @@ namespace HREngine.Bots
 
                 foreach (Minion m in this.ownMinions)
                 {
-                    retval += m.entitiyID + m.Attack + m.HealthPoints + (m.taunt ? 1 : 0) + (m.divineshild ? 1 : 0) + (m.wounded ? 0 : 1);
+                    retval += m.entitiyID + m.Attack + m.Hp + (m.taunt ? 1 : 0) + (m.divineshild ? 1 : 0) + (m.wounded ? 0 : 1);
                 }
                 retval *= 10000000;
             }
 
-            retval += 10000 * this.ownMinions.Count + 100 * this.enemyMinions.Count + 1000 * this.mana + 100000 * (this.ownHero.HealthPoints + this.enemyHero.HealthPoints) + this.owncards.Count + this.enemycarddraw + this.cardsPlayedThisTurn + this.mobsplayedThisTurn + this.ownHero.Attack + this.ownHero.armor + this.ownWeapon.Angr + this.enemyWeapon.Durability + this.spellpower + this.enemyspellpower + this.ownQuest.questProgress;
+            retval += 10000 * this.ownMinions.Count + 100 * this.enemyMinions.Count + 1000 * this.mana + 100000 * (this.ownHero.Hp + this.enemyHero.Hp) + this.owncards.Count + this.enemycarddraw + this.cardsPlayedThisTurn + this.mobsplayedThisTurn + this.ownHero.Attack + this.ownHero.armor + this.ownWeapon.Angr + this.enemyWeapon.Durability + this.spellpower + this.enemyspellpower + this.ownQuest.questProgress;
             return retval;
         }
 
@@ -1646,7 +1646,7 @@ namespace HREngine.Bots
                 bool usewhirlwind = true;
                 foreach (Minion m in this.enemyMinions)
                 {
-                    if (m.HealthPoints == 1) usewhirlwind = false;
+                    if (m.Hp == 1) usewhirlwind = false;
                 }
                 if (this.ownMinions.Count <= 3) usewhirlwind = false;
 
@@ -1878,7 +1878,7 @@ namespace HREngine.Bots
                             CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_538t);//hound
                             for (int i = 0; i < anz; i++)
                             {
-                                CallKid(kid, posi, false);
+                                callKid(kid, posi, false);
                             }
                         }
                         else wehaveCounterspell++;
@@ -1900,7 +1900,7 @@ namespace HREngine.Bots
                             CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.ICC_832t4);//
                             for (int i = 0; i < anz; i++)
                             {
-                                CallKid(kid, posi, false);
+                                callKid(kid, posi, false);
                             }
                         }
                         else wehaveCounterspell++;
@@ -2085,7 +2085,7 @@ namespace HREngine.Bots
                             Minion target = null;
                             foreach (Minion mnn in temp)
                             {
-                                if (mnn.HealthPoints <= damage4 || mnn.handcard.card.isSpecialMinion || target == null)
+                                if (mnn.Hp <= damage4 || mnn.handcard.card.isSpecialMinion || target == null)
                                 {
                                     target = mnn;
                                 }
@@ -2186,15 +2186,15 @@ namespace HREngine.Bots
                         tempval = 0;
                         {
                             
-                            tempval -= m.Attack +m.HealthPoints - 1;
+                            tempval -= m.Attack +m.Hp - 1;
                             if (m.Ready) tempval -= 3*m.Attack;
-                            if (m.windfury) tempval -= 2*m.Attack + m.HealthPoints;
+                            if (m.windfury) tempval -= 2*m.Attack + m.Hp;
                             if (m.windfury&&m.Ready) tempval -= m.Attack;
-                            if (m.divineshild) tempval -= 2*m.Attack + m.HealthPoints;
-                            if (m.taunt) tempval -= m.Attack + 2*m.HealthPoints;
-                            if (m.poisonous) tempval -=  m.HealthPoints;
-                            if (m.lifesteal)tempval -= 2*m.Attack + m.HealthPoints;
-                            if (m.untouchable)tempval -= m.Attack + m.HealthPoints;
+                            if (m.divineshild) tempval -= 2*m.Attack + m.Hp;
+                            if (m.taunt) tempval -= m.Attack + 2*m.Hp;
+                            if (m.poisonous) tempval -=  m.Hp;
+                            if (m.lifesteal)tempval -= 2*m.Attack + m.Hp;
+                            if (m.untouchable)tempval -= m.Attack + m.Hp;
                         }
                         places[i] = tempval;
 
@@ -2242,11 +2242,11 @@ namespace HREngine.Bots
                     tempval = 0;
                     if (!m.taunt)
                     {
-                        tempval -= m.HealthPoints;
+                        tempval -= m.Hp;
                     }
                     else
                     {
-                        tempval -= m.HealthPoints - 2;
+                        tempval -= m.Hp - 2;
                     }
 
                     if (m.windfury)
@@ -2446,15 +2446,15 @@ namespace HREngine.Bots
                         tempval = 0;
                         {
                             
-                            tempval -= m.Attack +m.HealthPoints - 1;
+                            tempval -= m.Attack +m.Hp - 1;
                             if (m.Ready) tempval -= 3*m.Attack;
-                            if (m.windfury) tempval -= 2*m.Attack + m.HealthPoints;
+                            if (m.windfury) tempval -= 2*m.Attack + m.Hp;
                             if (m.windfury&&m.Ready) tempval -= m.Attack;
-                            if (m.divineshild) tempval -= 2*m.Attack + m.HealthPoints;
-                            if (m.taunt) tempval -= m.Attack + 2*m.HealthPoints;
-                            if (m.poisonous) tempval -=  m.HealthPoints;
-                            if (m.lifesteal)tempval -= 2*m.Attack + m.HealthPoints;
-                            if (m.untouchable)tempval -= m.Attack + m.HealthPoints;
+                            if (m.divineshild) tempval -= 2*m.Attack + m.Hp;
+                            if (m.taunt) tempval -= m.Attack + 2*m.Hp;
+                            if (m.poisonous) tempval -=  m.Hp;
+                            if (m.lifesteal)tempval -= 2*m.Attack + m.Hp;
+                            if (m.untouchable)tempval -= m.Attack + m.Hp;
                         }
                         places[i] = tempval;
 
@@ -2611,9 +2611,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 foreach (Minion mm in this.enemyMinions)
                 {
-                    if(mm.HealthPoints>3&&(mm.taunt||mm.Attack>2))n1++;
+                    if(mm.Hp>3&&(mm.taunt||mm.Attack>2))n1++;
 
-                    if(n3 < mm.HealthPoints)n3=mm.HealthPoints;
+                    if(n3 < mm.Hp)n3=mm.Hp;
 
                 }
                 foreach (Minion mm in this.ownMinions)
@@ -2633,7 +2633,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         else if(!m.stealth&&m.numAttacksThisTurn > 1){m.stealth = true; return 9; }
                         else if(!m.cantBeTargetedBySpellsOrHeroPowers){m.cantBeTargetedBySpellsOrHeroPowers = true; return 8; }
                     }
-                    if (m.HealthPoints > 3) { this.minionGetBuffed(m, 0, 3); return 3; }
+                    if (m.Hp > 3) { this.minionGetBuffed(m, 0, 3); return 3; }
                     
                 }
             }
@@ -2657,7 +2657,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public int guessEnemyHeroLethalMissing()
         {
-            int lethalMissing = this.enemyHero.armor + this.enemyHero.HealthPoints;
+            int lethalMissing = this.enemyHero.armor + this.enemyHero.Hp;
             if (this.anzEnemyTaunt == 0)
             {
                 foreach (Minion m in this.ownMinions)
@@ -2742,13 +2742,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
             foreach (Minion m in this.ownMinions)
             {
-                if (m.taunt) ghd -= m.HealthPoints;
+                if (m.taunt) ghd -= m.Hp;
                 if (m.taunt && m.divineshild) ghd -= 1;
             }
 
             int guessingHeroDamage = Math.Max(0, ghd);
             if (this.ownHero.immune) guessingHeroDamage = 0;
-            this.guessingHeroHP = this.ownHero.HealthPoints + this.ownHero.armor - guessingHeroDamage;
+            this.guessingHeroHP = this.ownHero.Hp + this.ownHero.armor - guessingHeroDamage;
 
             bool haveImmune = false;
             if (this.guessingHeroHP < 1 && this.ownSecretsIDList.Count > 0)
@@ -2851,7 +2851,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                                         case CardDB.cardName.whiteknight: if (!m.silenced) continue; break;
                                         case CardDB.cardName.humongousrazorleaf: if (!m.silenced) continue; break;
                                     }
-                                    if (m.HealthPoints < 3)
+                                    if (m.Hp < 3)
                                     {
                                         losshd += m.Attack;
                                         if (m.windfury) losshd += m.Attack;
@@ -2876,7 +2876,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                                         case CardDB.cardName.humongousrazorleaf: if (!m.silenced) continue; break;
                                     }
 
-                                    if (m.HealthPoints < 4)
+                                    if (m.Hp < 4)
                                     {
                                         losshd += m.Attack;
                                         if (m.windfury) losshd += m.Attack;
@@ -2890,7 +2890,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 }
                 if (haveImmune && this.guessingHeroHP < 2) this.guessingHeroHP = 2;
             }
-            if (this.ownHero.HealthPoints + this.ownHero.armor <= ablilityDmg && !haveImmune) this.guessingHeroHP = this.ownHero.HealthPoints + this.ownHero.armor - ablilityDmg;
+            if (this.ownHero.Hp + this.ownHero.armor <= ablilityDmg && !haveImmune) this.guessingHeroHP = this.ownHero.Hp + this.ownHero.armor - ablilityDmg;
         }
 		
 
@@ -2961,7 +2961,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 if (this.enemyHero.windfury && this.enemyWeapon.Durability > 1) totalEnemyDamage += this.enemyWeapon.Angr;
             }
 
-            if (totalEnemyDamage < this.ownHero.HealthPoints + this.ownHero.armor) return false;
+            if (totalEnemyDamage < this.ownHero.Hp + this.ownHero.armor) return false;
             if (this.ownSecretsIDList.Count > 0)
             {
                 foreach (CardDB.cardIDEnum secretID in this.ownSecretsIDList)
@@ -2988,15 +2988,15 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         case CardDB.cardIDEnum.AT_060: //Bear Trap
                             return false;
                         case CardDB.cardIDEnum.EX1_132: //Eye for an Eye
-                            if ((this.enemyHero.HealthPoints + this.enemyHero.armor) <= (this.ownHero.HealthPoints + this.ownHero.armor) && !this.enemyHero.immune) return false;
+                            if ((this.enemyHero.Hp + this.enemyHero.armor) <= (this.ownHero.Hp + this.ownHero.armor) && !this.enemyHero.immune) return false;
                             continue;
                         case CardDB.cardIDEnum.LOE_021: //Dart Trap
-                            if ((this.enemyHero.HealthPoints + this.enemyHero.armor) < 6 && !this.enemyHero.immune) return false;
+                            if ((this.enemyHero.Hp + this.enemyHero.armor) < 6 && !this.enemyHero.immune) return false;
                             continue;
                     }
                 }
             }
-            if (totalEnemyDamage < this.ownHero.HealthPoints + this.ownHero.armor) return false;
+            if (totalEnemyDamage < this.ownHero.Hp + this.ownHero.armor) return false;
             return true;
         }
 
@@ -3019,9 +3019,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         pos = this.ownMinions.Count;
                         if (pos == 0) continue;
                         CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_554t);//snake
-                        CallKid(kid, pos, true, false);
-                        CallKid(kid, pos, true);
-                        CallKid(kid, pos, true);
+                        callKid(kid, pos, true, false);
+                        callKid(kid, pos, true);
+                        callKid(kid, pos, true);
                         continue;
                     case CardDB.cardIDEnum.EX1_610: //explosive trap
                         
@@ -3060,7 +3060,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         
                         if (this.enemyMinions.Count == 0 && ((this.enemyWeapon.Angr == 0 && !prozis.penman.HeroPowerEquipWeapon.ContainsKey(this.enemyHeroAblility.card.name)) || this.enemyHero.frozen)) continue;
                         pos = this.ownMinions.Count;
-                        CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_125), pos, true, false);
+                        callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_125), pos, true, false);
                         continue;
                     case CardDB.cardIDEnum.LOE_021: //Dart Trap
                         
@@ -3084,7 +3084,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     case CardDB.cardIDEnum.KAR_004: //cattrick
                         
                         pos = this.ownMinions.Count;
-                        CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_017), pos, true, false);
+                        callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_017), pos, true, false);
                         continue;
 
                     
@@ -3107,7 +3107,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         if (this.ownMinions.Count < 7)
                         {
                             pos = this.ownMinions.Count - 1;
-                            CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.TU4f_007), pos, true, false); 
+                            callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.TU4f_007), pos, true, false); 
                         }
                         else goto default;
                         continue;
@@ -3115,7 +3115,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         
                         if (this.ownMinions.Count == 0) continue;
                         pos = this.ownMinions.Count - 1;
-                        CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.TU4f_007), pos, true); 
+                        callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.TU4f_007), pos, true); 
                         continue;
                     case CardDB.cardIDEnum.tt_010: //spellbender
                         
@@ -3189,7 +3189,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         if (this.enemyMinions.Count == 0 && ((this.enemyWeapon.Angr == 0 && !prozis.penman.HeroPowerEquipWeapon.ContainsKey(this.enemyHeroAblility.card.name)) || this.enemyHero.frozen)) continue;
                         if (this.ownMinions.Count == 7) continue;
                         pos = this.ownMinions.Count - 1;
-                        CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.AT_097), pos, true, false); 
+                        callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.AT_097), pos, true, false); 
                         continue;
                     case CardDB.cardIDEnum.BOT_908: // 自动防御矩阵
                         if (this.ownMinions.Count == 0) continue;
@@ -3208,12 +3208,12 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         if (this.enemyMinions.Count == 0 && ((this.enemyWeapon.Angr == 0 && !prozis.penman.HeroPowerEquipWeapon.ContainsKey(this.enemyHeroAblility.card.name)) || this.enemyHero.frozen)) continue;
                         if (this.ownMinions.Count == 7) continue;
                         pos = this.ownMinions.Count - 1;
-                        CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_125), pos, true, false); 
+                        callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_125), pos, true, false); 
                         continue;
                     case CardDB.cardIDEnum.TRL_400: //裂魂
                     if (this.ownMinions.Count == 0) continue;
                         temp = new List<Minion>(this.ownMinions);
-                        temp.Sort((a, b) => a.HealthPoints.CompareTo(b.HealthPoints));
+                        temp.Sort((a, b) => a.Hp.CompareTo(b.Hp));
                         foreach (Minion m in temp)
                         {
                             if (m.divineshild) continue;
@@ -3227,7 +3227,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         
                         if (this.ownMinions.Count == 0) continue;
                         temp = new List<Minion>(this.ownMinions);
-                        temp.Sort((a, b) => a.HealthPoints.CompareTo(b.HealthPoints));
+                        temp.Sort((a, b) => a.Hp.CompareTo(b.Hp));
                         foreach (Minion m in temp)
                         {
                             if (m.divineshild) continue;
@@ -3240,7 +3240,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         
                         if (this.ownMinions.Count < 2 || (this.ownMinions.Count == 1 && !this.ownSecretsIDList.Contains(CardDB.cardIDEnum.EX1_130))) continue;
                         temp = new List<Minion>(this.ownMinions);
-                        temp.Sort((a, b) => a.HealthPoints.CompareTo(b.HealthPoints));
+                        temp.Sort((a, b) => a.Hp.CompareTo(b.Hp));
                         minionGetBuffed(temp[0], 3, 2);
                         continue;
                     default:
@@ -3337,7 +3337,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 if (m.playedThisTurn)
                                 {
-                                    m.HealthPoints = 1;
+                                    m.Hp = 1;
                                     m.maxHp = 1;
                                     activate = true;
                                     break;
@@ -3706,7 +3706,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     if (this.ownHero.entitiyID == newTarget) target = this.ownHero;
                     if (this.enemyHero.entitiyID == newTarget) target = this.enemyHero;
                 }
-                if (a.own.HealthPoints >= 1) minionAttacksMinion(a.own, target);
+                if (a.own.Hp >= 1) minionAttacksMinion(a.own, target);
             }
             else
             {
@@ -3763,7 +3763,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         //dontcount = betrayal effect!
         public void minionAttacksMinion(Minion attacker, Minion defender, bool dontcount = false)
         {
-            int oldHp = defender.HealthPoints;
+            int oldHp = defender.Hp;
             if (attacker.isHero)
             {
                 if (defender.isHero)
@@ -3780,14 +3780,14 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     switch ((attacker.own ? this.ownWeapon.name : this.enemyWeapon.name))
                     {
                         case CardDB.cardName.gravevengeance:
-                            if (oldHp > defender.HealthPoints) this.triggerAMinionDealedDmg(attacker, oldHp - defender.HealthPoints, true);
+                            if (oldHp > defender.Hp) this.triggerAMinionDealedDmg(attacker, oldHp - defender.Hp, true);
                             break;
                     }
                 }
                 else
                 {
                     defender.getDamageOrHeal(attacker.Attack, this, true, false);
-                    if (oldHp > defender.HealthPoints)
+                    if (oldHp > defender.Hp)
                     {
                         if (attacker.poisonous) minionGetDestroyed(defender);
                         else
@@ -3798,7 +3798,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                                     if (defender.frozen) minionGetDestroyed(defender);
                                     break;
                                 case CardDB.cardName.gravevengeance:
-                                    this.triggerAMinionDealedDmg(attacker, oldHp - defender.HealthPoints, true);
+                                    this.triggerAMinionDealedDmg(attacker, oldHp - defender.Hp, true);
                                     break;
                             }
                         }
@@ -3807,9 +3807,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     int enem_attack = defender.Attack;
                     if (!this.ownHero.immuneWhileAttacking)
                     {
-                        oldHp = attacker.HealthPoints;
+                        oldHp = attacker.Hp;
                         attacker.getDamageOrHeal(enem_attack, this, true, false);
-                        if (!defender.silenced && oldHp > attacker.HealthPoints)
+                        if (!defender.silenced && oldHp > attacker.Hp)
                         {
                             switch (defender.handcard.card.name)
                             {
@@ -3817,7 +3817,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                                 case CardDB.cardName.snowchugger: goto case CardDB.cardName.waterelemental;
                                 case CardDB.cardName.waterelemental: minionGetFrozen(attacker); break;
                             }
-                            this.triggerAMinionDealedDmg(defender, oldHp - attacker.HealthPoints, false);
+                            this.triggerAMinionDealedDmg(defender, oldHp - attacker.Hp, false);
                         }
                     }
                 }
@@ -3838,7 +3838,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             }
 
 
-            if (logging) LogHelper.WriteCombatLog(".attck with" + attacker.name + " A " + attacker.Attack + " H " + attacker.HealthPoints);
+            if (logging) LogHelper.WriteCombatLog(".attck with" + attacker.name + " A " + attacker.Attack + " H " + attacker.Hp);
 
             int attackerAngr = attacker.Attack;
             int defAngr = defender.Attack;
@@ -3848,9 +3848,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             
 
             //defender gets dmg
-            oldHp = defender.HealthPoints;
+            oldHp = defender.Hp;
             defender.getDamageOrHeal(attackerAngr, this, true, false);
-            bool defenderGotDmg = oldHp > defender.HealthPoints;
+            bool defenderGotDmg = oldHp > defender.Hp;
             if (defenderGotDmg)
             {
                 switch (attacker.handcard.card.name)
@@ -3870,10 +3870,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             }
             else 
             {
-                if( defender.HealthPoints < 0)//超杀
+                if( defender.Hp < 0)//超杀
                 {
-                    attacker.handcard.card.CardSimulation.chaosha(this, attacker , defender);
-                    //attacker.handcard.card2.CardSimulation.chaosha(this, attacker , defender);
+                    attacker.handcard.card.sim_card.chaosha(this, attacker , defender);
+                    //attacker.handcard.card2.sim_card.chaosha(this, attacker , defender);
                 }                 
             }
 
@@ -3881,9 +3881,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             bool attackerGotDmg = false;
             if (!dontcount)//betrayal effect :D
             {
-                oldHp = attacker.HealthPoints;
+                oldHp = attacker.Hp;
                 attacker.getDamageOrHeal(defAngr, this, true, false);
-                attackerGotDmg = oldHp > attacker.HealthPoints;
+                attackerGotDmg = oldHp > attacker.Hp;
                 if (attackerGotDmg)
                 {
                     switch (defender.handcard.card.name)
@@ -3914,13 +3914,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             switch (attacker.name)
             {
                 case CardDB.cardName.theboogeymonster: 
-                    if (!defender.isHero && defender.HealthPoints < 1 && attacker.HealthPoints > 0) this.minionGetBuffed(attacker, 2, 2);
+                    if (!defender.isHero && defender.Hp < 1 && attacker.Hp > 0) this.minionGetBuffed(attacker, 2, 2);
                     break;
                 case CardDB.cardName.windupburglebot: 
-                    if (!defender.isHero && attacker.HealthPoints > 0) this.drawACard(CardDB.cardName.unknown, attacker.own);
+                    if (!defender.isHero && attacker.Hp > 0) this.drawACard(CardDB.cardName.unknown, attacker.own);
                     break;
                 case CardDB.cardName.lotusassassin: 
-                    if (!defender.isHero && defender.HealthPoints < 1 && attacker.HealthPoints > 0) attacker.stealth = true;
+                    if (!defender.isHero && defender.Hp < 1 && attacker.Hp > 0) attacker.stealth = true;
                     break;
                 case CardDB.cardName.lotusillusionist: 
                     if (defender.isHero) this.minionTransform(attacker, this.getRandomCardForManaMinion(6));
@@ -3929,10 +3929,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     if (defender.isHero) this.getBestAdapt(attacker);
                     break;
                 case CardDB.cardName.knuckles: 
-                    if (!defender.isHero && attacker.HealthPoints > 0) this.minionAttacksMinion(attacker, attacker.own ? this.enemyHero : this.ownHero, true);
+                    if (!defender.isHero && attacker.Hp > 0) this.minionAttacksMinion(attacker, attacker.own ? this.enemyHero : this.ownHero, true);
                     break;
                 case CardDB.cardName.finjatheflyingstar: 
-                    if (!defender.isHero && defender.HealthPoints < 1)
+                    if (!defender.isHero && defender.Hp < 1)
                     {
                         if (attacker.own)
                         {
@@ -3948,7 +3948,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                                     {
                                         for (int i = 0; i < cid.Value; i++)
                                         {
-                                            this.CallKid(c, this.ownMinions.Count, true);
+                                            this.callKid(c, this.ownMinions.Count, true);
                                             count--;
                                             if (count < 1) break;
                                         }
@@ -3959,13 +3959,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         }
                         else
                         {
-                            this.CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_168), this.enemyMinions.Count, false);
-                            this.CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_168), this.enemyMinions.Count, false);
+                            this.callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_168), this.enemyMinions.Count, false);
+                            this.callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_168), this.enemyMinions.Count, false);
                         }
                     }
                     break;
                 case CardDB.cardName.giantsandworm: 
-                    if (!defender.isHero && defender.HealthPoints < 1 && attacker.HealthPoints > 0)
+                    if (!defender.isHero && defender.Hp < 1 && attacker.Hp > 0)
                     {
                         attacker.numAttacksThisTurn = 0; 
                         attacker.Ready = true;
@@ -4022,7 +4022,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     case CardDB.cardName.sharkfinfan://鲨鳍后援
                         //pos = this.ownMinions.Count;
                         CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.TRL_507t);//小海盗
-                        CallKid(kid, (own ? this.ownMinions.Count : this.enemyMinions.Count), own, false);
+                        callKid(kid, (own ? this.ownMinions.Count : this.enemyMinions.Count), own, false);
                         break;
                 
                    
@@ -4054,18 +4054,18 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     break;
                 case CardDB.cardName.piranhalauncher:
                     int pos = (own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                    this.CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CFM_337t), pos, own); 
+                    this.callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CFM_337t), pos, own); 
                     break;
                 case CardDB.cardName.vinecleaver:
                     int pos2 = (own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                    this.CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_101t), pos2, own); 
-                    this.CallKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_101t), pos2, own); 
+                    this.callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_101t), pos2, own); 
+                    this.callKid(CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.CS2_101t), pos2, own); 
                     break;
                 case CardDB.cardName.foolsbane:
                     if (!hero.frozen) hero.Ready = true;
                     break;
                 case CardDB.cardName.frostmourne://霜之哀伤
-                    if (target.HealthPoints <=0) this.frostmournekill.Add(target.handcard.card.cardIDenum);
+                    if (target.Hp <=0) this.frostmournekill.Add(target.handcard.card.cardIDenum);
                     break;
                 case CardDB.cardName.brassknuckles:
                     if (own)
@@ -4298,7 +4298,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             this.drawACard(CardDB.cardName.unknown, true, true);
                         }
                     }
-                    c.CardSimulation.onCardPlay(this, true, target, choice);
+                    c.sim_card.onCardPlay(this, true, target, choice);
                     if (this.ownQuest.Id != CardDB.cardIDEnum.None && c.type == CardDB.cardtype.SPELL) this.ownQuest.trigger_SpellWasPlayed(target, hc.entity);
                     else if (c.type == CardDB.cardtype.WEAPON)
                     {
@@ -4379,7 +4379,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 }
                 else
                 {
-                    c.CardSimulation.onCardPlay(this, false, target, choice);
+                    c.sim_card.onCardPlay(this, false, target, choice);
                     //lockandload
                     this.doDmgTriggers();
                     
@@ -4415,12 +4415,12 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
             if (logging) LogHelper.WriteCombatLog("play crd " + c.name + " trgt " + target);
 
-            c.CardSimulation.onCardPlay(this, ownturn, target, choice);
+            c.sim_card.onCardPlay(this, ownturn, target, choice);
             if (target != null && (ownturn ? this.ownAbilityFreezesTarget > 0 : this.enemyAbilityFreezesTarget > 0)) minionGetFrozen(target);
             this.triggerInspire(ownturn);
             this.secretTrigger_HeroPowerUsed();
             this.doDmgTriggers();
-            if(target != null &&target.HealthPoints <0)
+            if(target != null &&target.Hp <0)
              {
                 foreach (Minion m in this.ownMinions)
                 {
@@ -4449,7 +4449,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     if (this.ownWeapon.card.deathrattle)
                     {
                         Minion m = new Minion { own = true };
-                        ownWeapon.card.CardSimulation.onDeathrattle(this, m);
+                        ownWeapon.card.sim_card.onDeathrattle(this, m);
                     }
 
                     this.ownHero.Attack = Math.Max(0, this.ownHero.Attack - this.ownWeapon.Angr);
@@ -4487,7 +4487,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     if (this.enemyWeapon.card.deathrattle)
                     {
                         Minion m = new Minion { own = false };
-                        enemyWeapon.card.CardSimulation.onDeathrattle(this, m);
+                        enemyWeapon.card.sim_card.onDeathrattle(this, m);
                     }
 
                     this.enemyHero.Attack = Math.Max(0, this.enemyHero.Attack - this.enemyWeapon.Angr);
@@ -4516,7 +4516,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void doDmgTriggers()
         {
-            //we do the these trigger manualy (to less minions) (we could trigger them with m.handcard.card.CardSimulation.ontrigger...)
+            //we do the these trigger manualy (to less minions) (we could trigger them with m.handcard.card.sim_card.ontrigger...)
             if (this.tempTrigger.charsGotHealed >= 1)
             {
                 triggerACharGotHealed();//possible effects: gain attack
@@ -4535,7 +4535,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
             if (this.tempTrigger.ownMinionsDied + this.tempTrigger.enemyMinionsDied >= 1)
             {
-                triggerAMinionDied(); //possible effects: draw card, gain attack + hp, CallKid.
+                triggerAMinionDied(); //possible effects: draw card, gain attack + hp, callKid.
                 if (this.tempTrigger.ownMinionsDied >= 1) this.tempTrigger.ownMinionsChanged = true;
                 if (this.tempTrigger.enemyMinionsDied >= 1) this.tempTrigger.enemyMininsChanged = true;
                 this.tempTrigger.ownMinionsDied = 0;
@@ -4575,10 +4575,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     case CardDB.cardName.shadowboxer: goto case CardDB.cardName.aiextra1;
                     case CardDB.cardName.hoodedacolyte: goto case CardDB.cardName.aiextra1;
                     case CardDB.cardName.aiextra1:
-                        mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, anz);
+                        mnn.handcard.card.sim_card.onACharGotHealed(this, mnn, anz);
                         break;
                     case CardDB.cardName.blackguard:
-                        if (ownHero.GotHealedValue > 0) mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, ownHero.GotHealedValue);
+                        if (ownHero.GotHealedValue > 0) mnn.handcard.card.sim_card.onACharGotHealed(this, mnn, ownHero.GotHealedValue);
                         break;
                 }
             }
@@ -4592,10 +4592,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     case CardDB.cardName.shadowboxer: goto case CardDB.cardName.aiextra1;
                     case CardDB.cardName.hoodedacolyte: goto case CardDB.cardName.aiextra1;
                     case CardDB.cardName.aiextra1:
-                        mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, anz);
+                        mnn.handcard.card.sim_card.onACharGotHealed(this, mnn, anz);
                         break;
                     case CardDB.cardName.blackguard:
-                        if (enemyHero.GotHealedValue > 0) mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, enemyHero.GotHealedValue);
+                        if (enemyHero.GotHealedValue > 0) mnn.handcard.card.sim_card.onACharGotHealed(this, mnn, enemyHero.GotHealedValue);
                         break;
                 }
             }
@@ -4615,7 +4615,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     case CardDB.cardName.northshirecleric: goto case CardDB.cardName.aiextra1;
                     case CardDB.cardName.manageode: goto case CardDB.cardName.aiextra1;
                     case CardDB.cardName.aiextra1:
-                        mnn.handcard.card.CardSimulation.onAMinionGotHealedTrigger(this, mnn, anz);
+                        mnn.handcard.card.sim_card.onAMinionGotHealedTrigger(this, mnn, anz);
                         break;
                 }
             }
@@ -4628,7 +4628,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     case CardDB.cardName.northshirecleric: goto case CardDB.cardName.aiextra1;
                     case CardDB.cardName.manageode: goto case CardDB.cardName.aiextra1;
                     case CardDB.cardName.aiextra1:
-                        mnn.handcard.card.CardSimulation.onAMinionGotHealedTrigger(this, mnn, anz);
+                        mnn.handcard.card.sim_card.onAMinionGotHealedTrigger(this, mnn, anz);
                         break;
                 }
             }
@@ -4649,7 +4649,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             foreach (Minion m in this.ownMinions.ToArray())
             {
                 if (m.silenced) { m.anzGotDmg = 0; continue; }
-                m.handcard.card.CardSimulation.onMinionGotDmgTrigger(this, m, anzOwnMinionsGotDmg, anzEnemyMinionsGotDmg, anzOwnHeroGotDmg, anzEnemyHeroGotDmg);
+                m.handcard.card.sim_card.onMinionGotDmgTrigger(this, m, anzOwnMinionsGotDmg, anzEnemyMinionsGotDmg, anzOwnHeroGotDmg, anzEnemyHeroGotDmg);
                 m.anzGotDmg = 0;
                 m.GotDmgValue = 0;
             }
@@ -4657,7 +4657,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             foreach (Minion m in this.enemyMinions.ToArray())
             {
                 if (m.silenced) { m.anzGotDmg = 0; continue; }
-                m.handcard.card.CardSimulation.onMinionGotDmgTrigger(this, m, anzOwnMinionsGotDmg, anzEnemyMinionsGotDmg, anzOwnHeroGotDmg, anzEnemyHeroGotDmg);
+                m.handcard.card.sim_card.onMinionGotDmgTrigger(this, m, anzOwnMinionsGotDmg, anzEnemyMinionsGotDmg, anzOwnHeroGotDmg, anzEnemyHeroGotDmg);
                 m.anzGotDmg = 0;
                 m.GotDmgValue = 0;
             }
@@ -4677,7 +4677,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 foreach (Minion m in this.ownMinions.ToArray())
                 {
                     if (m.silenced) continue;
-                    m.handcard.card.CardSimulation.onMinionLosesDivineShield(this, m, anzOwn);
+                    m.handcard.card.sim_card.onMinionLosesDivineShield(this, m, anzOwn);
                 }
                 
                 if (this.ownWeapon.name == CardDB.cardName.lightssorrow) this.ownWeapon.Angr += anzOwn;
@@ -4688,7 +4688,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 foreach (Minion m in this.enemyMinions.ToArray())
                 {
                     if (m.silenced) continue;
-                    m.handcard.card.CardSimulation.onMinionLosesDivineShield(this, m, anzEnemy);
+                    m.handcard.card.sim_card.onMinionLosesDivineShield(this, m, anzEnemy);
                 }
                 
                 if (this.enemyWeapon.name == CardDB.cardName.lightssorrow) this.enemyWeapon.Angr += anzEnemy;
@@ -4707,14 +4707,14 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             foreach (Minion m in this.ownMinions.ToArray())
             {
                 if (m.silenced) continue;
-                if (m.HealthPoints <= 0) continue;
-                m.handcard.card.CardSimulation.onMinionDiedTrigger(this, m, m); 
+                if (m.Hp <= 0) continue;
+                m.handcard.card.sim_card.onMinionDiedTrigger(this, m, m); 
             }
             foreach (Minion m in this.enemyMinions.ToArray())
             {
                 if (m.silenced) continue;
-                if (m.HealthPoints <= 0) continue;
-                m.handcard.card.CardSimulation.onMinionDiedTrigger(this, m, m);
+                if (m.Hp <= 0) continue;
+                m.handcard.card.sim_card.onMinionDiedTrigger(this, m, m);
             }
 
             foreach (Handmanager.Handcard hc in this.owncards)
@@ -4734,15 +4734,15 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             if (this.ownWeapon.name == CardDB.cardName.jaws)
             {
                 int bonus = 0;
-                foreach (Minion m in this.ownMinions) if (m.HealthPoints < 1 && m.handcard.card.deathrattle && !m.silenced) bonus++;
-                foreach (Minion m in this.enemyMinions) if (m.HealthPoints < 1 && m.handcard.card.deathrattle && !m.silenced) bonus++;
+                foreach (Minion m in this.ownMinions) if (m.Hp < 1 && m.handcard.card.deathrattle && !m.silenced) bonus++;
+                foreach (Minion m in this.enemyMinions) if (m.Hp < 1 && m.handcard.card.deathrattle && !m.silenced) bonus++;
                 this.ownWeapon.Angr += bonus * 2;
             }
             if (this.enemyWeapon.name == CardDB.cardName.jaws)
             {
                 int bonus = 0;
-                foreach (Minion m in this.ownMinions) if (m.HealthPoints < 1 && m.handcard.card.deathrattle && !m.silenced) bonus++;
-                foreach (Minion m in this.enemyMinions) if (m.HealthPoints < 1 && m.handcard.card.deathrattle && !m.silenced) bonus++;
+                foreach (Minion m in this.ownMinions) if (m.Hp < 1 && m.handcard.card.deathrattle && !m.silenced) bonus++;
+                foreach (Minion m in this.enemyMinions) if (m.Hp < 1 && m.handcard.card.deathrattle && !m.silenced) bonus++;
                 this.enemyWeapon.Angr += bonus * 2;
             }
 
@@ -4754,7 +4754,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     CardDB.Card kid = CardDB.Instance.getCardDataFromID((this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.NAX4_04H) ? CardDB.cardIDEnum.NAX4_03H : CardDB.cardIDEnum.NAX4_03);
                     for (int i = 0; i < this.tempTrigger.enemyMinionsDied; i++)
                     {
-                        this.CallKid(kid, this.ownMinions.Count, true);
+                        this.callKid(kid, this.ownMinions.Count, true);
                     }
                 }
             }
@@ -4765,7 +4765,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     CardDB.Card kid = CardDB.Instance.getCardDataFromID((this.enemyHeroAblility.card.cardIDenum == CardDB.cardIDEnum.NAX4_04H) ? CardDB.cardIDEnum.NAX4_03H : CardDB.cardIDEnum.NAX4_03);
                     for (int i = 0; i < this.tempTrigger.ownMinionsDied; i++)
                     {
-                        this.CallKid(kid, this.enemyMinions.Count, false);
+                        this.callKid(kid, this.enemyMinions.Count, false);
                     }
                 }
             }
@@ -4865,7 +4865,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 foreach (Minion m in this.ownMinions.ToArray())
                 {
                     if (m.silenced) continue;
-                    m.handcard.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, m);
+                    m.handcard.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, m);
                 }
 
                 foreach (Minion m in this.enemyMinions)
@@ -4876,55 +4876,55 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     }
                     if (m.name == CardDB.cardName.felreaver)
                     {
-                        m.handcard.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, m);
+                        m.handcard.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, m);
                     }
                 }
                 for (int i = 0; i < this.owncards.Count; i++)//foreach (Handmanager.Handcard ohc in this.owncards)
                 {
                     Handmanager.Handcard ohc = this.owncards[i];
 
-                    ohc.card.CardSimulation.inhand(this, hc, own, ohc);
-                    //ohc.card2.CardSimulation.inhand(this, hc, own, ohc);
+                    ohc.card.sim_card.inhand(this, hc, own, ohc);
+                    //ohc.card2.sim_card.inhand(this, hc, own, ohc);
                     
                     switch (ohc.card.name)
                     {
                         case CardDB.cardName.shadowreflection:
-                            ohc.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, ohc);
+                            ohc.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, ohc);
                             break;
                         case CardDB.cardName.blubberbaron:
-                            ohc.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, ohc);
+                            ohc.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, ohc);
                             break;
                         case CardDB.cardName.corridorcreeper:
-                            ohc.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, ohc);
+                            ohc.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, ohc);
                             break;
                         case CardDB.cardName.demonbolt:
-                            ohc.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, ohc);
+                            ohc.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, ohc);
                             break;
                         case CardDB.cardName.lesseremeraldspellstone:
-                            ohc.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, ohc);
+                            ohc.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, ohc);
                             break;
                         case CardDB.cardName.emeraldspellstone:
-                            ohc.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, ohc);
+                            ohc.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, ohc);
                             break;
 
 
                     }
                 }
 
-                if (this.ownHeroAblility.card.name == CardDB.cardName.voidform) this.ownHeroAblility.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, this.ownHeroAblility);
+                if (this.ownHeroAblility.card.name == CardDB.cardName.voidform) this.ownHeroAblility.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, this.ownHeroAblility);
                 if(this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.GIL_504h||this.ownHeroAblility.card.name == CardDB.cardName.bewitch)
-                this.ownHeroAblility.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, this.ownHeroAblility);//hajiasa
+                this.ownHeroAblility.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, this.ownHeroAblility);//hajiasa
 
                 if (this.ownWeapon.name == CardDB.cardName.atiesh)
                 {
-                    this.CallKid(this.getRandomCardForManaMinion(hc.manacost), this.ownMinions.Count, own);
+                    this.callKid(this.getRandomCardForManaMinion(hc.manacost), this.ownMinions.Count, own);
                     this.lowerWeaponDurability(1, own);
                 }
 
                 for (int i = 0; i < burly; i++)//summon for enemy !
                 {
                     int pos = this.enemyMinions.Count;
-                    this.CallKid(CardDB.Instance.burlyrockjaw, pos, !own);
+                    this.callKid(CardDB.Instance.burlyrockjaw, pos, !own);
                 }
             }
             else
@@ -4933,7 +4933,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 foreach (Minion m in this.enemyMinions.ToArray())
                 {
                     if (m.silenced) continue;
-                    m.handcard.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, m);
+                    m.handcard.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, m);
                 }
                 foreach (Minion m in this.ownMinions)
                 {
@@ -4943,22 +4943,22 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     }
                     if (m.name == CardDB.cardName.felreaver)
                     {
-                        m.handcard.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, m);
+                        m.handcard.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, m);
                     }
                 }
 
-                if (this.enemyHeroAblility.card.name == CardDB.cardName.voidform) this.enemyHeroAblility.card.CardSimulation.onCardIsGoingToBePlayed(this, hc, own, this.enemyHeroAblility);
+                if (this.enemyHeroAblility.card.name == CardDB.cardName.voidform) this.enemyHeroAblility.card.sim_card.onCardIsGoingToBePlayed(this, hc, own, this.enemyHeroAblility);
 
                 if (this.enemyWeapon.name == CardDB.cardName.atiesh)
                 {
-                    this.CallKid(this.getRandomCardForManaMinion(hc.manacost), this.enemyMinions.Count, own);
+                    this.callKid(this.getRandomCardForManaMinion(hc.manacost), this.enemyMinions.Count, own);
                     this.lowerWeaponDurability(1, own);
                 }
 
                 for (int i = 0; i < burly; i++)//summon for us
                 {
                     int pos = this.ownMinions.Count;
-                    this.CallKid(CardDB.Instance.burlyrockjaw, pos, own);
+                    this.callKid(CardDB.Instance.burlyrockjaw, pos, own);
                 }
             }
 
@@ -4973,7 +4973,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 foreach (Minion mnn in this.ownMinions)
                 {
                     if (mnn.silenced) continue;
-                    mnn.handcard.card.CardSimulation.onMinionIsSummoned(this, mnn, m);
+                    mnn.handcard.card.sim_card.onMinionIsSummoned(this, mnn, m);
                 }
             }
             else
@@ -4981,7 +4981,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 foreach (Minion mnn in this.enemyMinions)
                 {
                     if (mnn.silenced) continue;
-                    mnn.handcard.card.CardSimulation.onMinionIsSummoned(this, mnn, m);
+                    mnn.handcard.card.sim_card.onMinionIsSummoned(this, mnn, m);
                 }
             }
         }
@@ -4995,7 +4995,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 foreach (Minion m in this.ownMinions.ToArray())
                 {
                     if (m.silenced || m.entitiyID == mnn.entitiyID) continue;
-                    m.handcard.card.CardSimulation.onMinionWasSummoned(this, m, mnn);
+                    m.handcard.card.sim_card.onMinionWasSummoned(this, m, mnn);
                 }
                 switch (this.ownWeapon.name)
                 {
@@ -5018,7 +5018,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 foreach (Minion m in this.enemyMinions.ToArray())
                 {
                     if (m.silenced || m.entitiyID == mnn.entitiyID) continue;
-                    m.handcard.card.CardSimulation.onMinionWasSummoned(this, m, mnn);
+                    m.handcard.card.sim_card.onMinionWasSummoned(this, m, mnn);
                 }
                 switch (this.enemyWeapon.name)
                 {
@@ -5068,8 +5068,8 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         else
                         {
                             this.evaluatePenality += 6;
-                            hc.card.CardSimulation.onCardDicscard(this, hc, null, 0); 
-                            //hc.card2.CardSimulation.onCardDicscard(this, hc, null, 0); 
+                            hc.card.sim_card.onCardDicscard(this, hc, null, 0); 
+                            //hc.card2.sim_card.onCardDicscard(this, hc, null, 0); 
                         }
                         //this.triggerCardsChanged(ownturn);
                         //this.removeCard(hc);
@@ -5084,12 +5084,12 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 m.cantAttackHeroes = false;
                 if (!m.silenced)
                 {
-                    m.handcard.card.CardSimulation.onTurnEndsTrigger(this, m, ownturn);
+                    m.handcard.card.sim_card.onTurnEndsTrigger(this, m, ownturn);
                     if (this.ownTurnEndEffectsTriggerTwice > 0 && ownturn)
                     {
                         for (int i = 0; i < ownTurnEndEffectsTriggerTwice; i++)
                         {
-                            m.handcard.card.CardSimulation.onTurnEndsTrigger(this, m, ownturn);
+                            m.handcard.card.sim_card.onTurnEndsTrigger(this, m, ownturn);
                         }
                     }
                 }
@@ -5109,13 +5109,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         break;
 
                     }
-                    //m.handcard.card2.CardSimulation.onTurnEndsTrigger(this, m, ownturn);
-                    m.handcard.card.CardSimulation.onTurnEndsTrigger(this, m, ownturn);
+                    //m.handcard.card2.sim_card.onTurnEndsTrigger(this, m, ownturn);
+                    m.handcard.card.sim_card.onTurnEndsTrigger(this, m, ownturn);
                     if (this.enemyTurnEndEffectsTriggerTwice > 0 && !ownturn)
                     {
                         for (int i = 0; i < enemyTurnEndEffectsTriggerTwice; i++)
                         {
-                            m.handcard.card.CardSimulation.onTurnEndsTrigger(this, m, ownturn);
+                            m.handcard.card.sim_card.onTurnEndsTrigger(this, m, ownturn);
                         }
                     }
                 }
@@ -5196,7 +5196,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
                 if (!m.silenced)
                 {
-                    m.handcard.card.CardSimulation.onTurnStartTrigger(this, m, ownturn);
+                    m.handcard.card.sim_card.onTurnStartTrigger(this, m, ownturn);
                 }
                 if (ownturn && m.destroyOnOwnTurnStart) this.minionGetDestroyed(m);
                 if (!ownturn && m.destroyOnEnemyTurnStart) this.minionGetDestroyed(m);
@@ -5209,7 +5209,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 m.justBuffed = 0;
                 if (!m.silenced)
                 {
-                    if (m.name == CardDB.cardName.micromachine) m.handcard.card.CardSimulation.onTurnStartTrigger(this, m, ownturn);
+                    if (m.name == CardDB.cardName.micromachine) m.handcard.card.sim_card.onTurnStartTrigger(this, m, ownturn);
                 }
                 if (ownturn && m.destroyOnOwnTurnStart) this.minionGetDestroyed(m);
                 if (!ownturn && m.destroyOnEnemyTurnStart) this.minionGetDestroyed(m);
@@ -5233,7 +5233,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 hero.conceal = false;
                 hero.stealth = false;
             }
-            if (ab.card.name == CardDB.cardName.deathsshadow) ab.card.CardSimulation.onTurnStartTrigger(this, null, ownturn);
+            if (ab.card.name == CardDB.cardName.deathsshadow) ab.card.sim_card.onTurnStartTrigger(this, null, ownturn);
 
             this.doDmgTriggers();
             this.drawACard(CardDB.cardName.unknown, ownturn);
@@ -5367,13 +5367,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             foreach (Minion m in this.ownMinions.ToArray())
             {
                 if (m.silenced) continue;
-                m.handcard.card.CardSimulation.onInspire(this, m, ownturn);
+                m.handcard.card.sim_card.onInspire(this, m, ownturn);
             }
 
             foreach (Minion m in this.enemyMinions.ToArray())
             {
                 if (m.silenced) continue;
-                m.handcard.card.CardSimulation.onInspire(this, m, ownturn);
+                m.handcard.card.sim_card.onInspire(this, m, ownturn);
             }
         }
 
@@ -5397,7 +5397,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 sii.canBe_explosive = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_610).CardSimulation.onSecretPlay(this, false, 0);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_610).sim_card.onSecretPlay(this, false, 0);
                             needDamageTrigger = true;
                         }
                         if (si.canBe_flameward)
@@ -5407,7 +5407,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 sii.canBe_flameward = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.ULD_239).CardSimulation.onSecretPlay(this, false, 0);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.ULD_239).sim_card.onSecretPlay(this, false, 0);
                             needDamageTrigger = true;
                         }
 
@@ -5418,7 +5418,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 sii.canBe_beartrap = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.AT_060).CardSimulation.onSecretPlay(this, false, 0);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.AT_060).sim_card.onSecretPlay(this, false, 0);
                             needDamageTrigger = true;
                         }
 
@@ -5429,7 +5429,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 sii.canBe_vaporize = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_594).CardSimulation.onSecretPlay(this, false, attacker, 0);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_594).sim_card.onSecretPlay(this, false, attacker, 0);
                             needDamageTrigger = true;
                         }
 
@@ -5442,7 +5442,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                                 {
                                     sii.canBe_missdirection = false;
                                 }
-                                CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_533).CardSimulation.onSecretPlay(this, false, attacker, defender, out newTarget);
+                                CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_533).sim_card.onSecretPlay(this, false, attacker, defender, out newTarget);
                                 //no needDamageTrigger
                             }
                         }
@@ -5454,7 +5454,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 sii.canBe_icebarrier = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_289).CardSimulation.onSecretPlay(this, false, defender, 0);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_289).sim_card.onSecretPlay(this, false, defender, 0);
                         }
 
                         if (needDamageTrigger) doDmgTriggers();
@@ -5472,7 +5472,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 sii.canBe_snaketrap = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_554).CardSimulation.onSecretPlay(this, false, 0);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_554).sim_card.onSecretPlay(this, false, 0);
                             doDmgTriggers();
                         }
                     }
@@ -5489,7 +5489,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 sii.canBe_freezing = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_611).CardSimulation.onSecretPlay(this, false, attacker, 0);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_611).sim_card.onSecretPlay(this, false, attacker, 0);
                         }
                     }
                 }
@@ -5505,7 +5505,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         }
                         bool ishero = defender.isHero;
                         si.usedTrigger_CharIsAttacked(ishero, attacker.isHero);
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_130).CardSimulation.onSecretPlay(this, false, attacker, defender, out newTarget);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_130).sim_card.onSecretPlay(this, false, attacker, defender, out newTarget);
                         //no needDamageTrigger
                     }
                 }
@@ -5535,17 +5535,17 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 sii.canBe_eyeforaneye = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_132).CardSimulation.onSecretPlay(this, false, dmg);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_132).sim_card.onSecretPlay(this, false, dmg);
                         }
 
-                        if (si.canBe_iceblock && this.enemyHero.HealthPoints <= 0)
+                        if (si.canBe_iceblock && this.enemyHero.Hp <= 0)
                         {
                             triggered++;
                             foreach (SecretItem sii in this.enemySecretList)
                             {
                                 sii.canBe_iceblock = false;
                             }
-                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_295).CardSimulation.onSecretPlay(this, false, this.enemyHero, dmg);
+                            CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_295).sim_card.onSecretPlay(this, false, this.enemyHero, dmg);
                         }
                     }
                 }
@@ -5574,7 +5574,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             sii.canBe_mirrorentity = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_294).CardSimulation.onSecretPlay(this, false, playedMinion, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_294).sim_card.onSecretPlay(this, false, playedMinion, 0);
                         needDamageTrigger = true;
                     }
 
@@ -5585,7 +5585,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             sii.canBe_repentance = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_379).CardSimulation.onSecretPlay(this, false, playedMinion, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_379).sim_card.onSecretPlay(this, false, playedMinion, 0);
                     }
 
                     if (si.canBe_sacredtrial && this.ownMinions.Count > 3)
@@ -5596,7 +5596,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             sii.canBe_sacredtrial = false;
                             sii.canBe_snipe = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.LOE_027).CardSimulation.onSecretPlay(this, false, playedMinion, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.LOE_027).sim_card.onSecretPlay(this, false, playedMinion, 0);
                         needDamageTrigger = true;
                     }
                     else if (si.canBe_snipe)
@@ -5606,7 +5606,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             sii.canBe_snipe = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_609).CardSimulation.onSecretPlay(this, false, playedMinion, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_609).sim_card.onSecretPlay(this, false, playedMinion, 0);
                         needDamageTrigger = true;
                     }
 
@@ -5659,7 +5659,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             sii.canBe_cattrick = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.KAR_004).CardSimulation.onSecretPlay(this, false, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.KAR_004).sim_card.onSecretPlay(this, false, 0);
                         doDmgTriggers();
                     }
 
@@ -5671,7 +5671,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             sii.canBe_spellbender = false;
                         }
                         if (target.own && prozis.penman.maycauseharmDatabase.ContainsKey(c.name)) { }
-                        else CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.tt_010).CardSimulation.onSecretPlay(this, false, null, target, out retval);
+                        else CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.tt_010).sim_card.onSecretPlay(this, false, null, target, out retval);
                     }
                 }
 
@@ -5702,7 +5702,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             sii.canBe_duplicate = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.FP1_018).CardSimulation.onSecretPlay(this, false, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.FP1_018).sim_card.onSecretPlay(this, false, 0);
                     }
 
                     if (si.canBe_redemption)
@@ -5712,7 +5712,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             sii.canBe_redemption = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_136).CardSimulation.onSecretPlay(this, false, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_136).sim_card.onSecretPlay(this, false, 0);
                     }
 
                     if (si.canBe_avenge)
@@ -5722,7 +5722,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             sii.canBe_avenge = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.FP1_020).CardSimulation.onSecretPlay(this, false, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.FP1_020).sim_card.onSecretPlay(this, false, 0);
                     }
                 }
             }
@@ -5748,7 +5748,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             sii.canBe_darttrap = false;
                         }
-                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.LOE_021).CardSimulation.onSecretPlay(this, false, 0);
+                        CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.LOE_021).sim_card.onSecretPlay(this, false, 0);
                         doDmgTriggers();
                     }
                 }
@@ -5871,7 +5871,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             foreach (SecretItem si in this.enemySecretList)
                             {
                                 if (si.canBe_eyeforaneye && !canBe_eyeforaneye) { canBe_eyeforaneye = true; triggered++; }
-                                if (si.canBe_iceblock && this.enemyHero.HealthPoints <= 0 && !canBe_iceblock) { canBe_iceblock = true; triggered++; }
+                                if (si.canBe_iceblock && this.enemyHero.Hp <= 0 && !canBe_iceblock) { canBe_iceblock = true; triggered++; }
                             }
                         }
                     }
@@ -5921,14 +5921,14 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 					CardDB.Card kid = m.handcard.card;
 					List<Minion> tmp = (m.own) ? this.ownMinions : this.enemyMinions;
                     int pos = tmp.Count;
-                    CallKid(kid, pos, m.own, false, true);
+                    callKid(kid, pos, m.own, false, true);
 
                     if (tmp.Count >= 1)
                     {
                         Minion summonedMinion = tmp[pos];
                         if (summonedMinion.handcard.card.cardIDenum == kid.cardIDenum)
                         {
-                            summonedMinion.HealthPoints = 1;
+                            summonedMinion.Hp = 1;
                             summonedMinion.reborn = false;
                             //summonedMinion.wounded = false;
                             if ( summonedMinion.maxHp > 1 || summonedMinion.handcard.card.Health>1) summonedMinion.wounded = true;
@@ -5946,7 +5946,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             //https://www.youtube.com/watch?v=2WrbqsOSbhc
             foreach (Minion m in deathrattleMinions)
             {
-                if (!m.silenced && m.handcard.card.deathrattle) m.handcard.card.CardSimulation.onDeathrattle(this, m);
+                if (!m.silenced && m.handcard.card.deathrattle) m.handcard.card.sim_card.onDeathrattle(this, m);
 
                 if (m.explorershat > 0)
                 {
@@ -5975,7 +5975,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     {
                         CardDB.Card kid = m.handcard.card;
                         int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                        CallKid(kid, pos, m.own, false, true);
+                        callKid(kid, pos, m.own, false, true);
                     }
                 }
 
@@ -5986,16 +5986,16 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         CardDB.Card kid = m.handcard.card;
                         List<Minion> tmp = (m.own) ? this.ownMinions : this.enemyMinions;
                         int pos = tmp.Count;
-                        CallKid(kid, pos, m.own, false, true);
+                        callKid(kid, pos, m.own, false, true);
 
                         if (tmp.Count >= 1)
                         {
                             Minion summonedMinion = tmp[pos];
                             if (summonedMinion.handcard.card.cardIDenum == kid.cardIDenum)
                             {
-                                summonedMinion.HealthPoints = 1;
+                                summonedMinion.Hp = 1;
                                 summonedMinion.wounded = false;
-                                if (summonedMinion.HealthPoints < summonedMinion.maxHp) summonedMinion.wounded = true;
+                                if (summonedMinion.Hp < summonedMinion.maxHp) summonedMinion.wounded = true;
                             }
                         }
                     }
@@ -6005,7 +6005,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 {
                     CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_158t);//Treant
                     int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                    CallKid(kid, pos, m.own, false, true);
+                    callKid(kid, pos, m.own, false, true);
                 }
                 
                   
@@ -6013,26 +6013,26 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 				for (int i = 0; i < m.sn1p; i++)
                 {
                     CardDB.Card c = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.BOT_312t);//微型机器人
-                    this.CallKid(c,m.zonepos - 1, m.own);
-                    this.CallKid(c,m.zonepos - 1, m.own);
+                    this.callKid(c,m.zonepos - 1, m.own);
+                    this.callKid(c,m.zonepos - 1, m.own);
                 }
 																
 				for (int i = 0; i < m.stegodon; i++)
                 {
                     CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.UNG_810);//Stegodon
                     int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                    CallKid(kid, pos, m.own, false, true);
+                    callKid(kid, pos, m.own, false, true);
                 }
 
                 for (int i = 0; i < m.livingspores; i++)
                 {
                     CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.UNG_999t2t1);//Plant
                     int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                    CallKid(kid, pos, m.own, false, true);
-                    CallKid(kid, pos, m.own, false, true);
+                    callKid(kid, pos, m.own, false, true);
+                    callKid(kid, pos, m.own, false, true);
                 }
 
-                if (m.deathrattle2 != null) m.deathrattle2.CardSimulation.onDeathrattle(this, m);
+                if (m.deathrattle2 != null) m.deathrattle2.sim_card.onDeathrattle(this, m);
 
                 //baron rivendare ??瑞文戴尔男爵 你的随从的亡语将触发2次。
                 if ((m.own && this.ownBaronRivendare >= 1) || (!m.own && this.enemyBaronRivendare >= 1))
@@ -6040,7 +6040,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     int r = (m.own) ? this.ownBaronRivendare : this.enemyBaronRivendare;
                     for (int j = 0; j < r; j++)
                     {
-                        if (!m.silenced && m.handcard.card.deathrattle) m.handcard.card.CardSimulation.onDeathrattle(this, m);
+                        if (!m.silenced && m.handcard.card.deathrattle) m.handcard.card.sim_card.onDeathrattle(this, m);
 
                         if (m.explorershat > 0)
                         {
@@ -6069,7 +6069,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             {
                                 CardDB.Card kid = m.handcard.card;
                                 int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                                CallKid(kid, pos, m.own); //because baron rivendare
+                                callKid(kid, pos, m.own); //because baron rivendare
                             }
                         }
                         
@@ -6080,16 +6080,16 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                                 CardDB.Card kid = m.handcard.card;
                                 List<Minion> tmp = (m.own) ? this.ownMinions : this.enemyMinions;
                                 int pos = tmp.Count;
-                                CallKid(kid, pos, m.own, false, true);
+                                callKid(kid, pos, m.own, false, true);
 
                                 if (tmp.Count >= 1)
                                 {
                                     Minion summonedMinion = tmp[pos];
                                     if (summonedMinion.handcard.card.cardIDenum == kid.cardIDenum)
                                     {
-                                        summonedMinion.HealthPoints = 1;
+                                        summonedMinion.Hp = 1;
                                         summonedMinion.wounded = false;
-                                        if (summonedMinion.HealthPoints < summonedMinion.maxHp) summonedMinion.wounded = true;
+                                        if (summonedMinion.Hp < summonedMinion.maxHp) summonedMinion.wounded = true;
                                     }
                                 }
                             }
@@ -6099,7 +6099,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.EX1_158t);//Treant
                             int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                            CallKid(kid, pos, m.own); //because baron rivendare
+                            callKid(kid, pos, m.own); //because baron rivendare
                         }
                         for (int i = 0; i < m.valanyr; i=m.valanyr)
                         {
@@ -6118,27 +6118,27 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         {
                             CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.BOT_312t);//Treant
                              int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                             CallKid(kid, pos, m.own, false, true);
-                             CallKid(kid, pos, m.own, false, true);
-                             CallKid(kid, pos, m.own, false, true);
+                             callKid(kid, pos, m.own, false, true);
+                             callKid(kid, pos, m.own, false, true);
+                             callKid(kid, pos, m.own, false, true);
                         } 
 
                         for (int i = 0; i < m.stegodon; i++)
                         {
                             CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.UNG_810);//Stegodon
                             int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                            CallKid(kid, pos, m.own);  //because baron rivendare
+                            callKid(kid, pos, m.own);  //because baron rivendare
                         }
 
                         for (int i = 0; i < m.livingspores; i++)
                         {
                             CardDB.Card kid = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.UNG_999t2t1);//Plant
                             int pos = (m.own) ? this.ownMinions.Count : this.enemyMinions.Count;
-                            CallKid(kid, pos, m.own);
-                            CallKid(kid, pos, m.own);  //because baron rivendare
+                            callKid(kid, pos, m.own);
+                            callKid(kid, pos, m.own);  //because baron rivendare
                         }
 
-                        if (m.deathrattle2 != null) m.deathrattle2.CardSimulation.onDeathrattle(this, m);
+                        if (m.deathrattle2 != null) m.deathrattle2.sim_card.onDeathrattle(this, m);
                     }
                 }
             }
@@ -6167,7 +6167,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     m.cantBeTargetedBySpellsOrHeroPowers = false;
 
                     //kill it!
-                    if (m.HealthPoints <= 0)
+                    if (m.Hp <= 0)
                     {
                         this.OwnLastDiedMinion = m.handcard.card.cardIDenum;
                         /*bool aaa=true;//如果重复，就不加入
@@ -6203,7 +6203,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 						}
 
                         // end aura of minion m
-                        if (!m.silenced) m.handcard.card.CardSimulation.onAuraEnds(this, m);
+                        if (!m.silenced) m.handcard.card.sim_card.onAuraEnds(this, m);
                     }
                     else
                     {
@@ -6229,7 +6229,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     m.cantBeTargetedBySpellsOrHeroPowers = false;
 
                     //kill it!
-                    if (m.HealthPoints <= 0)
+                    if (m.Hp <= 0)
                     {
                         if (this.revivingEnemyMinion == CardDB.cardIDEnum.None)
                         {
@@ -6247,7 +6247,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         }
 
                         // end aura of minion m
-                        if (!m.silenced) m.handcard.card.CardSimulation.onAuraEnds(this, m);
+                        if (!m.silenced) m.handcard.card.sim_card.onAuraEnds(this, m);
                     }
                     else
                     {
@@ -6493,13 +6493,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             if (this.ownCrystalCore > 0)
             {
                 m.Attack = ownCrystalCore;
-                m.HealthPoints = ownCrystalCore;
+                m.Hp = ownCrystalCore;
                 m.maxHp = ownCrystalCore;
             }
             else
             {
                 m.Attack = hc.card.Attack + hc.addattack;
-                m.HealthPoints = hc.card.Health + hc.addHp;
+                m.Hp = hc.card.Health + hc.addHp;
                 m.maxHp = hc.card.Health;
             }
 
@@ -6525,14 +6525,14 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             switch (m.name)
             {
                 case CardDB.cardName.lightspawn:
-                    m.Attack = m.HealthPoints;
+                    m.Attack = m.Hp;
                     break;
             }
             m.updateReadyness();
 
             if (m.name == CardDB.cardName.lightspawn)
             {
-                m.Attack = m.HealthPoints;
+                m.Attack = m.Hp;
             }
 
             if (own) m.synergy = prozis.penman.getClassRacePriorityPenality(this.ownHeroStartClass, (TAG_RACE)m.handcard.card.race);
@@ -6542,7 +6542,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             //trigger on summon effect!
             this.triggerAMinionIsSummoned(m);
             //activate onAura effect
-            m.handcard.card.CardSimulation.onAuraStarts(this, m);
+            m.handcard.card.sim_card.onAuraStarts(this, m);
             //buffs minion
             this.minionGetOrEraseAllAreaBuffs(m, true);
             return m;
@@ -6559,7 +6559,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             addMinionToBattlefield(m);
 
             //trigger the battlecry!
-            m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
+            m.handcard.card.sim_card.getBattlecryEffect(this, m, hc.target, choice);
             //if(!this.ownAbilityReady&&ownHeroAblility.card.name==CardDB.cardName.heartofvirnaal)//腐化水源 维尔纳尔之心
             //this.ownBrannBronzebeard++;
 
@@ -6567,13 +6567,13 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 for (int i = 0; i < this.ownBrannBronzebeard; i++)
                 {
-                    m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
+                    m.handcard.card.sim_card.getBattlecryEffect(this, m, hc.target, choice);
                 }
             }
             if((this.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.ULD_291p
             ||ownHeroAblility.card.name == CardDB.cardName.heartofvirnaal))//腐化水源 维尔纳尔之心
             {
-                if(!this.ownAbilityReady )m.handcard.card.CardSimulation.getBattlecryEffect(this, m, hc.target, choice);
+                if(!this.ownAbilityReady )m.handcard.card.sim_card.getBattlecryEffect(this, m, hc.target, choice);
                 else if(this.ownMaxMana > 7)this.evaluatePenality += 5;//尽量使用两次战吼 利用好手牌 打出卡差
                 else this.evaluatePenality += 1;
             }
@@ -6681,18 +6681,18 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         /// <param name="own"></param>
         /// <param name="spawnKid">call kid triggered by another minion</param>
         /// <param name="oneMoreIsAllowed">for deathrattle minion to call kid(such as Voidlord)</param>
-        public void callKid(CardDB.Card card, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
+        public void CallKid(CardDB.Card card, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
         {
-            this.CallKid(card,zonePosition,own,spawnKid,oneMoreIsAllowed);
+            this.callKid(card,zonePosition,own,spawnKid,oneMoreIsAllowed);
         }
 
-        public void CallKid(CardDB.cardIDEnum cardid, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
+        public void callKid(CardDB.cardIDEnum cardid, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
         {
             CardDB.Card card = CardDB.Instance.getCardDataFromID(cardid);
-            this.CallKid(card,zonePosition,own,spawnKid,oneMoreIsAllowed);
+            this.callKid(card,zonePosition,own,spawnKid,oneMoreIsAllowed);
 
         }
-        public void CallKid(CardDB.Card card, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
+        public void callKid(CardDB.Card card, int zonePosition, bool own, bool spawnKid = true, bool oneMoreIsAllowed = false)
         {
             
             int allowed = 7;
@@ -6926,7 +6926,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 if(m.zonepos ==mown.zonepos+1&&(TAG_RACE)m.handcard.card.race ==TAG_RACE.MECHANICAL)
                 {
-                    this.minionGetBuffed(m,mown.Attack,mown.HealthPoints);
+                    this.minionGetBuffed(m,mown.Attack,mown.Hp);
                     if(mown.taunt)m.taunt=true;
                     if(mown.divineshild)m.divineshild=true;
                     if(mown.lifesteal)m.lifesteal=true;
@@ -6945,7 +6945,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     
                     //鼓励使用磁力
 
-                    int minionvalue = mown.HealthPoints * 2 + mown.Attack;
+                    int minionvalue = mown.Hp * 2 + mown.Attack;
                     if (m.divineshild) minionvalue = minionvalue * 3 / 2;
                     
                     if (m.windfury) minionvalue+= mown.Attack;
@@ -6997,7 +6997,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     case TAG_CLASS.SHAMAN:
                         CardDB.Card kid1 = CardDB.Instance.getCardDataFromID(CardDB.cardIDEnum.DRG_238t14t3);
                         int posi = this.isOwnTurn ? this.ownMinions.Count : this.enemyMinions.Count;
-                        this.CallKid(kid1, posi, this.isOwnTurn, false);
+                        this.callKid(kid1, posi, this.isOwnTurn, false);
                         break;
                     case TAG_CLASS.PALADIN:
                         
@@ -7152,7 +7152,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     if ((ss==CardDB.cardName.unknown||c.name==ss)&&(race == TAG_RACE.INVALID||(TAG_RACE)c.race == race)&&(CardDB.Instance.getCardData(c.name).cost <= (-costofcard)||CardDB.Instance.getCardData(c.name).cost==costofcard||costofcard==0)&&(attack==0||c.Attack == attack||c.Attack <= (-attack)))   
                     {
 
-                        this.CallKid(c, pos, own, false);
+                        this.callKid(c, pos, own, false);
                         this.nzhaomu++;
                         if(own)
                         {
@@ -7173,7 +7173,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 if(costofcard==0)costofcard=8;
                 if(costofcard <0)costofcard=-costofcard;
                 c=getRandomCardForManaMinion(costofcard);
-                this.CallKid(c, pos, own, false);
+                this.callKid(c, pos, own, false);
             } 
 
 
@@ -7355,12 +7355,12 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             if(m==null)return;
             if (m.own)
             {
-                if (m.playedThisTurn && m.charge == 0) this.lostDamage += m.HealthPoints * 2 + m.Attack * 2 + (m.windfury ? m.Attack : 0) + ((m.handcard.card.isSpecialMinion && !m.taunt) ? 20 : 0);
+                if (m.playedThisTurn && m.charge == 0) this.lostDamage += m.Hp * 2 + m.Attack * 2 + (m.windfury ? m.Attack : 0) + ((m.handcard.card.isSpecialMinion && !m.taunt) ? 20 : 0);
             }
 
-            if (m.HealthPoints > 0)
+            if (m.Hp > 0)
             {
-                m.HealthPoints = 0;
+                m.Hp = 0;
                 m.minionDied(this);
             }
 
@@ -7390,7 +7390,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         {
             if(m==null)return;
             List<Minion> temp = (m.own) ? this.ownMinions : this.enemyMinions;
-            m.handcard.card.CardSimulation.onAuraEnds(this, m);
+            m.handcard.card.sim_card.onAuraEnds(this, m);
             temp.Remove(m);
 
             if (own)
@@ -7416,7 +7416,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         {
             if(m==null)return;
             List<Minion> temp = (m.own) ? this.ownMinions : this.enemyMinions;
-            m.handcard.card.CardSimulation.onAuraEnds(this, m);
+            m.handcard.card.sim_card.onAuraEnds(this, m);
             temp.Remove(m);
 
             if (m.own) this.tempTrigger.ownMinionsChanged = true;
@@ -7442,7 +7442,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         public void minionTransform(Minion m, CardDB.Card c)
         {
             if(m==null)return;
-            m.handcard.card.CardSimulation.onAuraEnds(this, m);//end aura of the minion
+            m.handcard.card.sim_card.onAuraEnds(this, m);//end aura of the minion
 
             Handmanager.Handcard hc = new Handmanager.Handcard(c) { entity = m.entitiyID };
             if ((m.ancestralspirit >= 1 || m.desperatestand >= 1) && !m.own) 
@@ -7457,7 +7457,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
             else 
             {
-                int minionvalue = m.HealthPoints * 2 + m.Attack;
+                int minionvalue = m.Hp * 2 + m.Attack;
                 if (m.divineshild) minionvalue = minionvalue * 3 / 2;
                 if (m.Ready) minionvalue *=2;
                 if(!m.silenced)
@@ -7497,7 +7497,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 else this.anzEnemyTaunt++;
             }
 
-            m.handcard.card.CardSimulation.onAuraStarts(this, m);
+            m.handcard.card.sim_card.onAuraStarts(this, m);
             this.minionGetOrEraseAllAreaBuffs(m, true);
 
             if (m.own)
@@ -7543,7 +7543,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             if (this.guessingHeroHP < 0)
             {
                 target = this.searchRandomMinionByMaxHP(this.enemyMinions, searchmode.searchHighestAttack, damage); //the last chance (optimistic)
-                if ((target == null || this.enemyHero.HealthPoints <= damage) && !onlyMinions) target = this.enemyHero;
+                if ((target == null || this.enemyHero.Hp <= damage) && !onlyMinions) target = this.enemyHero;
             }
             else
             {
@@ -7583,7 +7583,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             }
 
             //end buffs/aura
-            m.handcard.card.CardSimulation.onAuraEnds(this, m);
+            m.handcard.card.sim_card.onAuraEnds(this, m);
             this.minionGetOrEraseAllAreaBuffs(m, false);
 
             //remove minion from list
@@ -7597,7 +7597,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
                 // add minion to new list + new buffs
                 newOwnerList.Add(m);
-                m.handcard.card.CardSimulation.onAuraStarts(this, m);
+                m.handcard.card.sim_card.onAuraStarts(this, m);
                 this.minionGetOrEraseAllAreaBuffs(m, true);
 
                 if (m.charge >= 1 || canAttack) // minion can attack if its shadowmadnessed (canAttack = true) or it has charge
@@ -7657,16 +7657,16 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 {
                     int tauntvalue = 0;
                     int mttauntvalue =0;
-                    if(m.Attack > 1) tauntvalue = m.HealthPoints * 2 + m.Attack;
-                    else tauntvalue = m.HealthPoints  + m.Attack;
+                    if(m.Attack > 1) tauntvalue = m.Hp * 2 + m.Attack;
+                    else tauntvalue = m.Hp  + m.Attack;
                     tauntvalue -=prozis.penman.getValueOfUsefulNeedKeepPriority(m.name);
                     if(m.divineshild) tauntvalue *= 3/2;
 
                     foreach (Minion mt in this.ownMinions)
                     {
                         int mv =0;
-                        if(mt.Attack > 1) mv = mt.HealthPoints * 2 + mt.Attack;
-                        else mv = mt.HealthPoints  + mt.Attack;
+                        if(mt.Attack > 1) mv = mt.Hp * 2 + mt.Attack;
+                        else mv = mt.Hp  + mt.Attack;
                         mv -= prozis.penman.getValueOfUsefulNeedKeepPriority(mt.name);
                         if(mt.divineshild) mv *= 3/2;
                         if(mttauntvalue<mv)mttauntvalue = mv;
@@ -7730,24 +7730,24 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             {
                 if (hpbuff >= 1)
                 {
-                    m.HealthPoints = m.HealthPoints + hpbuff;
+                    m.Hp = m.Hp + hpbuff;
                     m.maxHp = m.maxHp + hpbuff;
                 }
                 else
                 {
                     //debuffing hp, lower only maxhp (unless maxhp < hp)
                     m.maxHp = m.maxHp + hpbuff;
-                    if (m.maxHp < m.HealthPoints)
+                    if (m.maxHp < m.Hp)
                     {
-                        m.HealthPoints = m.maxHp;
+                        m.Hp = m.maxHp;
                     }
                 }
-                m.wounded = (m.maxHp != m.HealthPoints);
+                m.wounded = (m.maxHp != m.Hp);
             }
 
             if (m.name == CardDB.cardName.lightspawn && !m.silenced)
             {
-                m.Attack = m.HealthPoints;
+                m.Attack = m.Hp;
             }
             if (m.name == CardDB.cardName.paragonoflight && !m.silenced&&attackbuff>0)//圣光楷模
             {
@@ -7884,7 +7884,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     this.owncards.RemoveAt(cPos);
                     anz--;
 
-                    if (removedhc.card.CardSimulation.onCardDicscard(this, removedhc, null, 0, true)) 
+                    if (removedhc.card.sim_card.onCardDicscard(this, removedhc, null, 0, true)) 
                     {
                         discardedCardsBonusList.Add(removedhc);
                         cVal = -6;
@@ -7900,7 +7900,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     {
                         removedhc = this.owncards[i];
                         bestCardValue = cardsValDict[this.owncards[i].entity];
-                        if (removedhc.card.CardSimulation.onCardDicscard(this, removedhc, null, 0, true))
+                        if (removedhc.card.sim_card.onCardDicscard(this, removedhc, null, 0, true))
                         {
                             discardedCardsBonusList.Add(removedhc);
                             bestCardValue = 0;
@@ -7917,10 +7917,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 int malchezaarsimpCount = 0;
                 foreach (Minion m in this.ownMinions)
                 {
-                    if (m.HealthPoints > 0 && !m.silenced)
+                    if (m.Hp > 0 && !m.silenced)
                     {
                         if (m.name == CardDB.cardName.malchezaarsimp) malchezaarsimpCount++;
-                        m.handcard.card.CardSimulation.onCardDicscard(this, m.handcard, m, numDiscardedCards); 
+                        m.handcard.card.sim_card.onCardDicscard(this, m.handcard, m, numDiscardedCards); 
                     }
                 }
                 if (malchezaarsimpCount > 0) summPen = summPen / 6;
@@ -7929,7 +7929,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 
                 foreach (Handmanager.Handcard dc in discardedCardsBonusList)
                 {
-                    dc.card.CardSimulation.onCardDicscard(this, dc, null, 0); 
+                    dc.card.sim_card.onCardDicscard(this, dc, null, 0); 
                 }
             }
             else
@@ -7970,7 +7970,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     foreach (Minion m in om)
                     {
                         if (!m.Ready || m.frozen) continue;
-                        if (m.Attack < d.HealthPoints)
+                        if (m.Attack < d.Hp)
                         {
                             omn.Add(m);
                             continue;
@@ -8018,7 +8018,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     }
                 }
             }
-            lethlMissing = this.enemyHero.HealthPoints - dmg;
+            lethlMissing = this.enemyHero.Hp - dmg;
             return lethlMissing;
         }
 
@@ -8054,7 +8054,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             }
 
 
-            if (this.enemyHero.HealthPoints > dmg) return false;
+            if (this.enemyHero.Hp > dmg) return false;
             else return true;
         }
 
@@ -8071,9 +8071,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         {
             if(m==null)return;
             minionGetOrEraseAllAreaBuffs(m, false);
-            m.HealthPoints = newHp;
+            m.Hp = newHp;
             m.maxHp = newHp;
-            if (m.wounded && !m.silenced) m.handcard.card.CardSimulation.onEnrageStop(this, m);
+            if (m.wounded && !m.silenced) m.handcard.card.sim_card.onEnrageStop(this, m);
             m.wounded = false;
             minionGetOrEraseAllAreaBuffs(m, true);
         }
@@ -8081,7 +8081,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         public void minionSetAngrToHP(Minion m)
         {
             if(m==null)return;
-            m.Attack = m.HealthPoints;
+            m.Attack = m.Hp;
             m.tempAttack = 0;
             this.minionGetOrEraseAllAreaBuffs(m, true);
 
@@ -8092,12 +8092,12 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             if(m==null)return;
             bool woundedbef = m.wounded;
             int temp = m.Attack;
-            m.Attack = m.HealthPoints;
-            m.HealthPoints = temp;
+            m.Attack = m.Hp;
+            m.Hp = temp;
             m.maxHp = temp;
             m.wounded = false;
-            if (woundedbef) m.handcard.card.CardSimulation.onEnrageStop(this, m);
-            if (m.HealthPoints <= 0)
+            if (woundedbef) m.handcard.card.sim_card.onEnrageStop(this, m);
+            if (m.Hp <= 0)
             {
                 if (m.own) this.tempTrigger.ownMinionsDied++;
                 else this.tempTrigger.enemyMinionsDied++;
@@ -8123,10 +8123,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     {
 
                     case CardDB.cardName.theglassknight: //玻璃骑士
-                    mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, dmgOrHeal);
+                    mnn.handcard.card.sim_card.onACharGotHealed(this, mnn, dmgOrHeal);
                     break;
                     case CardDB.cardName.crystalsmithkangor://水晶工匠坎格尔
-                    mnn.handcard.card.CardSimulation.onACharGotHealed(this, m, dmgOrHeal);
+                    mnn.handcard.card.sim_card.onACharGotHealed(this, m, dmgOrHeal);
                         dmgOrHeal*=2;//双倍治疗
                         break;
                     }
@@ -8137,16 +8137,16 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     switch (mnn.handcard.card.name)
                     {
                         case CardDB.cardName.theglassknight: 
-                        mnn.handcard.card.CardSimulation.onACharGotHealed(this, mnn, dmgOrHeal);
+                        mnn.handcard.card.sim_card.onACharGotHealed(this, mnn, dmgOrHeal);
                         break;
                         case CardDB.cardName.crystalsmithkangor:
-                        mnn.handcard.card.CardSimulation.onACharGotHealed(this, m, dmgOrHeal);
+                        mnn.handcard.card.sim_card.onACharGotHealed(this, m, dmgOrHeal);
                         dmgOrHeal*=2;//
                         break;
                     }
                 }
             }
-            if (m.HealthPoints > 0) m.getDamageOrHeal(dmgOrHeal, this, false, dontDmgLoss);
+            if (m.Hp > 0) m.getDamageOrHeal(dmgOrHeal, this, false, dontDmgLoss);
         }
 
 
@@ -8177,11 +8177,11 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
         {
             //Deal damage randomly split among all enemies.
 
-            if ((!ownSide && this.enemyHero.HealthPoints + this.enemyHero.armor <= times) || (ownSide && this.ownHero.HealthPoints + this.ownHero.armor <= times))
+            if ((!ownSide && this.enemyHero.Hp + this.enemyHero.armor <= times) || (ownSide && this.ownHero.Hp + this.ownHero.armor <= times))
             {
                 if (!ownSide)
                 {
-                    int dmg = this.enemyHero.HealthPoints + this.enemyHero.armor;  //optimistic
+                    int dmg = this.enemyHero.Hp + this.enemyHero.armor;  //optimistic
                     if (this.enemyMinions.Count > 2) dmg--;
                     times = times - dmg;
                     if (this.anzEnemyAnimatedArmor > 0)
@@ -8192,7 +8192,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 }
                 else
                 {
-                    int dmg = this.ownHero.HealthPoints + this.ownHero.armor - 1;
+                    int dmg = this.ownHero.Hp + this.ownHero.armor - 1;
                     times = times - dmg;
                     if (this.anzOwnAnimatedArmor > 0)
                     {
@@ -8203,7 +8203,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             }
 
             List<Minion> temp = (ownSide) ? new List<Minion>(this.ownMinions) : new List<Minion>(this.enemyMinions);
-            temp.Sort((a, b) => { int tmp = a.HealthPoints.CompareTo(b.HealthPoints); return tmp == 0 ? a.Attack - b.Attack : tmp; }); 
+            temp.Sort((a, b) => { int tmp = a.Hp.CompareTo(b.Hp); return tmp == 0 ? a.Attack - b.Attack : tmp; }); 
 
             int border = 1;
             for (int pos = 0; pos < temp.Count; pos++)
@@ -8215,9 +8215,9 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                     times--;
                     if (times < 1) break;
                 }
-                if (m.HealthPoints > border)
+                if (m.Hp > border)
                 {
-                    int dmg = Math.Min(m.HealthPoints - border, times);
+                    int dmg = Math.Min(m.Hp - border, times);
                     times -= dmg;
                     this.minionGetDamageOrHeal(m, dmg);
                 }
@@ -8444,22 +8444,22 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
             foreach (Minion m in minions)
             {
-                if (m.HealthPoints <= 0) continue;
+                if (m.Hp <= 0) continue;
 
                 switch (mode)
                 {
                     case searchmode.searchLowestHP:
-                        if (m.HealthPoints < value)
+                        if (m.Hp < value)
                         {
                             ret = m;
-                            value = m.HealthPoints;
+                            value = m.Hp;
                         }
                         continue;
                     case searchmode.searchHighestHP:
-                        if (m.HealthPoints > value)
+                        if (m.Hp > value)
                         {
                             ret = m;
-                            value = m.HealthPoints;
+                            value = m.Hp;
                         }
                         continue;
                     case searchmode.searchLowestAttack:
@@ -8477,10 +8477,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                         }
                         continue;
                     case searchmode.searchHighAttackLowHP:
-                        if (m.Attack / m.HealthPoints > value)
+                        if (m.Attack / m.Hp > value)
                         {
                             ret = m;
-                            value = m.Attack / m.HealthPoints;
+                            value = m.Attack / m.Hp;
                         }
                         continue;
                     case searchmode.searchHighHPLowAttack:
@@ -8489,10 +8489,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             if (ret == null) ret = m;
                             continue;
                         }
-                        if (m.HealthPoints / m.Attack > value)
+                        if (m.Hp / m.Attack > value)
                         {
                             ret = m;
-                            value = m.HealthPoints / m.Attack;
+                            value = m.Hp / m.Attack;
                         }
                         continue;
                     case searchmode.searchLowestCost:
@@ -8527,45 +8527,45 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             int retVal = 0;
             foreach (Minion m in minions)
             {
-                if (m.HealthPoints > maxHP) continue;
+                if (m.Hp > maxHP) continue;
 
                 switch (mode)
                 {
                     case searchmode.searchHighestHP:
-                        if (m.HealthPoints > value)
+                        if (m.Hp > value)
                         {
                             ret = m;
-                            value = m.HealthPoints;
+                            value = m.Hp;
                             retVal = m.Attack;
                         }
-                        else if (m.HealthPoints == value && retVal < m.Attack) ret = m;
+                        else if (m.Hp == value && retVal < m.Attack) ret = m;
                         continue;
                     case searchmode.searchLowestAttack:
                         if (m.Attack < value)
                         {
                             ret = m;
                             value = m.Attack;
-                            retVal = m.HealthPoints;
+                            retVal = m.Hp;
                         }
-                        else if (m.Attack == value && retVal < m.HealthPoints) ret = m;
+                        else if (m.Attack == value && retVal < m.Hp) ret = m;
                         continue;
                     case searchmode.searchHighestAttack:
                         if (m.Attack > value)
                         {
                             ret = m;
                             value = m.Attack;
-                            retVal = m.HealthPoints;
+                            retVal = m.Hp;
                         }
-                        else if (m.Attack == value && retVal < m.HealthPoints) ret = m;
+                        else if (m.Attack == value && retVal < m.Hp) ret = m;
                         continue;
                     case searchmode.searchHighAttackLowHP:
-                        if (m.Attack / m.HealthPoints > value)
+                        if (m.Attack / m.Hp > value)
                         {
                             ret = m;
-                            value = m.Attack / m.HealthPoints;
-                            retVal = m.HealthPoints;
+                            value = m.Attack / m.Hp;
+                            retVal = m.Hp;
                         }
-                        else if (m.Attack / m.HealthPoints == value && retVal < m.HealthPoints) ret = m;
+                        else if (m.Attack / m.Hp == value && retVal < m.Hp) ret = m;
                         continue;
                     case searchmode.searchHighHPLowAttack:
                         if (m.Attack == 0)
@@ -8573,26 +8573,26 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                             if (ret == null) ret = m;
                             continue;
                         }
-                        if (m.HealthPoints / m.Attack > value)
+                        if (m.Hp / m.Attack > value)
                         {
                             ret = m;
-                            value = m.HealthPoints / m.Attack;
-                            retVal = m.HealthPoints;
+                            value = m.Hp / m.Attack;
+                            retVal = m.Hp;
                         }
-                        else if (m.Attack / m.HealthPoints == value && retVal < m.HealthPoints) ret = m;
+                        else if (m.Attack / m.Hp == value && retVal < m.Hp) ret = m;
                         continue;
                     default: //==searchHighestHP
-                        if (m.HealthPoints > value)
+                        if (m.Hp > value)
                         {
                             ret = m;
-                            value = m.HealthPoints;
+                            value = m.Hp;
                             retVal = m.Attack;
                         }
-                        else if (m.HealthPoints == value && retVal < m.Attack) ret = m;
+                        else if (m.Hp == value && retVal < m.Attack) ret = m;
                         continue;
                 }
             }
-            if (ret != null && ret.HealthPoints <= 0) return null;
+            if (ret != null && ret.Hp <= 0) return null;
             return ret;
         }
 
@@ -8647,74 +8647,73 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void debugMinions()
         {
-            LogHelper.WriteCombatLog("OWN MINIONS################");
+            Helpfunctions.Instance.logg("OWN MINIONS################");
 
             foreach (Minion m in this.ownMinions)
             {
-                LogHelper.WriteCombatLog("name,ang, hp, maxhp: " + m.name + ", " + m.Attack + ", " + m.HealthPoints + ", " + m.maxHp);
+                Helpfunctions.Instance.logg("name,ang, hp, maxhp: " + m.name + ", " + m.Attack + ", " + m.Hp + ", " + m.maxHp);
             }
 
-            LogHelper.WriteCombatLog("ENEMY MINIONS############");
+            Helpfunctions.Instance.logg("ENEMY MINIONS############");
             foreach (Minion m in this.enemyMinions)
             {
-                LogHelper.WriteCombatLog("name,ang, hp: " + m.name + ", " + m.Attack + ", " + m.HealthPoints);
+                Helpfunctions.Instance.logg("name,ang, hp: " + m.name + ", " + m.Attack + ", " + m.Hp);
             }
         }
 
         public void printBoard()
         {
-            LogHelper.WriteCombatLog("+++++++ printBoard start +++++++++");
+            Helpfunctions.Instance.logg("+++++++ printBoard start +++++++++");
+            Helpfunctions.Instance.logg("board/hash/turn: " + value + "  /  " + this.hashcode + "  /  " + this.turnCounter + " ++++++++++++++++++++++");
+            Helpfunctions.Instance.logg("pen " + this.evaluatePenality);
+            Helpfunctions.Instance.logg("mana " + this.mana + "/" + this.ownMaxMana);
+            Helpfunctions.Instance.logg("cardsplayed: " + this.cardsPlayedThisTurn + " handsize: " + this.owncards.Count + " enemyhand: " + this.enemyAnzCards);
 
-            LogHelper.WriteCombatLog("board/hash/turn: " + value + "  /  " + this.hashcode + "  /  " + this.turnCounter + " ++++++++++++++++++++++");
-            LogHelper.WriteCombatLog("pen " + this.evaluatePenality);
-            LogHelper.WriteCombatLog("mana " + this.mana + "/" + this.ownMaxMana);
-            LogHelper.WriteCombatLog("cardsplayed: " + this.cardsPlayedThisTurn + " handsize: " + this.owncards.Count + " enemyhand: " + this.enemyAnzCards);
+            Helpfunctions.Instance.logg("ownhero: ");
+            Helpfunctions.Instance.logg("ownherohp: " + this.ownHero.Hp + " + " + this.ownHero.armor);
+            Helpfunctions.Instance.logg("ownheroattac: " + this.ownHero.Attack);
+            Helpfunctions.Instance.logg("ownheroweapon: " + this.ownWeapon.Angr + " " + this.ownWeapon.Durability + " " + this.ownWeapon.name + " " + this.ownWeapon.card.cardIDenum + " " + (this.ownWeapon.poisonous ? 1 : 0) + " " + (this.ownWeapon.lifesteal ? 1 : 0));
+            Helpfunctions.Instance.logg("ownherostatus: frozen" + this.ownHero.frozen + " ");
+            Helpfunctions.Instance.logg("enemyherohp: " + this.enemyHero.Hp + " + " + this.enemyHero.armor + ((this.enemyHero.immune) ? " immune" : ""));
 
-            LogHelper.WriteCombatLog("ownhero: ");
-            LogHelper.WriteCombatLog("ownherohp: " + this.ownHero.HealthPoints + " + " + this.ownHero.armor);
-            LogHelper.WriteCombatLog("ownheroattac: " + this.ownHero.Attack);
-            LogHelper.WriteCombatLog("ownheroweapon: " + this.ownWeapon.Angr + " " + this.ownWeapon.Durability + " " + this.ownWeapon.name + " " + this.ownWeapon.card.cardIDenum + " " + (this.ownWeapon.poisonous ? 1 : 0) + " " + (this.ownWeapon.lifesteal ? 1 : 0));
-            LogHelper.WriteCombatLog("ownherostatus: frozen" + this.ownHero.frozen + " ");
-            LogHelper.WriteCombatLog("enemyherohp: " + this.enemyHero.HealthPoints + " + " + this.enemyHero.armor + ((this.enemyHero.immune) ? " immune" : ""));
-
-            if (this.enemySecretCount >= 1) LogHelper.WriteCombatLog("enemySecrets: " + Probabilitymaker.Instance.getEnemySecretData(this.enemySecretList));
+            if (this.enemySecretCount >= 1) Helpfunctions.Instance.logg("enemySecrets: " + Probabilitymaker.Instance.getEnemySecretData(this.enemySecretList));
             foreach (Action a in this.playactions)
             {
                 a.print();
             }
-            LogHelper.WriteCombatLog("OWN MINIONS################ " + this.ownMinions.Count);
+            Helpfunctions.Instance.logg("OWN MINIONS################ " + this.ownMinions.Count);
 
             foreach (Minion m in this.ownMinions)
             {
-                LogHelper.WriteCombatLog("deckpos, name,ang, hp: " + m.zonepos + ", " + m.name + ", " + m.Attack + ", " + m.HealthPoints + " " + m.entitiyID);
+                Helpfunctions.Instance.logg("deckpos, name,ang, hp: " + m.zonepos + ", " + m.name + ", " + m.Attack + ", " + m.Hp + " " + m.entitiyID);
             }
 
             if (this.enemyMinions.Count > 0)
             {
-                LogHelper.WriteCombatLog("ENEMY MINIONS############ " + this.enemyMinions.Count);
+                Helpfunctions.Instance.logg("ENEMY MINIONS############ " + this.enemyMinions.Count);
                 foreach (Minion m in this.enemyMinions)
                 {
-                    LogHelper.WriteCombatLog("deckpos, name,ang, hp: " + m.zonepos + ", " + m.name + ", " + m.Attack + ", " + m.HealthPoints + " " + m.entitiyID);
+                    Helpfunctions.Instance.logg("deckpos, name,ang, hp: " + m.zonepos + ", " + m.name + ", " + m.Attack + ", " + m.Hp + " " + m.entitiyID);
                 }
             }
 
             if (this.diedMinions.Count > 0)
             {
-                LogHelper.WriteCombatLog("DIED MINIONS############");
+                Helpfunctions.Instance.logg("DIED MINIONS############");
                 foreach (GraveYardItem m in this.diedMinions)
                 {
-                    LogHelper.WriteCombatLog("own, entity, cardid: " + m.own + ", " + m.entity + ", " + m.cardid);
+                    Helpfunctions.Instance.logg("own, entity, cardid: " + m.own + ", " + m.entity + ", " + m.cardid);
                 }
             }
 
-            LogHelper.WriteCombatLog("Own Handcards: ");
+            Helpfunctions.Instance.logg("Own Handcards: ");
             foreach (Handmanager.Handcard hc in this.owncards)
             {
-                LogHelper.WriteCombatLog("pos " + hc.position + " " + hc.card.name + " " + hc.manacost + " entity " + hc.entity + " " + hc.card.cardIDenum + " " + hc.addattack + " " + hc.addHp + " " + hc.elemPoweredUp);
+                Helpfunctions.Instance.logg("pos " + hc.position + " " + hc.card.name + " " + hc.manacost + " entity " + hc.entity + " " + hc.card.cardIDenum + " " + hc.addattack + " " + hc.addHp + " " + hc.elemPoweredUp);
             }
-            LogHelper.WriteCombatLog("+++++++ printBoard end +++++++++");
+            Helpfunctions.Instance.logg("+++++++ printBoard end +++++++++");
 
-            LogHelper.WriteCombatLog("");
+            Helpfunctions.Instance.logg("");
         }
 
 
@@ -8726,10 +8725,10 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             retval += "\r\n" + ("pen\t" + this.evaluatePenality);
             retval += "\r\n" + ("mana\t" + this.mana + "/" + this.ownMaxMana);
             retval += "\r\n" + ("cardsplayed : handsize : enemyhand\t" + this.cardsPlayedThisTurn + ":" + this.owncards.Count + ":" + this.enemyAnzCards);
-            retval += "\r\n" + ("Hp : armor : Atk ownhero\t" + this.ownHero.HealthPoints + ":" + this.ownHero.armor + ":" + this.ownHero.Attack + ((this.ownHero.immune) ? ":immune" : ""));
+            retval += "\r\n" + ("Hp : armor : Atk ownhero\t" + this.ownHero.Hp + ":" + this.ownHero.armor + ":" + this.ownHero.Attack + ((this.ownHero.immune) ? ":immune" : ""));
             retval += "\r\n" + ("Atk : Dur : Name : IDe : poison ownWeapon\t" + this.ownWeapon.Angr + " " + this.ownWeapon.Durability + " " + this.ownWeapon.name + " " + this.ownWeapon.card.cardIDenum + " " + (this.ownWeapon.poisonous ? 1 : 0) + " " + (this.ownWeapon.lifesteal ? 1 : 0));
             retval += "\r\n" + ("ownHero.frozen\t" + this.ownHero.frozen);
-            retval += "\r\n" + ("Hp : armor enemyhero\t" + this.enemyHero.HealthPoints + ":" + this.enemyHero.armor + ((this.enemyHero.immune) ? ":immune" : ""));
+            retval += "\r\n" + ("Hp : armor enemyhero\t" + this.enemyHero.Hp + ":" + this.enemyHero.armor + ((this.enemyHero.immune) ? ":immune" : ""));
             retval += "\r\n" + ("Atk : Dur : Name : IDe : poison enemyWeapon\t" + this.enemyWeapon.Angr + " " + this.enemyWeapon.Durability + " " + this.enemyWeapon.name + " " + this.enemyWeapon.card.cardIDenum + " " + (this.enemyWeapon.poisonous ? 1 : 0) + " " + (this.enemyWeapon.lifesteal ? 1 : 0));
             retval += "\r\n" + ("carddraw own:enemy\t" + this.owncarddraw + ":" + this.enemycarddraw);
 
@@ -8749,7 +8748,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             for (int i = 0; i < this.ownMinions.Count; i++)
             {
                 Minion m = this.ownMinions[i];
-                retval += "\r\n" + (i + 1) + " OWN MINION\t" + m.zonepos + " " + m.entitiyID + ":" + m.name + " " + m.Attack + " " + m.HealthPoints;
+                retval += "\r\n" + (i + 1) + " OWN MINION\t" + m.zonepos + " " + m.entitiyID + ":" + m.name + " " + m.Attack + " " + m.Hp;
             }
 
             if (this.enemyMinions.Count > 0)
@@ -8758,7 +8757,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
                 for (int i = 0; i < this.enemyMinions.Count; i++)
                 {
                     Minion m = this.enemyMinions[i];
-                    retval += "\r\n" + (i + 1) + " ENEMY MINION\t" + m.zonepos + " " + m.entitiyID + ":" + m.name + " " + m.Attack + " " + m.HealthPoints;
+                    retval += "\r\n" + (i + 1) + " ENEMY MINION\t" + m.zonepos + " " + m.entitiyID + ":" + m.name + " " + m.Attack + " " + m.Hp;
                 }
             }
 
@@ -8785,21 +8784,21 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
         public void printBoardDebug()
         {
-            LogHelper.WriteCombatLog("hero " + this.ownHero.HealthPoints + " " + this.ownHero.armor + " " + this.ownHero.entitiyID);
-            LogHelper.WriteCombatLog("ehero " + this.enemyHero.HealthPoints + " " + this.enemyHero.armor + " " + this.enemyHero.entitiyID);
+            Helpfunctions.Instance.logg("hero " + this.ownHero.Hp + " " + this.ownHero.armor + " " + this.ownHero.entitiyID);
+            Helpfunctions.Instance.logg("ehero " + this.enemyHero.Hp + " " + this.enemyHero.armor + " " + this.enemyHero.entitiyID);
             foreach (Minion m in ownMinions)
             {
-                LogHelper.WriteCombatLog(m.name + " " + m.entitiyID);
+                Helpfunctions.Instance.logg(m.name + " " + m.entitiyID);
             }
-            LogHelper.WriteCombatLog("-");
+            Helpfunctions.Instance.logg("-");
             foreach (Minion m in enemyMinions)
             {
-                LogHelper.WriteCombatLog(m.name + " " + m.entitiyID);
+                Helpfunctions.Instance.logg(m.name + " " + m.entitiyID);
             }
-            LogHelper.WriteCombatLog("-");
+            Helpfunctions.Instance.logg("-");
             foreach (Handmanager.Handcard hc in this.owncards)
             {
-                LogHelper.WriteCombatLog(hc.position + " " + hc.card.name + " " + hc.entity);
+                Helpfunctions.Instance.logg(hc.position + " " + hc.card.name + " " + hc.entity);
             }
         }
 
@@ -8814,7 +8813,7 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
             foreach (Action a in this.playactions)
             {
                 a.print(toBuffer);
-                LogHelper.WriteCombatLog("");
+                Helpfunctions.Instance.logg("");
             }
         }
 

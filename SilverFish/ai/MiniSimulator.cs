@@ -1,4 +1,4 @@
-﻿using SilverFish.Helpers;
+﻿using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -94,7 +94,7 @@ namespace HREngine.Bots
 
         private void addToPosmoves(Playfield pf)
         {
-            if (pf.ownHero.HealthPoints <= 0) return;
+            if (pf.ownHero.Hp <= 0) return;
             this.posmoves.Add(pf);
             if (this.totalboards >= 1)
             {
@@ -102,7 +102,7 @@ namespace HREngine.Bots
             }
         }
         
-        public float DoAllMoves(Playfield playf)
+        public float doallmoves(Playfield playf)
         {
             print = playf.print;
             this.isLethalCheck = playf.isLethalCheck;
@@ -119,10 +119,7 @@ namespace HREngine.Bots
             bestoldval = -20000000;
             while (havedonesomething)
             {
-                if (this.printNormalstuff)
-                {
-                    LogHelper.WriteCombatLog("ailoop");
-                }
+                if (this.printNormalstuff) Helpfunctions.Instance.logg("ailoop");
                 GC.Collect();
                 temp.Clear();
                 temp.AddRange(this.posmoves);
@@ -183,14 +180,14 @@ namespace HREngine.Bots
                             donec++;
                         }
                     }
-                    LogHelper.WriteCombatLog("deep " + deep + " len " + this.posmoves.Count + " dones " + donec);
+                    Helpfunctions.Instance.logg("deep " + deep + " len " + this.posmoves.Count + " dones " + donec);
                 }
 
                 cuttingposibilities(isLethalCheck);
 
                 if (this.printNormalstuff)
                 {
-                    LogHelper.WriteCombatLog("cut to len " + this.posmoves.Count);
+                    Helpfunctions.Instance.logg("cut to len " + this.posmoves.Count);
                 }
                 deep++;
                 temp.Clear();
@@ -235,7 +232,7 @@ namespace HREngine.Bots
                     else if (posmoves[i].cardsPlayedThisTurn == bestplay.cardsPlayedThisTurn)
                     {
                         if (bestplay.optionsPlayedThisTurn > posmoves[i].optionsPlayedThisTurn) continue; 
-                        else if (bestplay.optionsPlayedThisTurn == posmoves[i].optionsPlayedThisTurn && bestplay.enemyHero.HealthPoints <= posmoves[i].enemyHero.HealthPoints) continue;
+                        else if (bestplay.optionsPlayedThisTurn == posmoves[i].optionsPlayedThisTurn && bestplay.enemyHero.Hp <= posmoves[i].enemyHero.Hp) continue;
                         
                     }
                     bestplay = posmoves[i];
@@ -280,11 +277,11 @@ namespace HREngine.Bots
             for (int i = startIndex; i < endIndex; i++)
             {
                 Playfield p = source[i];
-                if (p.complete || p.ownHero.HealthPoints <= 0) { }
+                if (p.complete || p.ownHero.Hp <= 0) { }
                 else if (!enoughCalculations)
                 {
                     //gernerate actions and play them!
-                    List<Action> actions = movegen.GetMoveList(p, usePenalityManager, useCutingTargets, true);
+                    List<Action> actions = movegen.getMoveList(p, usePenalityManager, useCutingTargets, true);
 
                     if (printRules > 0)
                     {
@@ -295,7 +292,7 @@ namespace HREngine.Bots
                         Playfield pf = new Playfield(p);
                         pf.doAction(a);
                         pf.evaluatePenality += - pf.ruleWeight + RulesEngine.Instance.getRuleWeight(pf);
-                        if (pf.ownHero.HealthPoints > 0 && pf.evaluatePenality < 500) p.nextPlayfields.Add(pf);
+                        if (pf.ownHero.Hp > 0 && pf.evaluatePenality < 500) p.nextPlayfields.Add(pf);
                     }
                 }
 
@@ -304,7 +301,7 @@ namespace HREngine.Bots
                     if (berserk > 0)
                     {
                         p.endTurn();
-                        if (p.enemyHero.HealthPoints > 0)
+                        if (p.enemyHero.Hp > 0)
                         {
                             bool needETS = true;
                             if (p.anzEnemyTaunt < 1) foreach (Minion m in p.ownMinions) { if (m.Ready) { needETS = false; break; } }
@@ -323,7 +320,7 @@ namespace HREngine.Bots
                 {
                     p.endTurn();
 
-                    if (p.enemyHero.HealthPoints > 0)
+                    if (p.enemyHero.Hp > 0)
                     {
                         Ai.Instance.enemyTurnSim[threadnumber].simulateEnemysTurn(p, this.simulateSecondTurn, playaround, false, playaroundprob, playaroundprob2);
                         if (p.value <= -10000)
@@ -484,13 +481,13 @@ namespace HREngine.Bots
                     foreach (Minion mnn in temp)
                     {
                         // special minions are allowed to attack in silended and unsilenced state!
-                        //LogHelper.WriteCombatLog(mnn.silenced + " " + m.silenced + " " + mnn.name + " " + m.name + " " + penman.specialMinions.ContainsKey(m.name));
+                        //help.logg(mnn.silenced + " " + m.silenced + " " + mnn.name + " " + m.name + " " + penman.specialMinions.ContainsKey(m.name));
 
                         bool otherisSpecial = mnn.handcard.card.isSpecialMinion;
 
                         if ((!isSpecial || (isSpecial && m.silenced)) && (!otherisSpecial || (otherisSpecial && mnn.silenced))) // both are not special, if they are the same, dont add
                         {
-                            if (mnn.Attack == m.Attack && mnn.HealthPoints == m.HealthPoints && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal) goingtoadd = false;
+                            if (mnn.Attack == m.Attack && mnn.Hp == m.Hp && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal) goingtoadd = false;
                             continue;
                         }
 
@@ -501,7 +498,7 @@ namespace HREngine.Bots
                                 continue;
                             }
                             // same name -> test whether they are equal
-                            if (mnn.Attack == m.Attack && mnn.HealthPoints == m.HealthPoints && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal) goingtoadd = false;
+                            if (mnn.Attack == m.Attack && mnn.Hp == m.Hp && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal) goingtoadd = false;
                             continue;
                         }
 
@@ -511,17 +508,17 @@ namespace HREngine.Bots
                     {
                         addedmins.Add(m);
                         retvalues.Add(t);
-                        //LogHelper.WriteCombatLog(m.name + " " + m.id +" is added to targetlist");
+                        //help.logg(m.name + " " + m.id +" is added to targetlist");
                     }
                     else
                     {
-                        //LogHelper.WriteCombatLog(m.name + " is not needed to attack");
+                        //help.logg(m.name + " is not needed to attack");
                         continue;
                     }
 
                 }
             }
-            //LogHelper.WriteCombatLog("end targetcutting");
+            //help.logg("end targetcutting");
             if (priomins) return retvaluesPrio;
 
             return retvalues;

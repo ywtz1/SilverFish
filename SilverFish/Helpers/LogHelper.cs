@@ -2,11 +2,11 @@
 using System.IO;
 using HREngine.Bots;
 
-namespace SilverFish.Helpers
+namespace Silverfish.Helpers
 {
     public class LogHelper
     {
-        private static string MainLogFolder = @"Logs\ChuckSilverFishAi";
+        private static string MainLogFolder = @"Logs\ChuckSilverfishAi";
 
         private static string CombatLogFolder = "CombatLogs";
 
@@ -60,7 +60,7 @@ namespace SilverFish.Helpers
             WriteAllText(filePath, obj);
         }
 
-        public static void WriteNotImplementedCardSimulationLog(string content)
+        public static void WriteNotImplementedsim_cardLog(string content)
         {
             WriteAllText(content, "CardNotImplemented-{DateTime.Now:yyyyMMdd}.csv", string.Empty);
         }
@@ -80,7 +80,7 @@ namespace SilverFish.Helpers
 
         public static void WriteMainLog(object obj)
         {
-            MainLogFileName = "ChuckSilverFishAi-{DateTime.Now:yyyyMMdd}.log";
+            MainLogFileName = "ChuckSilverfishAi-{DateTime.Now:yyyyMMdd}.log";
             AppendText(obj, MainLogFileName);
         }
 

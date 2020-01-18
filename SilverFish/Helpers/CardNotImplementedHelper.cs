@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using HREngine.Bots;
 
-namespace SilverFish.Helpers
+namespace Silverfish.Helpers
 {
     public class NotImplementedInfo
     {
@@ -84,7 +84,7 @@ namespace SilverFish.Helpers
                     var array1 = SingleGameCards.Values.Select(x => x.cardIDenum+","+x.name);
                     var result1 = string.Join(Environment.NewLine, array1);
                     stringBuilder.AppendLine(result1);
-                    LogHelper.WriteNotImplementedCardSimulationLog(stringBuilder.ToString());
+                    LogHelper.WriteNotImplementedsim_cardLog(stringBuilder.ToString());
                 }
 
                 return;
@@ -95,7 +95,7 @@ namespace SilverFish.Helpers
             var array = list.Select(x => x.Card.cardIDenum+","+x.Card.name+","+x.Counter);
             var result = string.Join(Environment.NewLine, array);
             stringBuilder.AppendLine(result);
-            LogHelper.WriteNotImplementedCardSimulationLog(stringBuilder.ToString());*/
+            LogHelper.WriteNotImplementedsim_cardLog(stringBuilder.ToString());*/
         }
 
     }

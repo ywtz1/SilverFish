@@ -2,7 +2,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using SilverFish.Helpers;
+using Silverfish.Helpers;
 using Triton.Common.LogUtilities;
 
 namespace HREngine.Bots
@@ -27,13 +27,12 @@ namespace HREngine.Bots
         public enum cardtype
         {
             NONE,
-            MOB,
-            SPELL,
-            WEAPON,
-            HEROPWR,
-            ENCHANTMENT,
-            HERO,
-
+            MOB=4,
+            SPELL=5,
+            WEAPON=7,
+            HEROPWR=10,
+            ENCHANTMENT=6,
+            HERO=3,
         }
 
         public enum cardtrigers
@@ -97,7 +96,7 @@ namespace HREngine.Bots
             {
                 Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType().ErrorFormat("[Unidentified card ID :" + s + "]");
                 
-                    string filepath =  Settings.Instance.DataFolderPath;
+                    string filepath =  Settings.Instance.BaseDirectory+"\\Unidentified card";
             ;
                     if (!Directory.Exists(filepath))
                     {
@@ -164,12 +163,12 @@ namespace HREngine.Bots
             }
             else
             {
-                nameEnum = GetSpecialCardNameEnumFromCardIdEnum(tempCardIdEnum);
-                if (nameEnum == cardName.unknown&&s!="3ofkindcheckplayerenchant")
+                
+                if (nameEnum != cardName.unknown&&s!="3ofkindcheckplayerenchant")
                 {
                     Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
                         .ErrorFormat("[Unidentified card name :" + s + "]");
-                    string filepath =  Settings.Instance.DataFolderPath;
+                    string filepath =  Settings.Instance.BaseDirectory+"\\Unidentified card";
                     string filename3 = filepath + "\\cardName.txt";
                     if (!File.Exists(filename3))
                     {
@@ -289,13 +288,13 @@ namespace HREngine.Bots
                     // have to do it 2 times (or the kids inside the simcards will not have a simcard :D
                     foreach (Card c in instance.cardlist)
                     {
-                        //c.CardSimulation = CardHelper.GetCardSimulation(c.cardIDenum);
-                        c.CardSimulation = CardHelper.getSimCard(c.cardIDenum);
+                        //c.sim_card = CardHelper.Getsim_card(c.cardIDenum);
+                        c.sim_card = CardHelper.getSimCard(c.cardIDenum);
 
                     }
 
                     var totalCardSimCount = instance.cardlist.Count;
-                    var implementedCardSimCount = instance.cardlist.Count(x =>x.CardSimulationImplemented);
+                    var implementedCardSimCount = instance.cardlist.Count(x =>x.sim_cardImplemented);
                     var percentage = 100*implementedCardSimCount / (double)totalCardSimCount;
                     Helpfunctions.Instance.ErrorLog(
                         string.Format("Card simulation implemented {1}/{2} = {0}% ",percentage,implementedCardSimCount,totalCardSimCount));
@@ -308,7 +307,7 @@ namespace HREngine.Bots
 
         private CardDB()
         {
-            InitSpecialNames();
+            
             string[] lines = new string[0] { };
             string[] lines2 = new string[0] { };
             
@@ -1130,7 +1129,7 @@ namespace HREngine.Bots
                 }
                 
                 c.trigers = new List<cardtrigers>();
-                Type trigerType = c.CardSimulation.GetType();
+                Type trigerType = c.sim_card.GetType();
                 foreach (string trigerName in Enum.GetNames(typeof(cardtrigers)))
                 {
                     try

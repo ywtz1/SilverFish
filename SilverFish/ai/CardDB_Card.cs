@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using SilverFish.Helpers;
+using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -81,25 +81,25 @@ namespace HREngine.Bots
             public List<Bots.CardDB.ErrorType2> playrequires;
             public List<Bots.CardDB.cardtrigers> trigers;
 
-            public SimTemplate CardSimulation
+            public SimTemplate sim_card
             {
                 get
                 {
-                    return _cardSimulation;
+                    return _sim_card;
                 }
                 set
                 {
-                    if (CardHelper.IsCardSimulationImplemented(value))
+                    if (CardHelper.Issim_cardImplemented(value))
                     {
-                        CardSimulationImplemented = true;
+                        sim_cardImplemented = true;
                     }
-                    _cardSimulation = value;
+                    _sim_card = value;
                 }
             }
 
-            private SimTemplate _cardSimulation;
+            private SimTemplate _sim_card;
 
-            public bool CardSimulationImplemented { get; set; }
+            public bool sim_cardImplemented { get; set; }
 
             public Card()
             {
@@ -164,7 +164,7 @@ namespace HREngine.Bots
                 this.type = c.type;
                 this.windfury = c.windfury;
                 this.cardIDenum = c.cardIDenum;
-                this.CardSimulation = c.CardSimulation;
+                this.sim_card = c.sim_card;
                 this.isToken = c.isToken;
             }
 
@@ -682,7 +682,7 @@ namespace HREngine.Bots
                             switch (minions[i].name)
                             {
                                 case Bots.CardDB.cardName.shadowboxer:
-                                    if (own && p.enemyHero.HealthPoints == 1 && p.enemyMinions.Count > 0) needCut = false;
+                                    if (own && p.enemyHero.Hp == 1 && p.enemyMinions.Count > 0) needCut = false;
                                     break;
                                 case Bots.CardDB.cardName.holychampion: needCut = false; break;
                                 case Bots.CardDB.cardName.lightwarden: needCut = false; break;
@@ -701,7 +701,7 @@ namespace HREngine.Bots
                                 for (int i = 0; i < tCount; i++)
                                 {
                                     Minion m = trgts[i];
-                                    if (m.HealthPoints < m.maxHp)
+                                    if (m.Hp < m.maxHp)
                                     {
                                         if (needCut)
                                         {
@@ -801,7 +801,7 @@ namespace HREngine.Bots
                         retval = retval + offset - p.enemyAnzCards;
                         break;
                     case CardDB.cardName.moltengiant:
-                        retval = retval + offset - p.ownHero.maxHp + p.ownHero.HealthPoints;
+                        retval = retval + offset - p.ownHero.maxHp + p.ownHero.Hp;
                         break;
                     case CardDB.cardName.frostgiant:
                         retval = retval + offset - p.anzUsedOwnHeroPower;
@@ -819,7 +819,7 @@ namespace HREngine.Bots
                         retval = retval + offset - ((p.enemyMinions.Count < 3) ? 0 : 2);
                         break;
                     case CardDB.cardName.golemagg:
-                        retval = retval + offset - p.ownHero.maxHp + p.ownHero.HealthPoints;
+                        retval = retval + offset - p.ownHero.maxHp + p.ownHero.Hp;
                         break;
                     case CardDB.cardName.volcaniclumberer:
                         retval = retval + offset - p.ownMinionsDiedTurn - p.enemyMinionsDiedTurn;
@@ -1004,7 +1004,7 @@ namespace HREngine.Bots
                         retval = retval + offset - p.enemyAnzCards + p.enemyCardsCountStarted;
                         break;
                     case CardDB.cardName.moltengiant:
-                        retval = retval + offset - p.ownHeroHpStarted + p.ownHero.HealthPoints;
+                        retval = retval + offset - p.ownHeroHpStarted + p.ownHero.Hp;
                         break;
                     case CardDB.cardName.frostgiant:
                         retval = retval + offset - p.anzUsedOwnHeroPower;
@@ -1022,7 +1022,7 @@ namespace HREngine.Bots
                         retval = retval + offset - ((p.enemyMinions.Count < 3) ? 0 : 2) + ((p.enemyMobsCountStarted < 3) ? 0 : 2);
                         break;
                     case CardDB.cardName.golemagg:
-                        retval = retval + offset - p.ownHeroHpStarted + p.ownHero.HealthPoints;
+                        retval = retval + offset - p.ownHeroHpStarted + p.ownHero.Hp;
                         break;
                     case CardDB.cardName.skycapnkragg:
                         int costBonus = 0;

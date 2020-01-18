@@ -289,8 +289,6 @@
         HIDDEN_CHOICE = 813,
         ZOMBEAST = 823,
         HERO_EMOTE_SILENCED = 832,
-        REBORN = 1085,
-        MODULAR = 849,
 
         None,
         Mob,

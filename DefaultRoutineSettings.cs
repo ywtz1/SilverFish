@@ -8,6 +8,10 @@ using Triton.Common;
 using Triton.Game.Mapping;
 using Logger = Triton.Common.LogUtilities.Logger;
 
+using Triton.Bot;
+using Triton.Game;
+using Triton.Game.Data;
+
 namespace HREngine.Bots
 {
     /// <summary>Settings for the DefaultRoutine. </summary>
@@ -49,8 +53,9 @@ namespace HREngine.Bots
                 {
                     _arenaPreferredClass1 = value;
                     NotifyPropertyChanged(() => ArenaPreferredClass1);
+  
                 }
-                Log.InfoFormat("[DefaultRoutineSettings] ArenaPreferredClass1 = {0}.", _arenaPreferredClass1);
+                Log.InfoFormat("[默认策略设置] 竞技场优先种族1 = {0}.", _arenaPreferredClass1);
             }
         }
 
@@ -68,7 +73,7 @@ namespace HREngine.Bots
                     _arenaPreferredClass2 = value;
                     NotifyPropertyChanged(() => ArenaPreferredClass2);
                 }
-                Log.InfoFormat("[DefaultRoutineSettings] ArenaPreferredClass2 = {0}.", _arenaPreferredClass2);
+                Log.InfoFormat("[默认策略设置] 竞技场优先种族2 = {0}.", _arenaPreferredClass2);
             }
         }
 
@@ -86,7 +91,7 @@ namespace HREngine.Bots
                     _arenaPreferredClass3 = value;
                     NotifyPropertyChanged(() => ArenaPreferredClass3);
                 }
-                Log.InfoFormat("[DefaultRoutineSettings] ArenaPreferredClass3 = {0}.", _arenaPreferredClass3);
+                Log.InfoFormat("[默认策略设置] 竞技场优先种族3 = {0}.", _arenaPreferredClass3);
             }
         }
 
@@ -104,7 +109,7 @@ namespace HREngine.Bots
                     _arenaPreferredClass4 = value;
                     NotifyPropertyChanged(() => ArenaPreferredClass4);
                 }
-                Log.InfoFormat("[DefaultRoutineSettings] ArenaPreferredClass4 = {0}.", _arenaPreferredClass4);
+                Log.InfoFormat("[默认策略设置] 竞技场优先种族4 = {0}.", _arenaPreferredClass4);
             }
         }
 
@@ -122,7 +127,7 @@ namespace HREngine.Bots
                     _arenaPreferredClass5 = value;
                     NotifyPropertyChanged(() => ArenaPreferredClass5);
                 }
-                Log.InfoFormat("[DefaultRoutineSettings] ArenaPreferredClass5 = {0}.", _arenaPreferredClass5);
+                Log.InfoFormat("[默认策略设置] 竞技场优先种族5 = {0}.", _arenaPreferredClass5);
             }
         }
 
@@ -150,7 +155,7 @@ namespace HREngine.Bots
         }
 
         // Behavior choice.
-        [DefaultValue("Control")]
+        [DefaultValue("控场模式")]
         public string DefaultBehavior
         {
             get { return _defaultBehavior; }
@@ -161,7 +166,7 @@ namespace HREngine.Bots
                     _defaultBehavior = value;
                     NotifyPropertyChanged(() => DefaultBehavior);
                 }
-                Log.InfoFormat("[DefaultRoutineSettings] DefaultBehavior = {0}.", _defaultBehavior);
+                Log.InfoFormat("[默认策略设置] 默认战斗模式 = {0}.", _defaultBehavior);
             }
         }
 
@@ -173,7 +178,7 @@ namespace HREngine.Bots
         {
             get
             {
-                return _allBehav ?? (_allBehav = new ObservableCollection<string>(SilverFishBot.Instance.BehaviorDB.Keys));
+                return _allBehav ?? (_allBehav = new ObservableCollection<string>(Silverfish.Instance.BehaviorDB.Keys));
             }
         }
 		

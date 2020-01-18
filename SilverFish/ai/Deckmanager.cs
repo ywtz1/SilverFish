@@ -104,25 +104,25 @@
 
                 if (this.druidchoice >= 1) playaction += " choice " + this.druidchoice;
 
-                LogHelper.WriteCombatLog(playaction);
+                help.logg(playaction);
             }
             if (this.actionType == actionEnum.attackWithMinion)
             {
-                LogHelper.WriteCombatLog("attacker: " + this.own.entitiyID + " enemy: " + this.target.entitiyID);
+                help.logg("attacker: " + this.own.entitiyID + " enemy: " + this.target.entitiyID);
             }
             if (this.actionType == actionEnum.attackWithHero)
             {
-                LogHelper.WriteCombatLog("attack with hero, enemy: " + this.target.entitiyID);
+                help.logg("attack with hero, enemy: " + this.target.entitiyID);
             }
             if (this.actionType == actionEnum.useHeroPower)
             {
-                LogHelper.WriteCombatLog("useability ");
+                help.logg("useability ");
                 if (this.target != null)
                 {
-                    LogHelper.WriteCombatLog("on enemy: " + this.target.entitiyID);
+                    help.logg("on enemy: " + this.target.entitiyID);
                 }
             }
-            LogHelper.WriteCombatLog("");
+            help.logg("");
         }
 
         public string printString()
@@ -194,12 +194,12 @@
 
         public void printcards()
         {
-            LogHelper.WriteCombatLog("Own Deckcards: ");
+            help.logg("Own Deckcards: ");
             foreach (Deckmanager.Deckcard c in this.Deckcards)
             {
-                LogHelper.WriteCombatLog("pos " + c.position + " " + c.card.name + " " + c.manacost + " entity " + c.entity + " " + c.card.cardIDenum + " " + c.addattack);
+                help.logg("pos " + c.position + " " + c.card.name + " " + c.manacost + " entity " + c.entity + " " + c.card.cardIDenum + " " + c.addattack);
             }
-            LogHelper.WriteCombatLog("Enemy cards: " + this.enemyAnzCards);
+            help.logg("Enemy cards: " + this.enemyAnzCards);
         }
 
 

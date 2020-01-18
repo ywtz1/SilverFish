@@ -5,7 +5,7 @@ using Hearthbuddy.Windows;
 using HREngine.Bots;
 using log4net;
 using Logger = Triton.Common.LogUtilities.Logger;
-namespace SilverFish.Helpers
+namespace Silverfish.Helpers
 {
     /// <summary>
     ///     The helpfunctions.

@@ -21,13 +21,13 @@ namespace HREngine.Bots
         {
         }
 
-        public List<Action> GetMoveList(Playfield p, bool usePenalityManager, bool useCutingTargets, bool own)
+        public List<Action> getMoveList(Playfield p, bool usePenalityManager, bool useCutingTargets, bool own)
         {
             //generates only own moves
             List<Action> ret = new List<Action>();
             List<Minion> targetMinions;
 
-            if (p.complete || p.ownHero.HealthPoints <= 0)
+            if (p.complete || p.ownHero.Hp <= 0)
             {
                 return ret;
             }
@@ -44,7 +44,7 @@ namespace HREngine.Bots
                     if ((p.nextSpellThisTurnCostHealth && hc.card.type == CardDB.cardtype.SPELL) ||
                         (p.nextMurlocThisTurnCostHealth && (TAG_RACE) hc.card.race == TAG_RACE.MURLOC))
                     {
-                        if (p.ownHero.HealthPoints > cardCost || p.ownHero.immune)
+                        if (p.ownHero.Hp > cardCost || p.ownHero.immune)
                         {
                         }
                         else
@@ -268,14 +268,14 @@ namespace HREngine.Bots
                 bool isSpecial = m.handcard.card.isSpecialMinion;
                 foreach (Minion mnn in addedmins)
                 {
-                    //LogHelper.WriteCombatLog(mnn.silenced + " " + m.silenced + " " + mnn.name + " " + m.name + " " + penman.specialMinions.ContainsKey(m.name));
+                    //help.logg(mnn.silenced + " " + m.silenced + " " + mnn.name + " " + m.name + " " + penman.specialMinions.ContainsKey(m.name));
 
                     bool otherisSpecial = mnn.handcard.card.isSpecialMinion;
 			        bool onlySpecial = isSpecial && otherisSpecial && !m.silenced && !mnn.silenced;
 			        bool onlyNotSpecial =(!isSpecial || (isSpecial && m.silenced)) && (!otherisSpecial || (otherisSpecial && mnn.silenced));
 			
 			        if(onlySpecial && (m.name != mnn.name)) continue; // different name -> take it
-                    if ((onlySpecial || onlyNotSpecial) && (mnn.Attack == m.Attack && mnn.HealthPoints == m.HealthPoints && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal && m.handcard.card.isToken == mnn.handcard.card.isToken && mnn.handcard.card.race == m.handcard.card.race))
+                    if ((onlySpecial || onlyNotSpecial) && (mnn.Attack == m.Attack && mnn.Hp == m.Hp && mnn.divineshild == m.divineshild && mnn.taunt == m.taunt && mnn.poisonous == m.poisonous && mnn.lifesteal == m.lifesteal && m.handcard.card.isToken == mnn.handcard.card.isToken && mnn.handcard.card.race == m.handcard.card.race))
                     {
 				        goingtoadd = false;
 				        break;
@@ -286,15 +286,15 @@ namespace HREngine.Bots
                 {
                     addedmins.Add(m);
                     retvalues.Add(m);
-                    //LogHelper.WriteCombatLog(m.name + " " + m.id +" is added to targetlist");
+                    //help.logg(m.name + " " + m.id +" is added to targetlist");
                 }
                 else
                 {
-                    //LogHelper.WriteCombatLog(m.name + " is not needed to attack");
+                    //help.logg(m.name + " is not needed to attack");
                     continue;
                 }
             }
-            //LogHelper.WriteCombatLog("end targetcutting");
+            //help.logg("end targetcutting");
 
             return retvalues;
         }

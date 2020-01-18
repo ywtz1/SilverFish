@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using SilverFish.Helpers;
+using Silverfish.Helpers;
 
 
 
@@ -55,22 +55,25 @@ namespace HREngine.Bots
         public int numberOfThreads = 32;
         public bool simulateEnemysTurn = true;
         public int secondTurnAmount = 256;
+
+
         public string DataFolderPath = "";
         public string LogFolderPath  = "";
         public string LogFileName  = "SilverFish.log";
 
         public string LogFilePath 
-		{
-		 get{return Path.Combine(LogFolderPath, LogFileName);}
-		 }
+        {
+            get{return Path.Combine(LogFolderPath, LogFileName);}
+        }
 
         public string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
+        public string path = "";
+        public string logpath = "";
+        public string logfile = "Logg.txt";
         public bool concede = false;
         public bool enemyConcede = false;
-
-        public bool writeToSingleFile =false;
-
+        public bool writeToSingleFile = false;
         public bool learnmode = true;
         public bool printlearnmode = true;
         public bool test = false;
@@ -90,59 +93,44 @@ namespace HREngine.Bots
             this.writeToSingleFile = false;
         }
 
-        public void SetSettings(string behavName, bool nameIsPath = false)
+        public void setSettings(string behavName, bool nameIsPath = false)
         {
-            if (test)
-            {
-                return;
-            }
-
+            if (test) return;
             string pathToSettings = behavName;
             if (!nameIsPath)
             {
-                if (!SilverFishBot.Instance.BehaviorPath.ContainsKey(behavName))
+                if (!Silverfish.Instance.BehaviorPath.ContainsKey(behavName))
                 {
-                    Helpfunctions.Instance.ErrorLog(behavName + ": no files for this Behavior.");
-                    EndOfSetSettings();
+                    Helpfunctions.Instance.ErrorLog(behavName + ": 本策略没有配置文件.");
+                    endOfSetSettings();
                     return;
                 }
-                pathToSettings = Path.Combine(SilverFishBot.Instance.BehaviorPath[behavName], "_settings_custom.txt");
-                if (File.Exists(pathToSettings))
-                {
-                    Helpfunctions.Instance.InfoLog(behavName + ": use custom settings.");
-                }
-                else
-                {
-                    var customSettingFilePath = pathToSettings;
-                    pathToSettings = Path.Combine(SilverFishBot.Instance.BehaviorPath[behavName], "_settings.txt");
-                    Helpfunctions.Instance.WarnLog("Can not find custom setting file "+customSettingFilePath+" so use default setting file "+pathToSettings);
-                }
+                pathToSettings = Path.Combine(Silverfish.Instance.BehaviorPath[behavName], "_settings_custom.txt");
+                if (System.IO.File.Exists(pathToSettings)) Helpfunctions.Instance.ErrorLog(behavName + ": 应用自定义配置.");
+                else pathToSettings = Path.Combine(Silverfish.Instance.BehaviorPath[behavName], "_settings.txt");
             }
 
-            if (!File.Exists(pathToSettings))
+            if (!System.IO.File.Exists(pathToSettings))
             {
-                Helpfunctions.Instance.ErrorLog(behavName + ": no settings.");
-                EndOfSetSettings();
+                Helpfunctions.Instance.ErrorLog(behavName + ": 没有设置.");
+                endOfSetSettings();
                 return;
             }
             try
             {
-                Helpfunctions.Instance.InfoLog("Load settings for Behavior "+behavName);
-                string[] lines = File.ReadAllLines(pathToSettings);
-                string[] tmp;
+                Helpfunctions.Instance.ErrorLog("读取战场设置 " + behavName);
+                string[] lines = System.IO.File.ReadAllLines(pathToSettings);
+                String[] tmp;
                 int valueInt;
                 bool valueBool = false;
                 foreach (string s in lines)
                 {
-                    if (string.IsNullOrWhiteSpace(s))
-                    {
-                        continue;
-                    }
+                    if (s == "" || s == null) continue;
                     if (s.StartsWith("//")) continue;
                     tmp = s.Split(';')[0].Split(' ');
                     if (tmp.Length != 3) continue;
 
-                    if (!int.TryParse(tmp[2], out valueInt))
+                    if (!Int32.TryParse(tmp[2], out valueInt))
                     {
                         switch (tmp[2])
                         {
@@ -181,42 +169,38 @@ namespace HREngine.Bots
                             break;
                     }
                 }
-                EndOfSetSettings();
+                endOfSetSettings();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Helpfunctions.Instance.ErrorLog(behavName + " _settings.txt - read error. We continue with the default settings.");
-                Helpfunctions.Instance.ErrorLog(ex);
-                EndOfSetSettings();
+                Helpfunctions.Instance.ErrorLog(behavName + " _settings.txt - 读取错误. 我们将使用默认配置.");
+                endOfSetSettings();
                 return;
             }
-            Helpfunctions.Instance.InfoLog("Behavior "+behavName+" settings are loaded.");
+            Helpfunctions.Instance.ErrorLog(behavName + " 配置文件读取成功.");
         }
 
-        private void EndOfSetSettings()
+        private void endOfSetSettings()
         {
             setWeights(this.alpha);
 
-            Helpfunctions.Instance.InfoLog("set enemy-face-hp to: "+enfacehp);
-            Helpfunctions.Instance.InfoLog("set weaponOnlyAttackMobsUntilEnemyFaceHp to: "+weaponOnlyAttackMobsUntilEnfacehp);
+            Helpfunctions.Instance.ErrorLog("设置怼脸血线值为: " + this.enfacehp);
+            Helpfunctions.Instance.ErrorLog("设置武器怼脸血线值: " + this.weaponOnlyAttackMobsUntilEnfacehp);
             ComboBreaker.Instance.attackFaceHP = this.enfacehp;
 
             Ai.Instance.setMaxWide(this.maxwide);
-            Helpfunctions.Instance.InfoLog("set maxWide to: "+maxwide);
-
+            Helpfunctions.Instance.ErrorLog("设置AI值（maxwide）: " + this.maxwide);
             Ai.Instance.setTwoTurnSimulation(false, this.twotsamount);
-            Helpfunctions.Instance.InfoLog("calculate the second turn of the "+twotsamount+" best boards");
-            Helpfunctions.Instance.InfoLog("simulates the enemy turn on your second turn is "+(twotsamount > 0));
-
-            Helpfunctions.Instance.InfoLog("playing around secrets is "+useSecretsPlayAround);
-
+            Helpfunctions.Instance.ErrorLog("计算下个回合 " + this.twotsamount + " 线程");
+            if (this.twotsamount > 0) Helpfunctions.Instance.ErrorLog("推算下回合敌方行动");
+            if (this.useSecretsPlayAround) Helpfunctions.Instance.ErrorLog("开启防奥秘");
             if (this.playaround)
             {
                 Ai.Instance.setPlayAround();
+                Helpfunctions.Instance.ErrorLog("开启防AOE");
             }
-            Helpfunctions.Instance.InfoLog("activated playAround AOE Spells is "+playaround);
+            if (this.writeToSingleFile) Helpfunctions.Instance.ErrorLog("write log to single file");
 
-            Helpfunctions.Instance.InfoLog("write log to single file is "+writeToSingleFile);
         }
 
         public void setWeights(int alpha)
@@ -224,7 +208,21 @@ namespace HREngine.Bots
             float a = ((float)alpha) / 100f;
             this.firstweight = 1f - a;
             this.secondweight = a;
-            Helpfunctions.Instance.InfoLog("current alpha is "+secondweight);
+            Helpfunctions.Instance.ErrorLog("目前的AI值（alpha）是 " + this.secondweight);
+        }
+
+        public void setFilePath(string path)
+        {
+            this.path = path;
+        }
+        public void setLoggPath(string path)
+        {
+            this.logpath = path;
+        }
+
+        public void setLoggFile(string path)
+        {
+            this.logfile = path;
         }
     }
 }

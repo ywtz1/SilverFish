@@ -2,7 +2,7 @@
 using System.Linq;
 using HREngine.Bots;
 
-namespace SilverFish.Helpers
+namespace Silverfish.Helpers
 {
     public class EvenDeckHelper
     {

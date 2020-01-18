@@ -1,4 +1,4 @@
-﻿using SilverFish.Helpers;
+﻿using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -130,12 +130,12 @@ namespace HREngine.Bots
         
         public void printcards()
         {
-            LogHelper.WriteCombatLog("Own Handcards: ");
+            help.logg("Own Handcards: ");
             foreach (Handmanager.Handcard hc in this.handCards)
             {
-                LogHelper.WriteCombatLog("pos " + hc.position + " " + hc.card.name + " " + hc.manacost + " entity " + hc.entity + " " + hc.card.cardIDenum + " " + hc.addattack + " " + hc.addHp + " " + hc.elemPoweredUp);
+                help.logg("pos " + hc.position + " " + hc.card.name + " " + hc.manacost + " entity " + hc.entity + " " + hc.card.cardIDenum + " " + hc.addattack + " " + hc.addHp + " " + hc.elemPoweredUp);
             }
-            LogHelper.WriteCombatLog("Enemy cards: " + this.enemyAnzCards);
+            help.logg("Enemy cards: " + this.enemyAnzCards);
         }
 
 

@@ -1,4 +1,4 @@
-﻿using SilverFish.Helpers;
+﻿using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using Triton.Game.Data;
 using log4net;
-using SilverFish.Helpers;
+using Silverfish.Helpers;
 using Logger = Triton.Common.LogUtilities.Logger;
 
 namespace HREngine.Bots
@@ -84,13 +84,13 @@ as well as
                 return;
             }
 			
-            if (!SilverFishBot.Instance.BehaviorPath.ContainsKey(behavName))
+            if (!Silverfish.Instance.BehaviorPath.ContainsKey(behavName))
             {
                 Helpfunctions.Instance.ErrorLog(behavName + ": no special mulligan.");
                 return;
             }
 
-            pathToMulligan = Path.Combine(SilverFishBot.Instance.BehaviorPath[behavName], "_mulligan.txt");
+            pathToMulligan = Path.Combine(Silverfish.Instance.BehaviorPath[behavName], "_mulligan.txt");
 
             if (!System.IO.File.Exists(pathToMulligan))
             {
@@ -116,13 +116,12 @@ as well as
                     else MulliganRules.Add(MullRuleKey, MullRuleValue);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ee)
             {
-                Helpfunctions.Instance.ErrorLog("[Mulligan] _mulligan.txt - read error. We continue without user-defined rules. Only the default rules.");
-                Helpfunctions.Instance.ErrorLog(ex.ToString());
+                Helpfunctions.Instance.ErrorLog("[开局留牌] 留牌文件_mulligan.txt读取错误. 只能应用默认配置.");
                 return;
             }
-            Helpfunctions.Instance.InfoLog("[Mulligan] Load rules for " + behavName);
+            Helpfunctions.Instance.ErrorLog("[开局留牌] 读取规则—— " + behavName);
             validateRule(behavName);
         }
 
@@ -206,15 +205,15 @@ as well as
 
             if (rejectedRule.Count > 0)
             {
-                Helpfunctions.Instance.InfoLog("[Mulligan] List of rejected Rules:");
+                Helpfunctions.Instance.ErrorLog("[开局留牌] 弃掉卡牌的规则列表:");
                 foreach (string tmp in rejectedRule)
                 {
-                    Helpfunctions.Instance.InfoLog(tmp);
+                    Helpfunctions.Instance.ErrorLog(tmp);
                 }
-                Helpfunctions.Instance.InfoLog("[Mulligan] End list of rejected Rules.");
+                Helpfunctions.Instance.ErrorLog("[开局留牌] 关闭规则列表.");
             }
 
-            if (repairedRules > 0) Helpfunctions.Instance.InfoLog(repairedRules.ToString() + " repaired rules");
+            if (repairedRules > 0) Helpfunctions.Instance.ErrorLog(repairedRules.ToString() + " repaired rules");
             MulliganRules.Clear();
 
             foreach (KeyValuePair<string, string> oneRule in MulliganRulesTmp)
@@ -222,12 +221,12 @@ as well as
                 MulliganRules.Add(oneRule.Key, oneRule.Value);
             }
 
-            Helpfunctions.Instance.InfoLog("[Mulligan] " + (MulliganRules.Count > 0 ? (MulliganRules.Count + " rules loaded successfully") : "No special rules."));
+            Helpfunctions.Instance.ErrorLog("[开局留牌] " + (MulliganRules.Count > 0 ? (MulliganRules.Count + " 读取留牌规则成功") : "并没有特殊的规则."));
             mulliganRulesLoaded = true;
             if (behavName == "") //oldCompatibility
             {
-                MulliganRulesDB.Add("Control", new Dictionary<string, string>(MulliganRules));
-                MulliganRulesDB.Add("Rush", new Dictionary<string, string>(MulliganRules));
+                MulliganRulesDB.Add("控场模式", new Dictionary<string, string>(MulliganRules));
+                MulliganRulesDB.Add("怼脸模式", new Dictionary<string, string>(MulliganRules));
             }
             else MulliganRulesDB.Add(behavName, new Dictionary<string, string>(MulliganRules));
         }
@@ -272,7 +271,7 @@ as well as
                 return false;
             }
 
-            Log.InfoFormat("[Mulligan] Apply the {0} rules:", behave.BehaviorName());
+            Log.InfoFormat("[开局留牌] 应用这个 {0} 规则:", behave.BehaviorName());
 
             for (var i = 0; i < mulliganData.Cards.Count; i++)
             {
@@ -309,12 +308,12 @@ as well as
                     if (c.cost < manaRule)
                     {
                         CardIDEntityC.holdByManarule = 2;
-                        CardIDEntityC.holdReason = joinSomeTxt("hold because the card cost:", c.cost.ToString(), " is less then Manarule cost:", manaRule.ToString());
+                        CardIDEntityC.holdReason = joinSomeTxt("保留这些卡牌因为法力值消耗:", c.cost.ToString(), " 小于预定值:", manaRule.ToString());
                     }
                     else
                     {
                         CardIDEntityC.holdByManarule = -2;
-                        CardIDEntityC.holdReason = joinSomeTxt("discard because the card cost:", c.cost.ToString(), " is not less then Manarule cost:", manaRule.ToString());
+                        CardIDEntityC.holdReason = joinSomeTxt("弃掉这些卡牌因为法力值消耗:", c.cost.ToString(), " 没有小于预定值:", manaRule.ToString());
                     }
                 }
 
@@ -384,7 +383,7 @@ as well as
                             if (MulliganRulesManual.ContainsKey(tmp.id))
                             {
                                 CardIDEntityC.holdByRule = -2;
-                                CardIDEntityC.holdReason = joinSomeTxt("discard by rule: ", getClearRule(MullRuleKeyExtra));
+                                CardIDEntityC.holdReason = joinSomeTxt("符合规则而弃掉: ", getClearRule(MullRuleKeyExtra));
                                 break;
                             }
                         }
@@ -393,7 +392,7 @@ as well as
                 else if (useDiscard)
                 {
                     CardIDEntityC.hold = -2;
-                    CardIDEntityC.holdReason = joinSomeTxt("discard by rule: ", getClearRule(MullRuleKeySimple));
+                    CardIDEntityC.holdReason = joinSomeTxt("符合规则而弃掉: ", getClearRule(MullRuleKeySimple));
                 }
 
                 if (useHoldRule)
@@ -411,7 +410,7 @@ as well as
                             if (MulliganRulesManual.ContainsKey(cards[i].id))
                             {
                                 CardIDEntityC.holdByRule = 2;
-                                CardIDEntityC.holdReason = joinSomeTxt("hold by rule: ", getClearRule(MullRuleKeyExtra));
+                                CardIDEntityC.holdReason = joinSomeTxt("符合规则而保留: ", getClearRule(MullRuleKeyExtra));
                                 if (cards[i].holdByRule < 0)
                                 {
                                     for (int j = i; j < cards.Count; j++)
@@ -422,7 +421,7 @@ as well as
                                             if (cards[j].holdByRule < 0) continue;
                                             foundFreeCard = true;
                                             cards[j].holdByRule = 2;
-                                            cards[j].holdReason = joinSomeTxt("hold by rule: ", getClearRule(MullRuleKeyExtra));
+                                            cards[j].holdReason = joinSomeTxt("符合规则而保留: ", getClearRule(MullRuleKeyExtra));
                                             break;
                                         }
                                     }
@@ -430,7 +429,7 @@ as well as
                                     {
                                         foundFreeCard = true;
                                         cards[i].holdByRule = 2;
-                                        cards[i].holdReason = joinSomeTxt("hold by rule: ", getClearRule(MullRuleKeyExtra));
+                                        cards[i].holdReason = joinSomeTxt("符合规则而保留: ", getClearRule(MullRuleKeyExtra));
                                         break;
                                     }
                                 }
@@ -438,7 +437,7 @@ as well as
                                 {
                                     foundFreeCard = true;
                                     cards[i].holdByRule = 2;
-                                    cards[i].holdReason = joinSomeTxt("hold by rule: ", getClearRule(MullRuleKeyExtra));
+                                    cards[i].holdReason = joinSomeTxt("符合规则而保留: ", getClearRule(MullRuleKeyExtra));
                                 }
 
                                 if (allowedQuantityExtra == 1)
@@ -449,7 +448,7 @@ as well as
                                         if (tmp.id == CardIDEntityC.id)
                                         {
                                             tmp.holdByRule = -2;
-                                            tmp.holdReason = joinSomeTxt("discard by rule: ", getClearRule(MullRuleKeyExtra));
+                                            tmp.holdReason = joinSomeTxt("符合规则而弃掉: ", getClearRule(MullRuleKeyExtra));
                                         }
                                     }
                                 }
@@ -462,7 +461,7 @@ as well as
                     if (CardIDEntityC.hold == 0)
                     {
                         CardIDEntityC.hold = 2;
-                        CardIDEntityC.holdReason = joinSomeTxt("hold by rule: ", getClearRule(MullRuleKeySimple));
+                        CardIDEntityC.holdReason = joinSomeTxt("符合规则而保留: ", getClearRule(MullRuleKeySimple));
                         if (allowedQuantitySimple == 1)
                         {
                             CardIDEntityC.hold = 1;
@@ -500,7 +499,7 @@ as well as
             for (var i = 0; i < mulliganData.Cards.Count; i++)
             {
                 mulliganData.Mulligans[i] = (cards[i].holdByRule > 0) ? false : true;
-                Log.InfoFormat("[Mulligan] {0} {1}.", mulliganData.Cards[i].Entity.Name, cards[i].holdReason);
+                Log.InfoFormat("[开局留牌] {0} {1}.", mulliganData.Cards[i].Entity.Name, cards[i].holdReason);
             }
             return true;
         }

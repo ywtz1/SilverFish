@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SilverFish.Helpers;
+using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -39,7 +39,7 @@ namespace HREngine.Bots
                 if (tmpPf.anzEnemyTaunt > 0) return;
 
                 Dictionary<Action, int> actDmgDict = new Dictionary<Action, int>();
-                tmpPf.enemyHero.HealthPoints = 30;
+                tmpPf.enemyHero.Hp = 30;
                 try
                 {
                     int useability = 0;
@@ -47,9 +47,9 @@ namespace HREngine.Bots
                     {
                         if (a.actionType == actionEnum.useHeroPower) useability = 1;
                         if (a.actionType == actionEnum.attackWithHero) useability++;
-                        int actDmd = tmpPf.enemyHero.HealthPoints + tmpPf.enemyHero.armor;
+                        int actDmd = tmpPf.enemyHero.Hp + tmpPf.enemyHero.armor;
                         tmpPf.doAction(a);
-                        actDmd -= (tmpPf.enemyHero.HealthPoints + tmpPf.enemyHero.armor);
+                        actDmd -= (tmpPf.enemyHero.Hp + tmpPf.enemyHero.armor);
                         actDmgDict.Add(a, actDmd);
                     }
                     if (useability > 1) return;
@@ -129,8 +129,8 @@ namespace HREngine.Bots
                                 tmpPlOld.doAction(aa);
 
                                 Dictionary<int, int> actIdDmg = new Dictionary<int, int>();
-                                if (tmp.enemyHero.HealthPoints != tmpPlOld.enemyHero.HealthPoints) actIdDmg.Add(tmpPlOld.enemyHero.entitiyID, tmp.enemyHero.HealthPoints - tmpPlOld.enemyHero.HealthPoints);
-                                if (tmp.ownHero.HealthPoints != tmpPlOld.ownHero.HealthPoints) actIdDmg.Add(tmpPlOld.ownHero.entitiyID, tmp.ownHero.HealthPoints - tmpPlOld.ownHero.HealthPoints);
+                                if (tmp.enemyHero.Hp != tmpPlOld.enemyHero.Hp) actIdDmg.Add(tmpPlOld.enemyHero.entitiyID, tmp.enemyHero.Hp - tmpPlOld.enemyHero.Hp);
+                                if (tmp.ownHero.Hp != tmpPlOld.ownHero.Hp) actIdDmg.Add(tmpPlOld.ownHero.entitiyID, tmp.ownHero.Hp - tmpPlOld.ownHero.Hp);
                                 bool found = false;
                                 foreach (Minion m in tmp.enemyMinions)
                                 {
@@ -140,11 +140,11 @@ namespace HREngine.Bots
                                         if (m.entitiyID == nm.entitiyID)
                                         {
                                             found = true;
-                                            if (m.HealthPoints != nm.HealthPoints) actIdDmg.Add(m.entitiyID, m.HealthPoints - nm.HealthPoints);
+                                            if (m.Hp != nm.Hp) actIdDmg.Add(m.entitiyID, m.Hp - nm.Hp);
                                             break;
                                         }
                                     }
-                                    if (!found) actIdDmg.Add(m.entitiyID, m.HealthPoints);
+                                    if (!found) actIdDmg.Add(m.entitiyID, m.Hp);
                                 }
                                 foreach (Minion m in tmp.ownMinions)
                                 {
@@ -154,11 +154,11 @@ namespace HREngine.Bots
                                         if (m.entitiyID == nm.entitiyID)
                                         {
                                             found = true;
-                                            if (m.HealthPoints != nm.HealthPoints) actIdDmg.Add(m.entitiyID, m.HealthPoints - nm.HealthPoints);
+                                            if (m.Hp != nm.Hp) actIdDmg.Add(m.entitiyID, m.Hp - nm.Hp);
                                             break;
                                         }
                                     }
-                                    if (!found) actIdDmg.Add(m.entitiyID, m.HealthPoints);
+                                    if (!found) actIdDmg.Add(m.entitiyID, m.Hp);
                                 }
                                 rndActIdsDmg.Add(aa.card.entity, actIdDmg);
                             }
@@ -207,13 +207,13 @@ namespace HREngine.Bots
 
                 if (oldval > newval) return;
             }
-            LogHelper.WriteCombatLog("Old order of actions:");
+            help.logg("Old order of actions:");
             foreach (Action a in p.playactions) a.print();
 
             p.playactions.Clear();
             p.playactions.AddRange(reorderedActions);
 
-            LogHelper.WriteCombatLog("New order of actions:");
+            help.logg("New order of actions:");
 
         }
 
@@ -293,11 +293,11 @@ namespace HREngine.Bots
         private void printError(List<Action> mainActList, List<Action> newActList, Action aError)
         {
             help.ErrorLog("Reordering actions error!");
-            LogHelper.WriteCombatLog("Reordering actions error!\r\nError in action:");
+            help.logg("Reordering actions error!\r\nError in action:");
             aError.print();
-            LogHelper.WriteCombatLog("Main order of actions:");
+            help.logg("Main order of actions:");
             foreach (Action a in mainActList) a.print();
-            LogHelper.WriteCombatLog("New order of actions:");
+            help.logg("New order of actions:");
             foreach (Action a in newActList) a.print();
             return;
         }
@@ -317,7 +317,7 @@ namespace HREngine.Bots
             tmpPf.checkLostAct = true;
             tmpPf.isLethalCheck = p.isLethalCheck;
 
-            float bestval = mainTurnSimulator.DoAllMoves(tmpPf);
+            float bestval = mainTurnSimulator.doallmoves(tmpPf);
             if (bestval > p.value)
             {
                 p.playactions.Clear();

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,7 +14,7 @@ using HREngine.Bots;
 using IronPython.Modules;
 using log4net;
 using Microsoft.Scripting.Hosting;
-using SilverFish.Helpers;
+using Silverfish.Helpers;
 using Triton.Bot;
 using Triton.Common;
 using Triton.Game;
@@ -26,7 +26,7 @@ using Triton.Game.Data;
 //!CompilerOption|AddRef|Microsoft.Dynamic.dll
 //!CompilerOption|AddRef|Microsoft.Scripting.Metadata.dll
 using Triton.Game.Mapping;
-
+using Triton.Bot.Logic.Bots.DefaultBot;
 using Logger = Triton.Common.LogUtilities.Logger;
 
 namespace HREngine.Bots
@@ -50,8 +50,11 @@ namespace HREngine.Bots
         public bool learnmode = false;
         public bool printlearnmode = true;
 
-        SilverFishBot sf = SilverFishBot.Instance;
-
+        Silverfish sf = Silverfish.Instance;
+        DefaultBotSettings botset
+        {
+            get { return DefaultBotSettings.Instance; }
+        }
         //uncomment the desired option, or leave it as is to select via the interface
         Behavior behave = new BehaviorControl();
         //Behavior behave = new BehaviorRush();
@@ -79,9 +82,9 @@ namespace HREngine.Bots
             // set to true, to run a testfile (requires test.txt file in folder where _cardDB.txt file is located)
             bool printstuff = false; // if true, the best board of the tested file is printet stepp by stepp
 
-            Helpfunctions.Instance.InfoLog("----------------------------");
-            Helpfunctions.Instance.ErrorLog("you are running SilverFish AI(https://github.com/ChuckHearthBuddy/SilverFish) written by ChuckLu Version:" + SilverFishBot.Instance.versionnumber);
-            Helpfunctions.Instance.InfoLog("----------------------------");
+            Helpfunctions.Instance.ErrorLog("----------------------------");
+            Helpfunctions.Instance.ErrorLog("您正在使用的AI版本为" + Silverfish.Instance.versionnumber);
+            Helpfunctions.Instance.ErrorLog("----------------------------");
 
             if (teststuff)
             {
@@ -145,13 +148,13 @@ def Execute():
         /// <summary> The name of the routine. </summary>
         public string Name
         {
-            get { return "DefaultRoutine"; }
+            get { return "策略"; }
         }
 
         /// <summary> The description of the routine. </summary>
         public string Description
         {
-            get { return "The default routine for Hearthbuddy."; }
+            get { return "炉石兄弟的默认策略."; }
         }
 
         /// <summary>The author of this routine.</summary>
@@ -215,7 +218,7 @@ def Execute():
                 if (
                     !VerifyCondition(tuple.Item1, new List<string> {"mulliganData"}, out ex))
                 {
-                    Log.ErrorFormat("[Start] There is an error with a mulligan execution condition [{1}]: {0}.", ex,
+                    Log.ErrorFormat("[开始] 发现一个错误的留牌策略为 [{1}]: {0}.", ex,
                         tuple.Item1);
                     BotManager.Stop();
                 }
@@ -224,7 +227,7 @@ def Execute():
                     !VerifyCondition(tuple.Item2, new List<string> {"mulliganData", "card"},
                         out ex))
                 {
-                    Log.ErrorFormat("[Start] There is an error with a mulligan card condition [{1}]: {0}.", ex,
+                    Log.ErrorFormat("[开始] 发现一个错误的留牌策略为 [{1}]: {0}.", ex,
                         tuple.Item2);
                     BotManager.Stop();
                 }
@@ -243,7 +246,6 @@ def Execute():
             GameEventManager.GameOver -= GameEventManagerOnGameOver;
             GameEventManager.QuestUpdate -= GameEventManagerOnQuestUpdate;
             GameEventManager.ArenaRewards -= GameEventManagerOnArenaRewards;
-            CardNotImplementedHelper.Save();
         }
 
         #endregion
@@ -506,11 +508,16 @@ def Execute():
         public async Task MulliganLogic(MulliganData mulliganData)
         {
             varadd.gamestart();//自定义变量初始化 在留牌阶段初始化
-            
             bool concedeSuccessfully = CustomEventManager.Instance.OnMulliganStarted();
-
-
-            Log.InfoFormat("[Mulligan] {0} vs {1}.", mulliganData.UserClass, mulliganData.OpponentClass);
+            if (!botset.AutoConcedeLag && !botset.ForceConcedeAtMulligan)
+            { 
+            Log.InfoFormat("[日志档案:] 开始创建");
+            Hrtprozis prozis = Hrtprozis.Instance;
+            prozis.clearAllNewGame();
+            Silverfish.Instance.setnewLoggFile();
+            Log.InfoFormat("[日志档案:] 创建完成");
+            }
+            Log.InfoFormat("[开局留牌] {0} 对阵 {1}.", mulliganData.UserClass, mulliganData.OpponentClass);
             var count = mulliganData.Cards.Count;
 
             if (this.behave.BehaviorName() != DefaultRoutineSettings.Instance.DefaultBehavior)
@@ -542,14 +549,14 @@ def Execute():
                                 {
                                     mulliganData.Mulligans[i] = true;
                                     Log.InfoFormat(
-                                        "[Mulligan] {0} should be mulliganed because it matches the user's mulligan rule: [{1}] ({2}).",
+                                        "[开局留牌] {0} 这张卡片符合自定义留牌规则: [{1}] ({2}).",
                                         card.Entity.Id, tuple.Item2, tuple.Item1);
                                 }
                             }
                             else
                             {
                                 Log.InfoFormat(
-                                    "[Mulligan] The mulligan execution check [{0}] is false, so the mulligan criteria [{1}] will not be evaluated.",
+                                    "[开局留牌] 留牌策略检测发现 [{0}] 的规则错误, 所以 [{1}] 的规则不执行.",
                                     tuple.Item1, tuple.Item2);
                             }
                         }
@@ -574,7 +581,7 @@ def Execute():
             {
                 var card = mulliganData.Cards[entry.Key];
 
-                Log.InfoFormat("[Mulligan] Now thinking about mulliganing {0} for {1} ms.", card.Entity.Id, entry.Value);
+                Log.InfoFormat("[开局留牌] 现在开始思考留牌 {0} 时间已经过去 {1} 毫秒.", card.Entity.Id, entry.Value);
 
                 // Instant think time, skip the card.
                 if (entry.Value == 0)
@@ -597,7 +604,7 @@ def Execute():
         /// <returns></returns>
         public async Task EmoteLogic(EmoteData data)
         {
-            Log.InfoFormat("[Emote] The enemy is using the emote [{0}].", data.Emote);
+            Log.InfoFormat("[表情] 使用表情 [{0}].", data.Emote);
 
             if (data.Emote == EmoteType.GREETINGS)
             {
@@ -625,7 +632,7 @@ def Execute():
 
 	    public async Task OurTurnCombatLogic()
 	    {
-            Log.InfoFormat("[OurTurnCombatLogic]");
+            Log.InfoFormat("[我方回合]");
             await Coroutine.Sleep(555 + makeChoice());
             switch (dirtychoice)
             {
@@ -636,13 +643,13 @@ def Execute():
 
             dirtychoice = -1;
             await Coroutine.Sleep(555);
-            SilverFishBot.Instance.lastpf = null;
+            Silverfish.Instance.lastpf = null;
             return;
 		}
 
 	    public async Task OpponentTurnCombatLogic()
 	    {
-		    Log.Info("[OpponentTurnCombatLogic]");
+		    Log.Info("[对手回合]");
 	    }
 
 		/// <summary>
@@ -654,7 +661,7 @@ def Execute():
             if (this.behave.BehaviorName() != DefaultRoutineSettings.Instance.DefaultBehavior)
             {
                 behave = sf.getBehaviorByName(DefaultRoutineSettings.Instance.DefaultBehavior);
-                SilverFishBot.Instance.lastpf = null;
+                Silverfish.Instance.lastpf = null;
             }
 
             if (this.learnmode && (TritonHs.IsInTargetMode() || TritonHs.IsInChoiceMode()))
@@ -667,7 +674,7 @@ def Execute():
             {
                 if (dirtytarget >= 0)
                 {
-                    Log.Info("targeting...");
+                    Log.Info("瞄准中...");
                     HSCard source = null;
                     if (dirtyTargetSource == 9000) // 9000 = ability
                     {
@@ -681,7 +688,7 @@ def Execute():
 
                     if (target == null)
                     {
-                        Log.Error("target is null...");
+                        Log.Error("目标为空...");
                         TritonHs.CancelTargetingMode();
                         return;
                     }
@@ -697,7 +704,7 @@ def Execute():
                     return;
                 }
 
-                Log.Error("target failure...");
+                Log.Error("目标丢失...");
                 TritonHs.CancelTargetingMode();
                 return;
             }
@@ -718,12 +725,12 @@ def Execute():
             }
 
             bool sleepRetry = false;
-            bool templearn = SilverFishBot.Instance.updateEverything(behave, 0, out sleepRetry);
+            bool templearn = Silverfish.Instance.updateEverything(behave, 0, out sleepRetry);
             if (sleepRetry)
             {
-                Log.Error("[AI] Readiness error. Attempting recover...");
+                Log.Error("[AI] 随从没能动起来，再试一次...");
                 await Coroutine.Sleep(500);
-                templearn = SilverFishBot.Instance.updateEverything(behave, 1, out sleepRetry);
+                templearn = Silverfish.Instance.updateEverything(behave, 1, out sleepRetry);
             }
 
             if (templearn == true) this.printlearnmode = true;
@@ -778,8 +785,8 @@ def Execute():
                                     case CardDB.cardName.stargazerluna: lastChance = true; break;//观星者露娜
 
                                     case CardDB.cardName.sirfinleymrrgglton: lastChance = true; break;
-                                    case CardDB.cardName.ragnarosthefirelord: if (lastChancePl.enemyHero.HealthPoints < 9) lastChance = true; break;
-                                    case CardDB.cardName.barongeddon: if (lastChancePl.enemyHero.HealthPoints < 3) lastChance = true; break;
+                                    case CardDB.cardName.ragnarosthefirelord: if (lastChancePl.enemyHero.Hp < 9) lastChance = true; break;
+                                    case CardDB.cardName.barongeddon: if (lastChancePl.enemyHero.Hp < 3) lastChance = true; break;
                                 }
                             }
                             foreach (CardDB.cardIDEnum secretID in lastChancePl.ownSecretsIDList)
@@ -802,12 +809,12 @@ def Execute():
                 }
                 if (doEndTurn)
                 {
-                    Helpfunctions.Instance.InfoLog("end turn");
+                    Helpfunctions.Instance.ErrorLog("回合结束");
                     await Coroutine.Sleep(new Random().Next(3000, 5000));//等待随机时间 防止没打牌
 
                 
 
-                    bool EndTurnRetry = SilverFishBot.Instance.updateEverything(behave, 1, out EndTurnRetry);
+                    bool EndTurnRetry = Silverfish.Instance.updateEverything(behave, 1, out EndTurnRetry);
                
                     Ai.Instance.simmulateWholeTurnandPrint();
                 
@@ -816,35 +823,21 @@ def Execute():
                     //do nothing
                     await Coroutine.Sleep(50);//重新计算
 
-
                     await TritonHs.EndTurn();
                     return;
                 }
                 else if (doConcede)
                 {
-                    Helpfunctions.Instance.InfoLog("Lethal detected. Concede...");
-                    LogHelper.WriteCombatLog("Concede... Lethal detected###############################################");
+                    Helpfunctions.Instance.ErrorLog("我方败局已定. 投降...");
+                    Helpfunctions.Instance.logg("投降... 败局已定###############################################");
                     TritonHs.Concede(true);
                     return;
                 }
             }
-            Helpfunctions.Instance.InfoLog("play action");
+            Helpfunctions.Instance.ErrorLog("开始行动");
             if (moveTodo == null)
             {
-                Helpfunctions.Instance.InfoLog("moveTodo == null. EndTurn");
-                await Coroutine.Sleep(new Random().Next(3000, 5000));//等待随机时间
-
-                bool EndTurnRetry = SilverFishBot.Instance.updateEverything(behave, 1, out EndTurnRetry);
-               
-                Ai.Instance.simmulateWholeTurnandPrint();
-                
-                    this.printlearnmode = false;
-
-                    //do nothing
-                    await Coroutine.Sleep(50);//重新计算
-
-
-
+                Helpfunctions.Instance.ErrorLog("实在支不出招啦. 结束当前回合");
                 await TritonHs.EndTurn();
                 return;
             }
@@ -862,7 +855,7 @@ def Execute():
                     HSCard cardtoplay = getCardWithNumber(moveTodo.card.entity);
                     if (cardtoplay == null)
                     {
-                        Helpfunctions.Instance.ErrorLog("[Tick] cardtoplay == null");
+                        Helpfunctions.Instance.ErrorLog("[提示] 实在支不出招啦");
                         return;
                     }
                     if (moveTodo.target != null)
@@ -870,8 +863,8 @@ def Execute():
                         HSCard target = getEntityWithNumber(moveTodo.target.entitiyID);
                         if (target != null)
                         {
-                            Helpfunctions.Instance.InfoLog("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") target: " + target.Name + " (" + target.EntityId + ")");
-                            LogHelper.WriteCombatLog("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") target: " + target.Name + " (" + target.EntityId + ") choice: " + moveTodo.druidchoice);
+                            Helpfunctions.Instance.ErrorLog("使用: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") 瞄准: " + target.Name + " (" + target.EntityId + ")");
+                            Helpfunctions.Instance.logg("使用: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") 瞄准: " + target.Name + " (" + target.EntityId + ") 抉择: " + moveTodo.druidchoice);
 						    if (moveTodo.druidchoice >= 1)
                             {
                                 dirtytarget = moveTodo.target.entitiyID;
@@ -904,16 +897,16 @@ def Execute():
                         }
                         else
                         {
-                            Helpfunctions.Instance.ErrorLog("[AI] Target is missing. Attempting recover...");
-                            LogHelper.WriteCombatLog("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
+                            Helpfunctions.Instance.ErrorLog("[AI] 目标丢失，再试一次...");
+                            Helpfunctions.Instance.logg("[AI] 目标 " + moveTodo.target.entitiyID + "丢失. 再试一次...");
                         }
                         await Coroutine.Sleep(500);
 
                         return;
                     }
 
-                    Helpfunctions.Instance.InfoLog("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") target nothing");
-                    LogHelper.WriteCombatLog("play: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") choice: " + moveTodo.druidchoice);
+                    Helpfunctions.Instance.ErrorLog("使用: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") 暂时没有目标");
+                    Helpfunctions.Instance.logg("使用: " + cardtoplay.Name + " (" + cardtoplay.EntityId + ") 抉择: " + moveTodo.druidchoice);
                     if (moveTodo.druidchoice >= 1)
                     {
                         dirtychoice = moveTodo.druidchoice; //1=leftcard, 2= rightcard
@@ -947,8 +940,8 @@ def Execute():
                     {
                         if (target != null)
                         {
-                            Helpfunctions.Instance.InfoLog("minion attack: " + attacker.Name + " target: " + target.Name);
-                            LogHelper.WriteCombatLog("minion attack: " + attacker.Name + " target: " + target.Name);
+                            Helpfunctions.Instance.ErrorLog("随从攻击: " + attacker.Name + " 目标为: " + target.Name);
+                            Helpfunctions.Instance.logg("随从攻击: " + attacker.Name + " 目标为: " + target.Name);
 
                             
                             await attacker.DoAttack(target);
@@ -956,14 +949,14 @@ def Execute():
                         }
                         else
                         {
-                            Helpfunctions.Instance.ErrorLog("[AI] Target is missing. Attempting recover...");
-                            LogHelper.WriteCombatLog("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
+                            Helpfunctions.Instance.ErrorLog("[AI] 目标丢失，再次重试...");
+                            Helpfunctions.Instance.logg("[AI] 目标 " + moveTodo.target.entitiyID + "丢失. 再次重试...");
                         }
                     }
                     else
                     {
-                        Helpfunctions.Instance.ErrorLog("[AI] Attacker is missing. Attempting recover...");
-                        LogHelper.WriteCombatLog("[AI] Attacker " + moveTodo.own.entitiyID + " is missing. Attempting recover...");
+                        Helpfunctions.Instance.ErrorLog("[AI] 攻击失败，再次重试...");
+                        Helpfunctions.Instance.logg("[AI] 进攻 " + moveTodo.own.entitiyID + " 失败.再次重试...");
                     }
                     await Coroutine.Sleep(250);
                     return;
@@ -978,8 +971,8 @@ def Execute():
                         if (target != null)
                         {
                             dirtytarget = moveTodo.target.entitiyID;
-                            Helpfunctions.Instance.InfoLog("heroattack: " + attacker.Name + " target: " + target.Name);
-                            LogHelper.WriteCombatLog("heroattack: " + attacker.Name + " target: " + target.Name);
+                            Helpfunctions.Instance.ErrorLog("英雄攻击: " + attacker.Name + " 目标为: " + target.Name);
+                            Helpfunctions.Instance.logg("英雄攻击: " + attacker.Name + " 目标为: " + target.Name);
 
                             //safe targeting stuff for hsbuddy
                             dirtyTargetSource = moveTodo.own.entitiyID;
@@ -988,14 +981,14 @@ def Execute():
                         }
                         else
                         {
-                            Helpfunctions.Instance.ErrorLog("[AI] Target is missing. Attempting recover...");
-                            LogHelper.WriteCombatLog("[AI] Target " + moveTodo.target.entitiyID + "is missing (H). Attempting recover...");
+                            Helpfunctions.Instance.ErrorLog("[AI] 英雄攻击目标丢失，再次重试...");
+                            Helpfunctions.Instance.logg("[AI] 英雄攻击目标 " + moveTodo.target.entitiyID + "丢失，再次重试...");
                         }
                     }
                     else
                     {
-                        Helpfunctions.Instance.ErrorLog("[AI] Attacker is missing. Attempting recover...");
-                        LogHelper.WriteCombatLog("[AI] Attacker " + moveTodo.own.entitiyID + " is missing (H). Attempting recover...");
+                        Helpfunctions.Instance.ErrorLog("[AI] 英雄攻击失败，再次重试...");
+                        Helpfunctions.Instance.logg("[AI] 英雄攻击 " + moveTodo.own.entitiyID + " 失败，再次重试...");
                     }
 				    await Coroutine.Sleep(250);
                     return;
@@ -1011,8 +1004,8 @@ def Execute():
                         HSCard target = getEntityWithNumber(moveTodo.target.entitiyID);
                         if (target != null)
                         {
-                            Helpfunctions.Instance.InfoLog("use ablitiy: " + cardtoplay.Name + " target " + target.Name);
-                            LogHelper.WriteCombatLog("use ablitiy: " + cardtoplay.Name + " target " + target.Name + (moveTodo.druidchoice > 0 ? (" choice: " + moveTodo.druidchoice) : ""));
+                            Helpfunctions.Instance.ErrorLog("使用英雄技能: " + cardtoplay.Name + " 目标为 " + target.Name);
+                            Helpfunctions.Instance.logg("使用英雄技能: " + cardtoplay.Name + " 目标为 " + target.Name + (moveTodo.druidchoice > 0 ? (" 抉择: " + moveTodo.druidchoice) : ""));
                             if (moveTodo.druidchoice > 0)
                             {
                                 dirtytarget = moveTodo.target.entitiyID;
@@ -1028,15 +1021,15 @@ def Execute():
                         }
                         else
                         {
-                            Helpfunctions.Instance.ErrorLog("[AI] Target is missing. Attempting recover...");
-                            LogHelper.WriteCombatLog("[AI] Target " + moveTodo.target.entitiyID + "is missing. Attempting recover...");
+                            Helpfunctions.Instance.ErrorLog("[AI] 目标丢失，再次重试...");
+                            Helpfunctions.Instance.logg("[AI] 目标 " + moveTodo.target.entitiyID + "丢失. 再次重试...");
                         }
                         await Coroutine.Sleep(500);
                     }
                     else
                     {
-                        Helpfunctions.Instance.InfoLog("use ablitiy: " + cardtoplay.Name + " target nothing");
-                        LogHelper.WriteCombatLog("use ablitiy: " + cardtoplay.Name + " target nothing" + (moveTodo.druidchoice > 0 ? (" choice: " + moveTodo.druidchoice) : ""));
+                        Helpfunctions.Instance.ErrorLog("使用英雄技能: " + cardtoplay.Name + " 暂时没有目标");
+                        Helpfunctions.Instance.logg("使用英雄技能: " + cardtoplay.Name + " 暂时没有目标" + (moveTodo.druidchoice > 0 ? (" 抉择: " + moveTodo.druidchoice) : ""));
                         
                         if (moveTodo.druidchoice >= 1)
                         {
@@ -1108,7 +1101,7 @@ def Execute():
                 }
 
                 int sirFinleyChoice = -1;
-                if (ai.bestmove == null) Log.ErrorFormat("[Tick] Can't get cards. ChoiceCardMgr is empty");
+                if (ai.bestmove == null) Log.ErrorFormat("[提示] 没有获得卡牌数据");
                 else if (ai.bestmove.actionType == actionEnum.playcard && ai.bestmove.card.card.name == CardDB.cardName.sirfinleymrrgglton)
                 {
                     sirFinleyChoice = ai.botBase.getSirFinleyPriority(discoverCards);
@@ -1201,7 +1194,7 @@ def Execute():
                                             tmpPlf.owncards[tmpPlf.owncards.Count - 1] = discoverCards[i];
                                             break;
                                     }
-                                    bestval = ai.mainTurnSimulator.DoAllMoves(tmpPlf);
+                                    bestval = ai.mainTurnSimulator.doallmoves(tmpPlf);
                                     if (PenalityManager.Instance.discoverCardPriority(tmpPlf,discoverCards)==i) bestval += 50;
                                     if (discoverCards[i].card.Shield&&ai.bestmove.card.card.name==CardDB.cardName.anewchallenger) bestval += 30;
                                     if (discoverCards[i].card.name==CardDB.cardName.zuljin) bestval += 30;
@@ -1255,8 +1248,8 @@ def Execute():
                                             if (forbidden) bestval = -2000000;
                                             else
                                             {
-                                                discoverCards[i].card.CardSimulation.onCardPlay(tmpPlf, true, m, 0);
-                                                bestval = ai.mainTurnSimulator.DoAllMoves(tmpPlf);
+                                                discoverCards[i].card.sim_card.onCardPlay(tmpPlf, true, m, 0);
+                                                bestval = ai.mainTurnSimulator.doallmoves(tmpPlf);
                                             }
                                             found = true;
                                             break;
@@ -1268,8 +1261,8 @@ def Execute():
 
                         if (sourceEntityCId == CardDB.cardIDEnum.DRG_099)//克罗斯·龙蹄
                             {
-                                discoverCards[i].card.CardSimulation.onCardPlay(tmpPlf, true, tmpPlf.ownHero, 0);
-                                bestval = ai.mainTurnSimulator.DoAllMoves(tmpPlf);
+                                discoverCards[i].card.sim_card.onCardPlay(tmpPlf, true, tmpPlf.ownHero, 0);
+                                bestval = ai.mainTurnSimulator.doallmoves(tmpPlf);
                             }
                             if (bestDiscoverValue <= bestval)
                             {
@@ -1281,17 +1274,16 @@ def Execute():
                     }
                     ai.mainTurnSimulator.setSecondTurnSimu(true, dirtyTwoTurnSim);
                 }
-                if (sourceEntityCId == CardDB.cardIDEnum.UNG_035) dirtychoice = new Random().Next(0, 2);//好奇的萤根草
-
+                if (sourceEntityCId == CardDB.cardIDEnum.UNG_035) dirtychoice = new Random().Next(0, 2);
                 if (dirtychoice == 0) dirtychoice = 1;
                 else if (dirtychoice == 1) dirtychoice = 0;
                 int ttf = (int)(DateTime.Now - tmp).TotalMilliseconds;
-                LogHelper.WriteCombatLog("discover card: " + dirtychoice + (discoverCardsCount > 1 ? " " + discoverCards[1].card.cardIDenum : "") + (discoverCardsCount > 0 ? " " + discoverCards[0].card.cardIDenum : "") + (discoverCardsCount > 2 ? " " + discoverCards[2].card.cardIDenum : ""));
+                Helpfunctions.Instance.logg("发现卡牌: " + dirtychoice + (discoverCardsCount > 1 ? " " + discoverCards[1].card.cardIDenum : "") + (discoverCardsCount > 0 ? " " + discoverCards[0].card.cardIDenum : "") + (discoverCardsCount > 2 ? " " + discoverCards[2].card.cardIDenum : ""));
                 if (ttf < 3000) return (new Random().Next(ttf < 1300 ? 1300 - ttf : 0, 3100 - ttf));
             }
             else
             {
-                LogHelper.WriteCombatLog("chooses the card: " + dirtychoice);
+                Helpfunctions.Instance.logg("选择这张卡牌: " + dirtychoice);
                 return (new Random().Next(1100, 3200));
             }
             return 0;
@@ -1303,7 +1295,7 @@ def Execute():
         /// <returns></returns>
         public async Task OpponentTurnLogic()
         {
-            Log.InfoFormat("[OpponentTurn]");
+            Log.InfoFormat("[对手回合]");
 
 
         }
@@ -1452,7 +1444,7 @@ def Execute():
         /// <returns></returns>
         public async Task HandleQuestsLogic(QuestData data)
         {
-            Log.InfoFormat("[HandleQuests]");
+            Log.InfoFormat("[处理日常任务]");
 
             // Loop though all quest tiles.
             foreach (var questTile in data.QuestTiles)
@@ -1466,7 +1458,7 @@ def Execute():
 						questTile.ShouldCancel = true;
 
                         StringBuilder questsInfo = new StringBuilder("", 1000);
-                        questsInfo.Append("[HandleQuests] List of quests: ");
+                        questsInfo.Append("[处理日常任务] 任务列表: ");
                         int qNum = data.QuestTiles.Count;
                         for (int i = 0; i < qNum; i++ )
                         {
@@ -1478,7 +1470,7 @@ def Execute():
                             questsInfo.Append(q.Name);
                             if (i < qNum - 1) questsInfo.Append(", ");
                         }
-                        questsInfo.Append(". Try to cancel: ").Append(questTile.Achievement.Name);
+                        questsInfo.Append(". 尝试取消任务: ").Append(questTile.Achievement.Name);
                         Log.InfoFormat(questsInfo.ToString());
                         await Coroutine.Sleep(new Random().Next(4000, 8000));
 						return;
@@ -1486,7 +1478,7 @@ def Execute():
                 }
                 else if (DefaultRoutineSettings.Instance.QuestIdsToCancel.Count > 0)
                 {
-                    Log.InfoFormat("We can't cancel the quest.");
+                    Log.InfoFormat("取消任务失败.");
                 }
             }
         }
@@ -1510,38 +1502,31 @@ def Execute():
 
         private void GameEventManagerOnGameOver(object sender, GameOverEventArgs gameOverEventArgs)
         {
-            Log.InfoFormat("[GameEventManagerOnGameOver] {0}{2} => {1}.", gameOverEventArgs.Result,
+            Log.InfoFormat("[游戏结束] {0}{2} => {1}.", gameOverEventArgs.Result,
                 GameEventManager.Instance.LastGamePresenceStatus, gameOverEventArgs.Conceded ? " [conceded]" : "");
-            ThreadPool.QueueUserWorkItem(CardNotImplementedHelper.GameOver);
         }
 
         private void GameEventManagerOnNewGame(object sender, NewGameEventArgs newGameEventArgs)//会一直重复执行
         {
-            /*Log.InfoFormat("[Set new log file:] Start");
-            Hrtprozis prozis = Hrtprozis.Instance;
-            prozis.clearAllNewGame();
-            EvenDeckHelper.Reset();
-            SilverFishBot.Instance.SetNewLogFile();
-            Log.InfoFormat("[Set new log file:] End");*/
             
         }
 
         private void GameEventManagerOnQuestUpdate(object sender, QuestUpdateEventArgs questUpdateEventArgs)
         {
-            Log.InfoFormat("[GameEventManagerOnQuestUpdate]");
+            Log.InfoFormat("[任务刷新]");
             foreach (var quest in TritonHs.CurrentQuests)
             {
-                Log.InfoFormat("[GameEventManagerOnQuestUpdate][{0}]{1}: {2} ({3} / {4}) [{6}x {5}]", quest.Id, quest.Name, quest.Description, quest.CurProgress,
+                Log.InfoFormat("[任务刷新][{0}]{1}: {2} ({3} / {4}) [{6}x {5}]", quest.Id, quest.Name, quest.Description, quest.CurProgress,
                     quest.MaxProgress, quest.RewardData[0].Type, quest.RewardData[0].Count);
             }
         }
 
         private void GameEventManagerOnArenaRewards(object sender, ArenaRewardsEventArgs arenaRewardsEventArgs)
         {
-            Log.InfoFormat("[GameEventManagerOnArenaRewards]");
+            Log.InfoFormat("[竞技场奖励]");
             foreach (var reward in arenaRewardsEventArgs.Rewards)
             {
-                Log.InfoFormat("[GameEventManagerOnArenaRewards] {1}x {0}.", reward.Type, reward.Count);
+                Log.InfoFormat("[竞技场奖励] {1}x {0}.", reward.Type, reward.Count);
             }
         }        
 

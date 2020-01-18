@@ -3,7 +3,7 @@ using System.Text;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
-using SilverFish.Helpers;
+using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -869,12 +869,12 @@ namespace HREngine.Bots
                     return;
                 }
 
-                if (!SilverFishBot.Instance.BehaviorPath.ContainsKey(behavName))
+                if (!Silverfish.Instance.BehaviorPath.ContainsKey(behavName))
                 {
                     Helpfunctions.Instance.ErrorLog(behavName + ": no special rules.");
                     return;
                 }
-                pathToRules = Path.Combine(SilverFishBot.Instance.BehaviorPath[behavName], "_rules.txt");
+                pathToRules = Path.Combine(Silverfish.Instance.BehaviorPath[behavName], "_rules.txt");
             }
 
             if (!System.IO.File.Exists(pathToRules))
@@ -1117,12 +1117,11 @@ namespace HREngine.Bots
             }
             catch (Exception ex)
             {
-                Helpfunctions.Instance.ErrorLog(ex);
-                Helpfunctions.Instance.ErrorLog("[RulesEngine] _rules.txt - read error. We continue without user-defined rules. Only the default rules.");
+                Helpfunctions.Instance.ErrorLog("[规则编辑器] _rules.txt - 文本读取错误. 我们将使用默认规则，放弃自定义规则.");
                 return;
             }
 
-            Helpfunctions.Instance.InfoLog("[RulesEngine] " + heapOfRules.Count + " rules for " + behavName + " loaded successfully");
+            Helpfunctions.Instance.ErrorLog("[规则编辑器] " + heapOfRules.Count + " 规则名 " + behavName + " 读取成功");
             setRuleCardIds();
         }
 
@@ -2704,28 +2703,28 @@ namespace HREngine.Bots
                     if (p.owncarddraw < cond.num) return true;
                     return false;
                 case param.ohhp_equal: 
-                    if (p.ownHero.HealthPoints == cond.num) return true;
+                    if (p.ownHero.Hp == cond.num) return true;
                     return false;
                 case param.ohhp_notequal:
-                    if (p.ownHero.HealthPoints != cond.num) return true;
+                    if (p.ownHero.Hp != cond.num) return true;
                     return false;
                 case param.ohhp_greater:
-                    if (p.ownHero.HealthPoints > cond.num) return true;
+                    if (p.ownHero.Hp > cond.num) return true;
                     return false;
                 case param.ohhp_less:
-                    if (p.ownHero.HealthPoints < cond.num) return true;
+                    if (p.ownHero.Hp < cond.num) return true;
                     return false;
                 case param.ehhp_equal: 
-                    if (p.enemyHero.HealthPoints == cond.num) return true;
+                    if (p.enemyHero.Hp == cond.num) return true;
                     return false;
                 case param.ehhp_notequal:
-                    if (p.enemyHero.HealthPoints != cond.num) return true;
+                    if (p.enemyHero.Hp != cond.num) return true;
                     return false;
                 case param.ehhp_greater:
-                    if (p.enemyHero.HealthPoints > cond.num) return true;
+                    if (p.enemyHero.Hp > cond.num) return true;
                     return false;
                 case param.ehhp_less:
-                    if (p.enemyHero.HealthPoints < cond.num) return true;
+                    if (p.enemyHero.Hp < cond.num) return true;
                     return false;
 
                 case param.ownboard_contain: 

@@ -1,4 +1,4 @@
-﻿using SilverFish.Helpers;
+﻿using Silverfish.Helpers;
 
 namespace HREngine.Bots
 {
@@ -402,7 +402,7 @@ namespace HREngine.Bots
             /*string g = "";
             if (Probabilitymaker.Instance.feugenDead) g += " fgn";
             if (Probabilitymaker.Instance.stalaggDead) g += " stlgg";
-            LogHelper.WriteCombatLog("GraveYard:" + g);
+            Helpfunctions.Instance.logg("GraveYard:" + g);
             if (writetobuffer) Helpfunctions.Instance.writeToBuffer("GraveYard:" + g);*/
 
             string s = "ownDiedMinions: ";
@@ -410,14 +410,14 @@ namespace HREngine.Bots
             {
                 if (gyi.own) s += gyi.cardid + "," + gyi.entity + ";";
             }
-            LogHelper.WriteCombatLog(s);
+            Helpfunctions.Instance.logg(s);
 
             s = "enemyDiedMinions: ";
             foreach (GraveYardItem gyi in this.turngraveyard)
             {
                 if (!gyi.own) s += gyi.cardid + "," + gyi.entity + ";";
             }
-            LogHelper.WriteCombatLog(s);
+            Helpfunctions.Instance.logg(s);
 
 
             s = "otg: ";
@@ -425,14 +425,14 @@ namespace HREngine.Bots
             {
                 if (gyi.own) s += gyi.cardid + "," + gyi.entity + ";";
             }
-            LogHelper.WriteCombatLog(s);
+            Helpfunctions.Instance.logg(s);
 
             s = "etg: ";
             foreach (GraveYardItem gyi in this.turngraveyardAll)
             {
                 if (!gyi.own) s += gyi.cardid + "," + gyi.entity + ";";
             }
-            LogHelper.WriteCombatLog(s);
+            Helpfunctions.Instance.logg(s);
         }
 
         public void setGraveYard(List<GraveYardItem> list, bool turnStart)
@@ -543,8 +543,8 @@ namespace HREngine.Bots
             {
                 eg += e.Key + "," + e.Value + ";";
             }
-            LogHelper.WriteCombatLog(og);
-            LogHelper.WriteCombatLog(eg);
+            Helpfunctions.Instance.logg(og);
+            Helpfunctions.Instance.logg(eg);
         }
 
         public int getProbOfEnemyHavingCardInHand(CardDB.cardIDEnum cardid, int handsize, int decksize)
@@ -605,7 +605,7 @@ namespace HREngine.Bots
             foreach (KeyValuePair<int, TAG_CLASS> eSec in enemySecretList)
             {
                 if (eSec.Key >= 1000) continue;
-                LogHelper.WriteCombatLog("detect secret with id" + eSec.Key);
+                Helpfunctions.Instance.logg("detect secret with id" + eSec.Key);
                 SecretItem sec = getNewSecretGuessedItem(eSec.Key, eSec.Value);
 
                 newlist.Add(new SecretItem(sec));
@@ -1049,8 +1049,8 @@ namespace HREngine.Bots
                                 vaporize = false;
                                 if (enemySecretsOpenedStep.Contains(CardDB.cardIDEnum.EX1_554)) continue;
                                 int hpBalance = 0; //we need to know who has become the new target
-                                foreach (Minion m in p.enemyMinions) hpBalance += m.HealthPoints;
-                                foreach (Minion m in old.enemyMinions) hpBalance -= m.HealthPoints;
+                                foreach (Minion m in p.enemyMinions) hpBalance += m.Hp;
+                                foreach (Minion m in old.enemyMinions) hpBalance -= m.Hp;
                                 if (hpBalance < 0) snaketrap = true;
                                 continue;
                             case CardDB.cardIDEnum.EX1_611:  //freezingtrap
@@ -1101,7 +1101,7 @@ namespace HREngine.Bots
                 if (p.ownMinions.Count > 3) sacredtrial = true;
             }
 
-            if (p.enemyHero.HealthPoints + p.enemyHero.armor < old.enemyHero.HealthPoints + old.enemyHero.armor) eyeforaneye = true;
+            if (p.enemyHero.Hp + p.enemyHero.armor < old.enemyHero.Hp + old.enemyHero.armor) eyeforaneye = true;
             if (doneMove.actionType == actionEnum.useHeroPower) darttrap = true;
 
             foreach (CardDB.cardIDEnum id in enemySecretsOpenedStep)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SilverFish.Helpers
+namespace Silverfish.Helpers
 {
     public class FileHelper
     {
