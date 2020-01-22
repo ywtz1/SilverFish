@@ -14,6 +14,15 @@ class Sim_TRL_352:SimTemplate//舔舔
 		public override void onCardPlay(Playfield p ,bool ownplay ,Minion target ,int choice)
 		{
             p.equipWeapon(weapon, ownplay);
+            if(ownplay)
+            {
+	            if(p.ueberladung>0||p.lockedMana>0) 
+	            {
+	            	p.minionGetBuffed(p.ownHero, 2, 0);
+	                p.ownWeapon.Angr += 2;
+	            }
+            }
+
 
 		}
 
