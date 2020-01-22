@@ -16736,6 +16736,504 @@ case CardDB.cardIDEnum.WE1_039:
   return new Sim_WE1_039();
 
 
+    case CardDB.cardIDEnum.BGS_014:
+      return new Sim_BGS_014();
+    case CardDB.cardIDEnum.CS2_034_H3_AT_132:
+      return new Sim_CS2_034_H3_AT_132();
+    case CardDB.cardIDEnum.CS2_034_H4:
+      return new Sim_CS2_034_H4();
+    case CardDB.cardIDEnum.DRGA_001:
+      return new Sim_DRGA_001();
+    case CardDB.cardIDEnum.DRGA_001e:
+      return new Sim_DRGA_001e();
+    case CardDB.cardIDEnum.DRGA_002:
+      return new Sim_DRGA_002();
+    case CardDB.cardIDEnum.DRGA_003:
+      return new Sim_DRGA_003();
+    case CardDB.cardIDEnum.DRGA_004:
+      return new Sim_DRGA_004();
+    case CardDB.cardIDEnum.DRGA_005:
+      return new Sim_DRGA_005();
+    case CardDB.cardIDEnum.DRGA_011:
+      return new Sim_DRGA_011();
+    case CardDB.cardIDEnum.DRGA_011t:
+      return new Sim_DRGA_011t();
+    case CardDB.cardIDEnum.DRGA_011ts:
+      return new Sim_DRGA_011ts();
+    case CardDB.cardIDEnum.DRGA_011ts2:
+      return new Sim_DRGA_011ts2();
+    case CardDB.cardIDEnum.DRGA_011ts3:
+      return new Sim_DRGA_011ts3();
+    case CardDB.cardIDEnum.DRGA_011ts4:
+      return new Sim_DRGA_011ts4();
+    case CardDB.cardIDEnum.DRGA_011ts5:
+      return new Sim_DRGA_011ts5();
+    case CardDB.cardIDEnum.DRGA_01q:
+      return new Sim_DRGA_01q();
+    case CardDB.cardIDEnum.DRGA_06:
+      return new Sim_DRGA_06();
+    case CardDB.cardIDEnum.DRGA_06e:
+      return new Sim_DRGA_06e();
+    case CardDB.cardIDEnum.DRGA_099t3:
+      return new Sim_DRGA_099t3();
+    case CardDB.cardIDEnum.DRGA_099t4:
+      return new Sim_DRGA_099t4();
+    case CardDB.cardIDEnum.DRGA_24w:
+      return new Sim_DRGA_24w();
+    case CardDB.cardIDEnum.DRGA_BOSS_01e:
+      return new Sim_DRGA_BOSS_01e();
+    case CardDB.cardIDEnum.DRGA_BOSS_01p:
+      return new Sim_DRGA_BOSS_01p();
+    case CardDB.cardIDEnum.DRGA_BOSS_01p2:
+      return new Sim_DRGA_BOSS_01p2();
+    case CardDB.cardIDEnum.DRGA_BOSS_01p3:
+      return new Sim_DRGA_BOSS_01p3();
+    case CardDB.cardIDEnum.DRGA_BOSS_01p_H:
+      return new Sim_DRGA_BOSS_01p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_01t:
+      return new Sim_DRGA_BOSS_01t();
+    case CardDB.cardIDEnum.DRGA_BOSS_02p:
+      return new Sim_DRGA_BOSS_02p();
+    case CardDB.cardIDEnum.DRGA_BOSS_02t:
+      return new Sim_DRGA_BOSS_02t();
+    case CardDB.cardIDEnum.DRGA_BOSS_02t3:
+      return new Sim_DRGA_BOSS_02t3();
+    case CardDB.cardIDEnum.DRGA_BOSS_02tt:
+      return new Sim_DRGA_BOSS_02tt();
+    case CardDB.cardIDEnum.DRGA_BOSS_03e:
+      return new Sim_DRGA_BOSS_03e();
+    case CardDB.cardIDEnum.DRGA_BOSS_03p:
+      return new Sim_DRGA_BOSS_03p();
+    case CardDB.cardIDEnum.DRGA_BOSS_03p_H:
+      return new Sim_DRGA_BOSS_03p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_03pe:
+      return new Sim_DRGA_BOSS_03pe();
+    case CardDB.cardIDEnum.DRGA_BOSS_03t:
+      return new Sim_DRGA_BOSS_03t();
+    case CardDB.cardIDEnum.DRGA_BOSS_03t2:
+      return new Sim_DRGA_BOSS_03t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_03t3:
+      return new Sim_DRGA_BOSS_03t3();
+    case CardDB.cardIDEnum.DRGA_BOSS_03te:
+      return new Sim_DRGA_BOSS_03te();
+    case CardDB.cardIDEnum.DRGA_BOSS_04p:
+      return new Sim_DRGA_BOSS_04p();
+    case CardDB.cardIDEnum.DRGA_BOSS_04t:
+      return new Sim_DRGA_BOSS_04t();
+    case CardDB.cardIDEnum.DRGA_BOSS_05p:
+      return new Sim_DRGA_BOSS_05p();
+    case CardDB.cardIDEnum.DRGA_BOSS_05p_H:
+      return new Sim_DRGA_BOSS_05p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_05t:
+      return new Sim_DRGA_BOSS_05t();
+    case CardDB.cardIDEnum.DRGA_BOSS_05t2:
+      return new Sim_DRGA_BOSS_05t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_05t3:
+      return new Sim_DRGA_BOSS_05t3();
+    case CardDB.cardIDEnum.DRGA_BOSS_05t4:
+      return new Sim_DRGA_BOSS_05t4();
+    case CardDB.cardIDEnum.DRGA_BOSS_05t5:
+      return new Sim_DRGA_BOSS_05t5();
+    case CardDB.cardIDEnum.DRGA_BOSS_06p:
+      return new Sim_DRGA_BOSS_06p();
+    case CardDB.cardIDEnum.DRGA_BOSS_06p_H:
+      return new Sim_DRGA_BOSS_06p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_06t:
+      return new Sim_DRGA_BOSS_06t();
+    case CardDB.cardIDEnum.DRGA_BOSS_06t2:
+      return new Sim_DRGA_BOSS_06t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_07p:
+      return new Sim_DRGA_BOSS_07p();
+    case CardDB.cardIDEnum.DRGA_BOSS_07p2:
+      return new Sim_DRGA_BOSS_07p2();
+    case CardDB.cardIDEnum.DRGA_BOSS_07p3:
+      return new Sim_DRGA_BOSS_07p3();
+    case CardDB.cardIDEnum.DRGA_BOSS_07p4:
+      return new Sim_DRGA_BOSS_07p4();
+    case CardDB.cardIDEnum.DRGA_BOSS_07t:
+      return new Sim_DRGA_BOSS_07t();
+    case CardDB.cardIDEnum.DRGA_BOSS_08p:
+      return new Sim_DRGA_BOSS_08p();
+    case CardDB.cardIDEnum.DRGA_BOSS_08p_H:
+      return new Sim_DRGA_BOSS_08p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_08t:
+      return new Sim_DRGA_BOSS_08t();
+    case CardDB.cardIDEnum.DRGA_BOSS_08t2:
+      return new Sim_DRGA_BOSS_08t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_08t2e:
+      return new Sim_DRGA_BOSS_08t2e();
+    case CardDB.cardIDEnum.DRGA_BOSS_09p:
+      return new Sim_DRGA_BOSS_09p();
+    case CardDB.cardIDEnum.DRGA_BOSS_09p_H:
+      return new Sim_DRGA_BOSS_09p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_09t:
+      return new Sim_DRGA_BOSS_09t();
+    case CardDB.cardIDEnum.DRGA_BOSS_09t2:
+      return new Sim_DRGA_BOSS_09t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_09t2e:
+      return new Sim_DRGA_BOSS_09t2e();
+    case CardDB.cardIDEnum.DRGA_BOSS_09te:
+      return new Sim_DRGA_BOSS_09te();
+    case CardDB.cardIDEnum.DRGA_BOSS_10p:
+      return new Sim_DRGA_BOSS_10p();
+    case CardDB.cardIDEnum.DRGA_BOSS_10p_H:
+      return new Sim_DRGA_BOSS_10p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_11e:
+      return new Sim_DRGA_BOSS_11e();
+    case CardDB.cardIDEnum.DRGA_BOSS_11p:
+      return new Sim_DRGA_BOSS_11p();
+    case CardDB.cardIDEnum.DRGA_BOSS_11p_H:
+      return new Sim_DRGA_BOSS_11p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_11t:
+      return new Sim_DRGA_BOSS_11t();
+    case CardDB.cardIDEnum.DRGA_BOSS_11te:
+      return new Sim_DRGA_BOSS_11te();
+    case CardDB.cardIDEnum.DRGA_BOSS_12p:
+      return new Sim_DRGA_BOSS_12p();
+    case CardDB.cardIDEnum.DRGA_BOSS_12p_H:
+      return new Sim_DRGA_BOSS_12p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_12pe:
+      return new Sim_DRGA_BOSS_12pe();
+    case CardDB.cardIDEnum.DRGA_BOSS_12t:
+      return new Sim_DRGA_BOSS_12t();
+    case CardDB.cardIDEnum.DRGA_BOSS_12te:
+      return new Sim_DRGA_BOSS_12te();
+    case CardDB.cardIDEnum.DRGA_BOSS_13p:
+      return new Sim_DRGA_BOSS_13p();
+    case CardDB.cardIDEnum.DRGA_BOSS_13p_H:
+      return new Sim_DRGA_BOSS_13p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_13pe:
+      return new Sim_DRGA_BOSS_13pe();
+    case CardDB.cardIDEnum.DRGA_BOSS_13t:
+      return new Sim_DRGA_BOSS_13t();
+    case CardDB.cardIDEnum.DRGA_BOSS_13te:
+      return new Sim_DRGA_BOSS_13te();
+    case CardDB.cardIDEnum.DRGA_BOSS_15p:
+      return new Sim_DRGA_BOSS_15p();
+    case CardDB.cardIDEnum.DRGA_BOSS_15t:
+      return new Sim_DRGA_BOSS_15t();
+    case CardDB.cardIDEnum.DRGA_BOSS_15t2:
+      return new Sim_DRGA_BOSS_15t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_16p:
+      return new Sim_DRGA_BOSS_16p();
+    case CardDB.cardIDEnum.DRGA_BOSS_16p2:
+      return new Sim_DRGA_BOSS_16p2();
+    case CardDB.cardIDEnum.DRGA_BOSS_17p:
+      return new Sim_DRGA_BOSS_17p();
+    case CardDB.cardIDEnum.DRGA_BOSS_17pe:
+      return new Sim_DRGA_BOSS_17pe();
+    case CardDB.cardIDEnum.DRGA_BOSS_18p:
+      return new Sim_DRGA_BOSS_18p();
+    case CardDB.cardIDEnum.DRGA_BOSS_18p_H:
+      return new Sim_DRGA_BOSS_18p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_18pe:
+      return new Sim_DRGA_BOSS_18pe();
+    case CardDB.cardIDEnum.DRGA_BOSS_19p:
+      return new Sim_DRGA_BOSS_19p();
+    case CardDB.cardIDEnum.DRGA_BOSS_19p_H:
+      return new Sim_DRGA_BOSS_19p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_20p:
+      return new Sim_DRGA_BOSS_20p();
+    case CardDB.cardIDEnum.DRGA_BOSS_20p_H:
+      return new Sim_DRGA_BOSS_20p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_20t:
+      return new Sim_DRGA_BOSS_20t();
+    case CardDB.cardIDEnum.DRGA_BOSS_21p:
+      return new Sim_DRGA_BOSS_21p();
+    case CardDB.cardIDEnum.DRGA_BOSS_21t:
+      return new Sim_DRGA_BOSS_21t();
+    case CardDB.cardIDEnum.DRGA_BOSS_21t2:
+      return new Sim_DRGA_BOSS_21t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_22e:
+      return new Sim_DRGA_BOSS_22e();
+    case CardDB.cardIDEnum.DRGA_BOSS_22p:
+      return new Sim_DRGA_BOSS_22p();
+    case CardDB.cardIDEnum.DRGA_BOSS_22p_H:
+      return new Sim_DRGA_BOSS_22p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_22t:
+      return new Sim_DRGA_BOSS_22t();
+    case CardDB.cardIDEnum.DRGA_BOSS_22t2:
+      return new Sim_DRGA_BOSS_22t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_22t3:
+      return new Sim_DRGA_BOSS_22t3();
+    case CardDB.cardIDEnum.DRGA_BOSS_22t4:
+      return new Sim_DRGA_BOSS_22t4();
+    case CardDB.cardIDEnum.DRGA_BOSS_23e:
+      return new Sim_DRGA_BOSS_23e();
+    case CardDB.cardIDEnum.DRGA_BOSS_23p:
+      return new Sim_DRGA_BOSS_23p();
+    case CardDB.cardIDEnum.DRGA_BOSS_23t:
+      return new Sim_DRGA_BOSS_23t();
+    case CardDB.cardIDEnum.DRGA_BOSS_23te:
+      return new Sim_DRGA_BOSS_23te();
+    case CardDB.cardIDEnum.DRGA_BOSS_24p:
+      return new Sim_DRGA_BOSS_24p();
+    case CardDB.cardIDEnum.DRGA_BOSS_24p_H:
+      return new Sim_DRGA_BOSS_24p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_25p:
+      return new Sim_DRGA_BOSS_25p();
+    case CardDB.cardIDEnum.DRGA_BOSS_25p_H:
+      return new Sim_DRGA_BOSS_25p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_25t:
+      return new Sim_DRGA_BOSS_25t();
+    case CardDB.cardIDEnum.DRGA_BOSS_26p:
+      return new Sim_DRGA_BOSS_26p();
+    case CardDB.cardIDEnum.DRGA_BOSS_26p2:
+      return new Sim_DRGA_BOSS_26p2();
+    case CardDB.cardIDEnum.DRGA_BOSS_26pe:
+      return new Sim_DRGA_BOSS_26pe();
+    case CardDB.cardIDEnum.DRGA_BOSS_27p:
+      return new Sim_DRGA_BOSS_27p();
+    case CardDB.cardIDEnum.DRGA_BOSS_27p_H:
+      return new Sim_DRGA_BOSS_27p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_27t:
+      return new Sim_DRGA_BOSS_27t();
+    case CardDB.cardIDEnum.DRGA_BOSS_28p:
+      return new Sim_DRGA_BOSS_28p();
+    case CardDB.cardIDEnum.DRGA_BOSS_28p2:
+      return new Sim_DRGA_BOSS_28p2();
+    case CardDB.cardIDEnum.DRGA_BOSS_28p2e:
+      return new Sim_DRGA_BOSS_28p2e();
+    case CardDB.cardIDEnum.DRGA_BOSS_29p:
+      return new Sim_DRGA_BOSS_29p();
+    case CardDB.cardIDEnum.DRGA_BOSS_29pe:
+      return new Sim_DRGA_BOSS_29pe();
+    case CardDB.cardIDEnum.DRGA_BOSS_30p:
+      return new Sim_DRGA_BOSS_30p();
+    case CardDB.cardIDEnum.DRGA_BOSS_30p_H:
+      return new Sim_DRGA_BOSS_30p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_30t:
+      return new Sim_DRGA_BOSS_30t();
+    case CardDB.cardIDEnum.DRGA_BOSS_30t2:
+      return new Sim_DRGA_BOSS_30t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_30t2t:
+      return new Sim_DRGA_BOSS_30t2t();
+    case CardDB.cardIDEnum.DRGA_BOSS_30t3:
+      return new Sim_DRGA_BOSS_30t3();
+    case CardDB.cardIDEnum.DRGA_BOSS_30t4:
+      return new Sim_DRGA_BOSS_30t4();
+    case CardDB.cardIDEnum.DRGA_BOSS_30t5:
+      return new Sim_DRGA_BOSS_30t5();
+    case CardDB.cardIDEnum.DRGA_BOSS_30t6:
+      return new Sim_DRGA_BOSS_30t6();
+    case CardDB.cardIDEnum.DRGA_BOSS_30t7:
+      return new Sim_DRGA_BOSS_30t7();
+    case CardDB.cardIDEnum.DRGA_BOSS_31p:
+      return new Sim_DRGA_BOSS_31p();
+    case CardDB.cardIDEnum.DRGA_BOSS_31p2:
+      return new Sim_DRGA_BOSS_31p2();
+    case CardDB.cardIDEnum.DRGA_BOSS_31p_H:
+      return new Sim_DRGA_BOSS_31p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_31t:
+      return new Sim_DRGA_BOSS_31t();
+    case CardDB.cardIDEnum.DRGA_BOSS_32p:
+      return new Sim_DRGA_BOSS_32p();
+    case CardDB.cardIDEnum.DRGA_BOSS_32p_H:
+      return new Sim_DRGA_BOSS_32p_H();
+    case CardDB.cardIDEnum.DRGA_BOSS_33p:
+      return new Sim_DRGA_BOSS_33p();
+    case CardDB.cardIDEnum.DRGA_BOSS_33t:
+      return new Sim_DRGA_BOSS_33t();
+    case CardDB.cardIDEnum.DRGA_BOSS_35p:
+      return new Sim_DRGA_BOSS_35p();
+    case CardDB.cardIDEnum.DRGA_BOSS_35pt:
+      return new Sim_DRGA_BOSS_35pt();
+    case CardDB.cardIDEnum.DRGA_BOSS_36p:
+      return new Sim_DRGA_BOSS_36p();
+    case CardDB.cardIDEnum.DRGA_BOSS_36p2:
+      return new Sim_DRGA_BOSS_36p2();
+    case CardDB.cardIDEnum.DRGA_BOSS_36t:
+      return new Sim_DRGA_BOSS_36t();
+    case CardDB.cardIDEnum.DRGA_BOSS_36t2:
+      return new Sim_DRGA_BOSS_36t2();
+    case CardDB.cardIDEnum.DRGA_BOSS_37e:
+      return new Sim_DRGA_BOSS_37e();
+    case CardDB.cardIDEnum.DRGA_BOSS_37p:
+      return new Sim_DRGA_BOSS_37p();
+    case CardDB.cardIDEnum.DRGA_BOSS_38e:
+      return new Sim_DRGA_BOSS_38e();
+    case CardDB.cardIDEnum.DRGA_BOSS_38p:
+      return new Sim_DRGA_BOSS_38p();
+    case CardDB.cardIDEnum.GBL_010e:
+      return new Sim_GBL_010e();
+
+
+    case CardDB.cardIDEnum.TB_BaconShop_HP_046:
+      return new Sim_TB_BaconShop_HP_046();
+    case CardDB.cardIDEnum.TB_BaconShop_HP_051:
+      return new Sim_TB_BaconShop_HP_051();
+    case CardDB.cardIDEnum.TB_BaconShop_HP_051e:
+      return new Sim_TB_BaconShop_HP_051e();
+    case CardDB.cardIDEnum.TB_BaconShop_HP_054:
+      return new Sim_TB_BaconShop_HP_054();
+    case CardDB.cardIDEnum.TB_Baconshop_HP_054e:
+      return new Sim_TB_Baconshop_HP_054e();
+    case CardDB.cardIDEnum.TB_Baconshop_HP_054e2:
+      return new Sim_TB_Baconshop_HP_054e2();
+    case CardDB.cardIDEnum.TB_BaconUps_091:
+      return new Sim_TB_BaconUps_091();
+    case CardDB.cardIDEnum.TB_BaconUps_112:
+      return new Sim_TB_BaconUps_112();
+    case CardDB.cardIDEnum.TB_BaconUps_113:
+      return new Sim_TB_BaconUps_113();
+    case CardDB.cardIDEnum.TB_Lunar_Dog:
+      return new Sim_TB_Lunar_Dog();
+    case CardDB.cardIDEnum.TB_Lunar_DogE:
+      return new Sim_TB_Lunar_DogE();
+    case CardDB.cardIDEnum.TB_Lunar_DogEe:
+      return new Sim_TB_Lunar_DogEe();
+    case CardDB.cardIDEnum.TB_Lunar_Dragon:
+      return new Sim_TB_Lunar_Dragon();
+    case CardDB.cardIDEnum.TB_Lunar_DragonE:
+      return new Sim_TB_Lunar_DragonE();
+    case CardDB.cardIDEnum.TB_Lunar_Horse:
+      return new Sim_TB_Lunar_Horse();
+    case CardDB.cardIDEnum.TB_Lunar_HorseE:
+      return new Sim_TB_Lunar_HorseE();
+    case CardDB.cardIDEnum.TB_Lunar_Monkey:
+      return new Sim_TB_Lunar_Monkey();
+    case CardDB.cardIDEnum.TB_Lunar_MonkeyE:
+      return new Sim_TB_Lunar_MonkeyE();
+    case CardDB.cardIDEnum.TB_Lunar_Ox:
+      return new Sim_TB_Lunar_Ox();
+    case CardDB.cardIDEnum.TB_Lunar_OxE:
+      return new Sim_TB_Lunar_OxE();
+    case CardDB.cardIDEnum.TB_Lunar_OxEe:
+      return new Sim_TB_Lunar_OxEe();
+    case CardDB.cardIDEnum.TB_Lunar_Pig:
+      return new Sim_TB_Lunar_Pig();
+    case CardDB.cardIDEnum.TB_Lunar_PigE:
+      return new Sim_TB_Lunar_PigE();
+    case CardDB.cardIDEnum.TB_Lunar_Rabbit:
+      return new Sim_TB_Lunar_Rabbit();
+    case CardDB.cardIDEnum.TB_Lunar_RabbitE:
+      return new Sim_TB_Lunar_RabbitE();
+    case CardDB.cardIDEnum.TB_Lunar_Rat:
+      return new Sim_TB_Lunar_Rat();
+    case CardDB.cardIDEnum.TB_Lunar_RatE:
+      return new Sim_TB_Lunar_RatE();
+    case CardDB.cardIDEnum.TB_Lunar_Rooster:
+      return new Sim_TB_Lunar_Rooster();
+    case CardDB.cardIDEnum.TB_Lunar_RoosterE:
+      return new Sim_TB_Lunar_RoosterE();
+    case CardDB.cardIDEnum.TB_Lunar_Sheep:
+      return new Sim_TB_Lunar_Sheep();
+    case CardDB.cardIDEnum.TB_Lunar_SheepE:
+      return new Sim_TB_Lunar_SheepE();
+    case CardDB.cardIDEnum.TB_Lunar_Snake:
+      return new Sim_TB_Lunar_Snake();
+    case CardDB.cardIDEnum.TB_Lunar_SnakeE:
+      return new Sim_TB_Lunar_SnakeE();
+    case CardDB.cardIDEnum.TB_Lunar_Tiger:
+      return new Sim_TB_Lunar_Tiger();
+    case CardDB.cardIDEnum.TB_Lunar_TigerE:
+      return new Sim_TB_Lunar_TigerE();
+    case CardDB.cardIDEnum.TB_Lunar_TigerEe:
+      return new Sim_TB_Lunar_TigerEe();
+    case CardDB.cardIDEnum.YOD_001:
+      return new Sim_YOD_001();
+    case CardDB.cardIDEnum.YOD_001b:
+      return new Sim_YOD_001b();
+    case CardDB.cardIDEnum.YOD_001c:
+      return new Sim_YOD_001c();
+    case CardDB.cardIDEnum.YOD_001ts:
+      return new Sim_YOD_001ts();
+    case CardDB.cardIDEnum.YOD_003:
+      return new Sim_YOD_003();
+    case CardDB.cardIDEnum.YOD_004:
+      return new Sim_YOD_004();
+    case CardDB.cardIDEnum.YOD_005:
+      return new Sim_YOD_005();
+    case CardDB.cardIDEnum.YOD_005e:
+      return new Sim_YOD_005e();
+    case CardDB.cardIDEnum.YOD_005ts:
+      return new Sim_YOD_005ts();
+    case CardDB.cardIDEnum.YOD_006:
+      return new Sim_YOD_006();
+    case CardDB.cardIDEnum.YOD_007:
+      return new Sim_YOD_007();
+    case CardDB.cardIDEnum.YOD_008:
+      return new Sim_YOD_008();
+    case CardDB.cardIDEnum.YOD_009:
+      return new Sim_YOD_009();
+    case CardDB.cardIDEnum.YOD_009h:
+      return new Sim_YOD_009h();
+    case CardDB.cardIDEnum.YOD_010:
+      return new Sim_YOD_010();
+    case CardDB.cardIDEnum.YOD_012:
+      return new Sim_YOD_012();
+    case CardDB.cardIDEnum.YOD_012ts:
+      return new Sim_YOD_012ts();
+    case CardDB.cardIDEnum.YOD_013:
+      return new Sim_YOD_013();
+    case CardDB.cardIDEnum.YOD_014:
+      return new Sim_YOD_014();
+    case CardDB.cardIDEnum.YOD_015:
+      return new Sim_YOD_015();
+    case CardDB.cardIDEnum.YOD_015e:
+      return new Sim_YOD_015e();
+    case CardDB.cardIDEnum.YOD_016:
+      return new Sim_YOD_016();
+    case CardDB.cardIDEnum.YOD_017:
+      return new Sim_YOD_017();
+    case CardDB.cardIDEnum.YOD_018:
+      return new Sim_YOD_018();
+    case CardDB.cardIDEnum.YOD_018e:
+      return new Sim_YOD_018e();
+    case CardDB.cardIDEnum.YOD_020:
+      return new Sim_YOD_020();
+    case CardDB.cardIDEnum.YOD_022:
+      return new Sim_YOD_022();
+    case CardDB.cardIDEnum.YOD_023:
+      return new Sim_YOD_023();
+    case CardDB.cardIDEnum.YOD_024:
+      return new Sim_YOD_024();
+    case CardDB.cardIDEnum.YOD_025:
+      return new Sim_YOD_025();
+    case CardDB.cardIDEnum.YOD_026:
+      return new Sim_YOD_026();
+    case CardDB.cardIDEnum.Yod_026e:
+      return new Sim_Yod_026e();
+    case CardDB.cardIDEnum.YOD_027:
+      return new Sim_YOD_027();
+    case CardDB.cardIDEnum.YOD_027e:
+      return new Sim_YOD_027e();
+    case CardDB.cardIDEnum.YOD_028:
+      return new Sim_YOD_028();
+    case CardDB.cardIDEnum.YOD_029:
+      return new Sim_YOD_029();
+    case CardDB.cardIDEnum.YOD_029t:
+      return new Sim_YOD_029t();
+    case CardDB.cardIDEnum.YOD_030:
+      return new Sim_YOD_030();
+    case CardDB.cardIDEnum.YOD_032:
+      return new Sim_YOD_032();
+    case CardDB.cardIDEnum.YOD_032e:
+      return new Sim_YOD_032e();
+    case CardDB.cardIDEnum.YOD_033:
+      return new Sim_YOD_033();
+    case CardDB.cardIDEnum.YOD_033e:
+      return new Sim_YOD_033e();
+    case CardDB.cardIDEnum.YOD_035:
+      return new Sim_YOD_035();
+    case CardDB.cardIDEnum.YOD_036:
+      return new Sim_YOD_036();
+    case CardDB.cardIDEnum.YOD_038:
+      return new Sim_YOD_038();
+    case CardDB.cardIDEnum.YOD_038t:
+      return new Sim_YOD_038t();
+    case CardDB.cardIDEnum.YOD_040:
+      return new Sim_YOD_040();
+    case CardDB.cardIDEnum.YOD_041:
+      return new Sim_YOD_041();
+    case CardDB.cardIDEnum.YOD_041t:
+      return new Sim_YOD_041t();
+    case CardDB.cardIDEnum.YOD_042:
+      return new Sim_YOD_042();
+    case CardDB.cardIDEnum.YOD_043:
+      return new Sim_YOD_043();
+
+
             }
             return new SimTemplate();
         }

@@ -6,6 +6,15 @@ namespace HREngine.Bots
 {
 	class Sim_DRG_099  : SimTemplate
 	{
+        public  override void inhand(Playfield p, Handmanager.Handcard hc, bool wasOwnCard, Handmanager.Handcard triggerhc)
+        {
+            if(p.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p5||
+                p.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p4||
+                p.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p3||
+                p.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p2||
+                p.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p)
+                triggerhc.card.choice = true;
+        }
 		public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
         {
             
@@ -15,6 +24,7 @@ namespace HREngine.Bots
             	p.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p2||
             	p.ownHeroAblility.card.cardIDenum == CardDB.cardIDEnum.DRG_238p)
             {
+
             	if (choice == 4 )
                 {
                     p.allMinionsGetDamage(5,own.entitiyID);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Silverfish.Helpers;
 using Triton.Common.LogUtilities;
+using System.Text.RegularExpressions;
 
 namespace HREngine.Bots
 {
@@ -87,6 +88,86 @@ namespace HREngine.Bots
             PIRATE,
             DRAGON
         }
+        public void Createcardsimcs(string id,string name,string discribetext)
+        {
+            string filepath =  Settings.Instance.BaseDirectory+"\\Unidentified card";
+            if (!Directory.Exists(filepath))
+            {
+                Directory.CreateDirectory(filepath);
+            }
+
+            Regex regNum = new Regex("^[0-9]");
+
+            cardName nameEnum;
+            if (!Enum.TryParse(name, false, out  nameEnum) && !regNum.IsMatch(name))//名称不是数字开头
+                {
+                    string filename3 = filepath + "\\cardName.txt";
+                    if (!File.Exists(filename3))
+                    {
+                        FileStream fs3 = File.Create(filename3);
+                        fs3.Close();
+                    }
+                    using (System.IO.StreamWriter file3 = new System.IO.StreamWriter(@filename3, true))
+                    if(name!=""&&name!=null&&name!="continue")
+                    {
+                        Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType().ErrorFormat("[Unidentified card name :" + name + "]");
+                        
+                        string text = name+"," + "\r\n";
+                        file3.Write(text);
+                    }
+                }
+
+
+            CardDB.cardIDEnum CardEnum;
+            if (Enum.TryParse<cardIDEnum>(id, false, out CardEnum)) return ;
+            
+            if(id!=""&&id!=null)
+            {
+                string filename = filepath + "\\Sim_" + id + ".cs";
+                FileStream fs = File.Create(filename);
+                fs.Close();
+                string text = "using System;" + "\r\n" + "using System.Collections.Generic;" + "\r\n" + "using System.Text;"
+                    + "\r\n" + "\r\n" + "namespace HREngine.Bots" + "\r\n" + "{" + "\r\n" + "\t" + "class Sim_" + id + "  : SimTemplate"
+                    + "// " + id + "  " + name + "\r\n" + "//" + discribetext
+                    + "\r\n" + "\r\n" + "\t" + "{" + "\r\n" + "\t" + "}" + "\r\n" + "}";
+                File.WriteAllText(filename, text);
+            }
+
+            string filename1 = filepath + "\\casereturn.txt";
+            if (!File.Exists(filename1))
+            {
+                FileStream fs1 = File.Create(filename1);
+                fs1.Close();
+            }
+
+            using (System.IO.StreamWriter file1 = new System.IO.StreamWriter(@filename1, true))
+            {
+                if(id!=""&&id!=null)
+                {
+                    string text = "case CardDB.cardIDEnum." + id + ":" + "\r\n" + "  return new Sim_" + id + "();" + "\r\n";
+                    file1.Write( text);
+                }
+                
+            }
+
+            string filename2 = filepath + "\\cardID.txt";
+            if (!File.Exists(filename2))
+            {
+                FileStream fs2 = File.Create(filename2);
+                fs2.Close();
+            }
+            
+            using (System.IO.StreamWriter file2 = new System.IO.StreamWriter(@filename2, true))
+            {
+                if(id!=""&&id!=null)
+                {
+                    Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType().ErrorFormat("[Unidentified card ID :" + id + "]");
+                    string text = id+"," + "\r\n";
+                    file2.Write( text);
+                }
+                
+            }
+        }
 
         public cardIDEnum cardIdstringToEnum(string s)
         {
@@ -94,62 +175,8 @@ namespace HREngine.Bots
             if (Enum.TryParse<cardIDEnum>(s, false, out CardEnum)) return CardEnum;
             else
             {
-                Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType().ErrorFormat("[Unidentified card ID :" + s + "]");
+                //Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType().ErrorFormat("[Unidentified card ID :" + s + "]");
                 
-                    string filepath =  Settings.Instance.BaseDirectory+"\\Unidentified card";
-            ;
-                    if (!Directory.Exists(filepath))
-                    {
-                        Directory.CreateDirectory(filepath);
-                    }
-                    
-                    
-                    var a= s;
-                    if(a!=""&&a!=null)
-                    {
-                        string filename = filepath + "\\Sim_" + a + ".cs";
-                        FileStream fs = File.Create(filename);
-                        fs.Close();
-                        string text = "using System;" + "\r\n" + "using System.Collections.Generic;" + "\r\n" + "using System.Text;"
-                            + "\r\n" + "\r\n" + "namespace HREngine.Bots" + "\r\n" + "{" + "\r\n" + "\t" + "class Sim_" + a + "  : SimTemplate"
-                            + "\r\n" + "\r\n" + "\t" + "{" + "\r\n" + "\t" + "}" + "\r\n" + "}";
-                        File.WriteAllText(filename, text);
-                    }
-
-                    string filename1 = filepath + "\\casereturn.txt";
-                    if (!File.Exists(filename1))
-                    {
-                        FileStream fs1 = File.Create(filename1);
-                        fs1.Close();
-                    }
-
-                    using (System.IO.StreamWriter file1 = new System.IO.StreamWriter(@filename1, true))
-                    {
-                        if(a!=""&&a!=null)
-                        {
-                            string text = "case CardDB.cardIDEnum." + a + ":" + "\r\n" + "  return new Sim_" + a + "();" + "\r\n";
-                            file1.Write( text);
-                        }
-                        
-                    }
-
-                    string filename2 = filepath + "\\cardID.txt";
-                    if (!File.Exists(filename2))
-                    {
-                        FileStream fs2 = File.Create(filename2);
-                        fs2.Close();
-                    }
-                    
-                    using (System.IO.StreamWriter file2 = new System.IO.StreamWriter(@filename2, true))
-                    {
-                        if(a!=""&&a!=null)
-                        {
-                            string text = a+"," + "\r\n";
-                            file2.Write( text);
-                        }
-                        
-                    }
-
                 return CardDB.cardIDEnum.None;
             }
         }
@@ -164,24 +191,12 @@ namespace HREngine.Bots
             else
             {
                 
-                if (nameEnum != cardName.unknown&&s!="3ofkindcheckplayerenchant")
+                /*if (nameEnum == cardName.unknown&&s!="3ofkindcheckplayerenchant"&&s!="1level")
                 {
                     Triton.Common.LogUtilities.Logger.GetLoggerInstanceForType()
                         .ErrorFormat("[Unidentified card name :" + s + "]");
-                    string filepath =  Settings.Instance.BaseDirectory+"\\Unidentified card";
-                    string filename3 = filepath + "\\cardName.txt";
-                    if (!File.Exists(filename3))
-                    {
-                        FileStream fs3 = File.Create(filename3);
-                        fs3.Close();
-                    }
-                    using (System.IO.StreamWriter file3 = new System.IO.StreamWriter(@filename3, true))
 
-                    {
-                        string text = s+"," + "\r\n";
-                        file3.Write( text);
-                    }
-                }
+                }*/
             }
 
             return nameEnum;
@@ -310,17 +325,22 @@ namespace HREngine.Bots
             
             string[] lines = new string[0] { };
             string[] lines2 = new string[0] { };
+            string[] lines3 = new string[0] { };
             
             string path = Settings.Instance.DataFolderPath;
 
             string cardDbPath = Path.Combine(path, "_carddb.txt");
-            string cardDbPath2 = Path.Combine(path, "CardDefs.xml");
-            
+            string cardDbPath2 = Path.Combine(path, "CardDefs-playreq.xml");
+            string cardDbPath3 = Path.Combine(path, "CardDefs.xml");
+
             lines = System.IO.File.ReadAllLines(cardDbPath);
             lines2 = System.IO.File.ReadAllLines(cardDbPath2);
+            lines3 = System.IO.File.ReadAllLines(cardDbPath3);
 
-            string[] lines3 = lines.Concat(lines2).ToArray();
-            lines=lines3;
+            string[] linestemp = lines.Concat(lines2).ToArray();
+            string[] linestemp2 = linestemp.Concat(lines3).ToArray();
+
+            lines=linestemp2;
 
 
 
@@ -337,6 +357,9 @@ namespace HREngine.Bots
             string name = "";
             bool CARDNAME185=false;//
             bool CARDTEXT184=false;//
+            string CARDNAME= "";//缓存卡牌数据
+            string CARDTEXT= "";
+            string CARDID= "";
             //bool duplicatecard=false;//该卡重复
             
             foreach (string s in lines)
@@ -390,6 +413,8 @@ namespace HREngine.Bots
                     de = 0;
 
                     c.cardIDenum = this.cardIdstringToEnum(temp);
+
+                    CARDID = temp;
 
                     //token:
                     if (temp.EndsWith("t"))
@@ -564,6 +589,7 @@ namespace HREngine.Bots
                     
                         temp = temp.Split(new string[] {"</Tag>"}, StringSplitOptions.RemoveEmptyEntries)[0];
                         temp = TrimHelper.TrimEnglishName(temp);
+                        CARDNAME = temp;
                         c.name = this.cardNameStringToEnum(temp, c.cardIDenum);
                         name = temp;
 
@@ -585,6 +611,7 @@ namespace HREngine.Bots
                     temp = TrimHelper.TrimEnglishName(temp);
                     temp = temp.Replace("&quot;", "");
                     c.name = this.cardNameStringToEnum(temp, c.cardIDenum);
+                    CARDNAME = temp;
                     name = temp;
                     continue;
                 }
@@ -595,15 +622,19 @@ namespace HREngine.Bots
                     CARDTEXT184=false;
                     temp = s.Split(new string[] {"<enUS>"}, StringSplitOptions.RemoveEmptyEntries)[1];
                     temp = temp.Split(new string[] {"</enUS>"}, StringSplitOptions.RemoveEmptyEntries)[0];
+                    temp = temp.Replace("/b&gt;", "");
                     temp = temp.Replace("&lt;", "");
                     temp = temp.Replace("b&gt;", "");
-                    temp = temp.Replace("/b&gt;", "");
                     temp = temp.ToLower(new System.Globalization.CultureInfo("en-US", false));
                         if (temp.Contains("choose one"))
                         {
                             c.choice = true;
                             //LogHelper.WriteCombatLog(c.name + " is choice");
                         }
+                    CARDTEXT =temp;
+
+                        Createcardsimcs(CARDID,CARDNAME,CARDTEXT);
+
                         continue;
                     
                 }
@@ -616,8 +647,9 @@ namespace HREngine.Bots
                         string temp = s.Split(new string[] {"value=\"0\">"}, StringSplitOptions.RemoveEmptyEntries)[1];
                         temp = temp.Split(new string[] {"</Tag>"}, StringSplitOptions.RemoveEmptyEntries)[0];
                         temp = temp.Replace("&lt;", "");
-                        temp = temp.Replace("b&gt;", "");
                         temp = temp.Replace("/b&gt;", "");
+                        temp = temp.Replace("b&gt;", "");
+                        
                         temp = temp.ToLower(new System.Globalization.CultureInfo("en-US", false));
 
                         if (temp.Contains("choose one"))
@@ -625,6 +657,7 @@ namespace HREngine.Bots
                             c.choice = true;
                             //LogHelper.WriteCombatLog(c.name + " is choice");
                         }
+                        CARDTEXT =temp;
                     }
                     else CARDTEXT184=true;
 
