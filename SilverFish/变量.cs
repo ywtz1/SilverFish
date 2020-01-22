@@ -28,6 +28,7 @@ namespace HREngine.Bots
         public static int ownHeroPowerExtraDamageturn = 0;//本回合英雄技能额外伤害
         public static int enemyHeroPowerExtraDamageturn = 0;
         public static bool penpen=false;//砰砰突袭
+        public static bool likkim=false;//舔舔魔杖
 
         //public static List<CardDB.cardIDEnum> OwnDiedMinion = new List<CardDB.cardIDEnum>();
         public static List<CardDB.cardIDEnum> frostmournekill = new List<CardDB.cardIDEnum>();
@@ -66,6 +67,7 @@ namespace HREngine.Bots
             ownHeroPowerExtraDamageturn = 0;//本回合英雄技能额外伤害
             enemyHeroPowerExtraDamageturn = 0;
             penpen=false;//砰砰突袭
+            likkim=false;//舔舔魔杖
 
 
             frostmournekill = new List<CardDB.cardIDEnum>();
@@ -97,6 +99,7 @@ namespace HREngine.Bots
             ownHeroPowerExtraDamageturn = p.ownHeroPowerExtraDamageturn;//本回合英雄技能额外伤害
             enemyHeroPowerExtraDamageturn = p.enemyHeroPowerExtraDamageturn;
             penpen=p.penpen;//砰砰突袭
+            likkim=p.likkim;//舔舔魔杖
 
 
             frostmournekill = p.frostmournekill;
@@ -127,6 +130,7 @@ namespace HREngine.Bots
             p.ownHeroPowerExtraDamageturn = ownHeroPowerExtraDamageturn;//本回合英雄技能额外伤害
             p.enemyHeroPowerExtraDamageturn = enemyHeroPowerExtraDamageturn;
             p.penpen=penpen;//砰砰突袭
+            p.likkim=likkim;//舔舔魔杖
 
 
             p.frostmournekill = frostmournekill;

@@ -66,6 +66,7 @@ namespace HREngine.Bots
         public int ownHeroPowerExtraDamageturn = 0;//本回合英雄技能额外伤害
         public int enemyHeroPowerExtraDamageturn = 0;
         public bool penpen=false;//砰砰突袭
+        public bool likkim=false;//舔舔魔杖
 
         //public List<CardDB.cardIDEnum> OwnDiedMinion = new List<CardDB.cardIDEnum>();
         public List<CardDB.cardIDEnum> frostmournekill = new List<CardDB.cardIDEnum>();
@@ -1232,6 +1233,7 @@ namespace HREngine.Bots
             this.ownHeroPowerExtraDamageturn = p.ownHeroPowerExtraDamageturn;//本回合英雄技能额外伤害
             this.enemyHeroPowerExtraDamageturn = p.enemyHeroPowerExtraDamageturn;
             this.penpen=p.penpen;//砰砰突袭
+            this.likkim=p.likkim;//舔舔魔杖
             this.OwnLastDiedMinion = p.OwnLastDiedMinion;
             this.SpellLastPlayed = p.SpellLastPlayed;
 
@@ -6312,19 +6314,29 @@ public int getBestAdapt(Minion m) //1-+1/+1, 2-Attack, 3-hp, 4-taunt, 5-divine, 
 
             if (this.ownWeapon.name == CardDB.cardName.likkim)
             {
+
                 if (this.ueberladung > 0 ||this.lockedMana>0)
                 {
+                    if(!likkim)
+                    {
                         this.minionGetBuffed(this.ownHero, 2, 0);
                         this.ownWeapon.Angr += 2;
+                        likkim=true;
+                    }
                 }
-                else 
+                else if(likkim)
                 {
-              
-                        this.minionGetBuffed(this.ownHero, -2, 0);
-                        this.ownWeapon.Angr -= 2;
+                    this.minionGetBuffed(this.ownHero, -2, 0);
+                    this.ownWeapon.Angr -= 2;
+                    likkim=false;
                 }
             }
-
+            else if(likkim)
+            {
+                this.minionGetBuffed(this.ownHero, -2, 0);
+                this.ownWeapon.Angr -= 2;
+                likkim=false;
+            }
 
 
 

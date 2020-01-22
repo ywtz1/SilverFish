@@ -10,7 +10,7 @@ namespace HREngine.Bots
 
         public override void getBattlecryEffect(Playfield p, Minion own, Minion target, int choice)
         {
-            if (target != null)
+            if (target != null&&(TAG_RACE)target.handcard.card.race == TAG_RACE.PIRATE)
             {
                 p.minionGetDestroyed(target);
                 p.minionGetBuffed(own, 1, 1);
